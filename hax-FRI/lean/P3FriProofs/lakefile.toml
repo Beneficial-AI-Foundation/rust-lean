@@ -1,0 +1,29 @@
+name = "P3FriProofs"
+version = "0.1.0"
+defaultTargets = ["FoldingCorrectness"]
+
+[[lean_lib]]
+name = "FoldingCorrectness"
+roots = ["Proofs.FoldingCorrectness"]
+
+[[require]]
+name = "ArkLib"
+git = "https://github.com/Verified-zkEVM/ArkLib"
+rev = "main"
+
+# CompPoly not needed for FRI verification
+# [[require]]
+# name = "CompPoly"
+# git = "https://github.com/Verified-zkEVM/CompPoly"
+# rev = "master"
+
+# Hax Lean libs from PR #1880 (Lean 4.26.0 support)
+[[require]]
+name = "Hax"
+git.url = "https://github.com/cryspen/hax"
+git.subDir = "hax-lib/proof-libs/lean"
+rev = "1332b8fa19967234232473d0d3ec88e4d8ce8424"  # PR #1880
+
+[[require]]
+name = "p3_fri_kernel"
+path = "../../rust/p3_fri_kernel/proofs/lean/extraction"

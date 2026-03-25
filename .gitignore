@@ -1,0 +1,31 @@
+# Lean build artifacts and downloaded packages
+.lake/
+build/
+lake-packages/
+*.olean
+*.ilean
+*.trace
+*.hash
+
+# Rust build artifacts
+target/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*~
+
+# Bundled tool repositories (should be cloned separately)
+hax-horner/hax/
+
+# Nix
+result
+
+# Misc
+nohup.out
+*.profraw

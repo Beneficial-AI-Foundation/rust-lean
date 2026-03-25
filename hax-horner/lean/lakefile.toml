@@ -1,0 +1,15 @@
+name = "HornerLean"
+version = "0.1.0"
+defaultTargets = ["HornerLean"]
+
+[[lean_lib]]
+name = "HornerLean"
+srcDir = "."
+
+[[lean_lib]]
+name = "Hax"
+srcDir = "../hax/hax-lib/proof-libs/lean"
+
+[[require]]
+name = "CompPoly"
+git = "https://github.com/Verified-zkEVM/CompPoly"

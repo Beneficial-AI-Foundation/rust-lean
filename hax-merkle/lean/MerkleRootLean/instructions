@@ -1,0 +1,19 @@
+5. Target Theorem (Minimal Viable Proof)
+
+Steps:
+
+    Spec.lean: Define merkleRootSpec using foldl over the path
+
+    Proof.lean: Prove extracted_merkle_root_from_path = merkleRootSpec
+
+Proof Strategy:
+
+    Induction on the list of digests
+
+    Lemma: Rust for loop ↔ Lean foldl
+
+ArkLib Integration:
+
+    Phase 1: Use simple function parameter (hash_pair: fn(&Digest, &Digest) -> Digest)
+
+    Phase 2: Wrap with ArkLib/OracleReduction Oracle computation

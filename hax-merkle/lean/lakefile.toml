@@ -1,0 +1,10 @@
+name = "MerkleRootLean"
+version = "0.1.0"
+defaultTargets = ["MerkleRootLean"]
+
+[[lean_lib]]
+name = "Hax"
+srcDir = "HaxLib"
+
+[[lean_lib]]
+name = "MerkleRootLean"

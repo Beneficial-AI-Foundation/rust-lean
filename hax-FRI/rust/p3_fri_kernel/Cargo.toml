@@ -1,0 +1,9 @@
+[package]
+name = "p3_fri_kernel"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[target."cfg(hax)".dependencies]
+hax-lib = { git = "https://github.com/hacspec/hax", version = "0.3.6" }

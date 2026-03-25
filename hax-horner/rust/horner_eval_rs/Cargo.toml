@@ -1,0 +1,9 @@
+[package]
+name = "horner_eval_rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+
+[target."cfg(hax)".dependencies]
+hax-lib = { version = "0.3.6", path = "../../hax/hax-lib" }

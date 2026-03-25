@@ -1,0 +1,12 @@
+name = "Hax_adc_poc"
+version = "0.1.0"
+defaultTargets = ["Hax_adc_poc"]
+
+[[lean_lib]]
+name = "Hax_adc_poc"
+
+[[require]]
+name = "Hax"
+git.url = "https://github.com/cryspen/hax"
+git.subDir = "hax-lib/proof-libs/lean"
+rev = "main"

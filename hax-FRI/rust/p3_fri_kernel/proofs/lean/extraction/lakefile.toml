@@ -1,0 +1,13 @@
+name = "p3_fri_kernel"
+version = "0.1.0"
+defaultTargets = ["p3_fri_kernel"]
+
+[[lean_lib]]
+name = "p3_fri_kernel"
+roots = ["p3_fri_kernel", "CoreModelsPatch", "BasicProofs"]
+
+[[require]]
+name = "Hax"
+git.url = "https://github.com/cryspen/hax"
+git.subDir = "hax-lib/proof-libs/lean"
+rev = "1332b8fa19967234232473d0d3ec88e4d8ce8424"  # PR #1880 (Lean 4.26.0)
