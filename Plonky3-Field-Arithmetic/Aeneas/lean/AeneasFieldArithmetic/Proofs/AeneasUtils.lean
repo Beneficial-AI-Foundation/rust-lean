@@ -24,7 +24,14 @@ theorem UScalar.val_sub_eq {ty : UScalarTy} (n m : UScalar ty)
     refine (@BitVec.toNat_lt_twoPow_of_le ↑(System.Platform.getNumBits ())
     ↑(System.Platform.getNumBits ()) (by rfl) _)
   simp [UScalarTy.numBits, System.Platform.numBits] at *
+  cases ty <;> grind
+
+theorem UScalar.val_mul_eq {ty : UScalarTy} (n m : UScalar ty)
+ (inBounds : ↑n * ↑m < (2^(UScalarTy.numBits ty) : ℕ)) : UScalar.val n * UScalar.val m = (n.bv * m.bv).toNat := by
+  simp [UScalarTy.numBits, System.Platform.numBits] at *
   cases ty <;> try grind
+  cases h: System.Platform.getNumBits (); simp_all
+  rename_i p; cases p <;> grind
 
 theorem int_nat_val_dist :
   @Nat.cast ℤ _ (UScalar.val n) + ↑(UScalar.val m) =
@@ -65,3 +72,10 @@ theorem ICast_to_bv_of_Ncast_to_Z_of_N (n : ℕ) :
 
 theorem UScalar.mk_of_Ncast_to_bv_of_bvcast_to_N_of_bv {ty : UScalarTy} (b : BitVec ty.numBits) :
   UScalar.mk ↑b.toNat = UScalar.mk b := by simp
+
+-- NOTE: There must be a better way for performing this rewrite
+theorem UScalar.bv_mk_ext {ty : UScalarTy} (b : BitVec ty.numBits) :
+  UScalar.bv (UScalar.mk b) = b := by simp
+
+lemma UScalar.toNat_lt {ty : UScalarTy} {n m : UScalar ty} :
+  n < m → UScalar.val n < ↑m := by grind
