@@ -17,18 +17,59 @@ Projecting the extracted addition into the specification field is the same
 as projecting each element and performing the spec's addition.
 -/
 theorem add_verify_to_spec
-  (valid_n : UScalar.val n.value < 2^31-1)
-  (valid_m : UScalar.val m.value < 2^31-1)
-  (special_case : UScalar.val n.value + ↑m.value ≠ (2^31-1 : ℕ)) :
-  to_m31_spec (addOk n m valid_n valid_m)
-    (addOk_in_bounds n m valid_n valid_m special_case) =
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  to_m31_spec ⟨add_logic n m valid_n valid_m⟩
+    (add_logic_in_bounds n m valid_n valid_m) =
   to_m31_spec n valid_n + to_m31_spec m valid_m := by
-  unfold addOk to_m31_spec UScalar.val; congr; split <;> rename_i h <;> rw [add_spec] at h
-  any_goals assumption
-  any_goals contradiction
-  simp at h; rw [←h]; simp [add_logic]; split; grind
-  rename_i h2; simp at h2
-  simp only [UScalar.ofNatCore, UScalar.val, BitVec.toNat]; grind
+  unfold to_m31_spec; split
+  · split <;>
+      split <;>
+      simp [add_logic] <;> simp only [UScalar.val] <;>
+      congr <;> simp <;> split <;> rename_i h _ _ _ <;>
+      rw [add_logic] at h <;> grind
+  · split
+    · split <;> rename_i h _ _  <;> simp [add_logic] at h
+      · split at h <;> rename_i h2
+        · simp only [UScalar.ofNatCore, UScalar.val] at h
+          unfold UScalar.val at h; simp at h
+          have sum_eq : ↑n.value + ↑m.value = (2147483647 : ℕ) := by grind
+          refine Arith.ZMod_val_injective ?_
+          simp [ZMod.val_add]; simp only [ZMod.val, sum_eq]
+          grind
+        -- TODO: Merge these two proofs
+        · simp only [UScalar.ofNatCore, UScalar.val] at h
+          unfold UScalar.val at h; simp at h
+          have sum_eq : ↑n.value + ↑m.value = (2147483647 : ℕ) := by grind
+          refine Arith.ZMod_val_injective ?_
+          simp [ZMod.val_add]; simp only [ZMod.val, sum_eq]
+          grind
+      · split at h <;> rename_i h2 <;>
+        simp only [UScalar.ofNatCore, UScalar.val] at h <;>
+        unfold UScalar.val at h; simp at h
+        -- TODO: Collapse these two subproofs into one
+        · have sum_eq : ↑n.value + ↑m.value = (2147483647 : ℕ) := by grind
+          have m_eq : ↑m.value = (2147483647 : ℕ) := by grind
+          have n_eq : ↑n.value = (0 : ℕ) := by grind
+          refine Arith.ZMod_val_injective ?_
+          simp [n_eq]
+        · have m_eq : ↑m.value = (2147483647 : ℕ) := by grind
+          have n_eq : ↑n.value = (0 : ℕ) := by grind
+          refine Arith.ZMod_val_injective ?_
+          simp [n_eq]
+    · split <;> rename_i h _ _  <;> simp [add_logic] at h <;>
+      split at h <;> rename_i h2 <;> try simp <;> simp at h2 <;>
+      simp only [UScalar.ofNatCore, UScalar.val] at h <;>
+      simp only [BitVec.toNat] at h <;> simp at h
+      · have n_eq : ↑n.value = (2147483647 : ℕ) := by grind
+        have m_eq : ↑m.value = (0 : ℕ) := by grind
+        refine Arith.ZMod_val_injective ?_
+        simp [m_eq]
+      -- TODO: Collapse these two subproofs into one
+      · have n_eq : ↑n.value = (2147483647 : ℕ) := by grind
+        have m_eq : ↑m.value = (0 : ℕ) := by grind
+        refine Arith.ZMod_val_injective ?_
+        simp [m_eq]
 
 /--
 Given two specification `Mersenne31.Field` elements such that
@@ -40,13 +81,11 @@ the same as projecting each element and performing the impl's addition.
 theorem add_verify_of_spec
   (special_case : (ZMod.val p) + (ZMod.val q) ≠ 2^31 - 1) :
   of_m31_spec (p + q) =
-  addOk (of_m31_spec p) (of_m31_spec q) (of_m31_spec_lt_m31 p) (of_m31_spec_lt_m31 q)
+  ⟨add_logic (of_m31_spec p) (of_m31_spec q) (Nat.le_of_lt (of_m31_spec_lt_m31 p)) ((Nat.le_of_lt (of_m31_spec_lt_m31 q)))⟩
   := by
-  simp [addOk, of_m31_spec]; split <;> rename_i h <;> rw [add_spec] at h <;> try simp <;> try grind
-  any_goals contradiction
-  simp at h; rw [←h]; simp [add_logic, ZMod.val_add, Mersenne31.fieldSize]; split; grind
-  simp only [ZMod.val] at *
-  rename_i h2; simp at h2; simp [U32.ofNatCore, UScalar.ofNatCore]
-  rw [Nat.mod_eq]
-  split; grind
-  rename_i fls; simp at fls; simp [ZMod.val] at h2; omega
+  simp [add_logic, of_m31_spec]; split <;> rename_i h <;>
+  simp [U32.ofNatCore, UScalar.ofNatCore] <;> try simp at h
+  · simp [Nat.le_iff_lt_or_eq] at h; cases h
+    · rw [ZMod.val_add_of_lt]; assumption
+    · contradiction
+  · rw [ZMod.val_add_of_le (Nat.le_of_lt h)]
