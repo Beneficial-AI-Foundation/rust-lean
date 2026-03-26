@@ -8,14 +8,22 @@ open aeneas_field_arithmetic mersenne31.Mersenne31
 
 abbrev m31 := mersenne31.Mersenne31
 
+instance : ToString m31 where
+  toString m := Nat.repr m.value.bv.toNat
+
+#eval (⟨⟨⟨2^31 - 1, (by simp)⟩⟩⟩ : m31)
+
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 
 infixl:60 " +ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
+infixl:60 " ×ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
 
 def to_m31_spec
-  (valid_n : UScalar.val n.value < 2^31-1): Mersenne31.Field :=
-  ⟨↑(n.value), (by grind)⟩
+  (valid_n : UScalar.val n.value ≤ 2^31-1): Mersenne31.Field :=
+  if h : UScalar.val n.value < 2^31-1 then
+    ⟨↑(n.value), (by grind)⟩
+  else 0
 
 postfix:75 "↘" => to_m31_spec
 
@@ -28,6 +36,10 @@ def new_of_field : Result m31 := new (Std.U32.ofNatCore p.val (lt_field_u32 p))
 lemma m31_prime_ok :
   mersenne31.P = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
     simp [mersenne31.P]; rfl
+@[simp]
+lemma m31_prime64_ok :
+  mersenne31.P64 = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
+    simp [mersenne31.P64]; rfl
 
 lemma new_of_field_isOk :
   new_of_field p =
@@ -43,6 +55,8 @@ lemma new_of_field_isOk :
 
 def of_m31_spec : m31 :=
   {value := Std.U32.ofNatCore p.val (lt_field_u32 p)}
+
+theorem val_of_m31_spec : UScalar.val (of_m31_spec p).value = ZMod.val (p) := by congr
 
 theorem of_m31_spec_lt_m31 : ↑(of_m31_spec p).value < (2^31 - 1 : ℕ) := by
   simp [of_m31_spec]; grind
@@ -62,28 +76,38 @@ theorem to_of_m31_eq:
 
 theorem field_size_mod_small : p.val % Mersenne31.fieldSize = p.val := by grind
 
+/-! # Addition interface
+
+The following are functions and theorems that allow for a better
+interface with the extracted addition.
+
+ -/
+
 /-- The underlying logic of the extracted Mersenne31 `add` implementation -/
 def add_logic
-  (valid_n : UScalar.val n.value < 2^31-1) -- valid m31 elements
-  (valid_m : UScalar.val m.value < 2^31-1) : U32 :=
+  (valid_n : UScalar.val n.value ≤  2^31-1) -- valid m31 elements
+  (valid_m : UScalar.val m.value ≤ 2^31-1) : U32 :=
   let nat_sum := UScalar.val n.value + ↑m.value
   -- NOTE: Not <
   if nsh : nat_sum ≤ 2^31 - 1 then @UScalar.ofNatCore .U32 nat_sum (by grind)
   else @UScalar.ofNatCore .U32 (nat_sum - (2^31-1)) (by simp; grind)
 
+-- `2^31 - 1` is a non-canonical zero
+#eval add_logic ⟨⟨⟨2^31 - 2, (by simp)⟩⟩⟩ ⟨⟨⟨1, (by simp)⟩⟩⟩
+  (by {simp [UScalar.val]}) (by {simp [UScalar.val]})
+
 theorem add_logic_in_bounds
-  (valid_n : UScalar.val n.value < 2^31-1) -- valid m31 elements
-  (valid_m : UScalar.val m.value < 2^31-1)
-  (special_case : UScalar.val n.value + ↑m.value ≠ (2^31-1 : ℕ)):
-  ↑(add_logic n m valid_n valid_m) < (2^31 - 1 : ℕ) := by
+  (valid_n : UScalar.val n.value ≤ 2^31-1) -- valid m31 elements
+  (valid_m : UScalar.val m.value ≤ 2^31-1):
+  ↑(add_logic n m valid_n valid_m) ≤ (2^31 - 1 : ℕ) := by
   simp [add_logic, UScalar.ofNatCore]; split <;> rename_i h <;>
   simp only [UScalar.val, BitVec.toNat] at *
   · rw [Nat.le_iff_lt_or_eq] at h; cases h <;> grind
   · grind
 
 theorem add_spec
-  (valid_n : UScalar.val n.value < 2^31-1) -- valid m31 elements
-  (valid_m : UScalar.val m.value < 2^31-1) :
+  (valid_n : UScalar.val n.value ≤ 2^31-1) -- valid m31 elements
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
   n +ₘ m = .ok ⟨add_logic n m valid_n valid_m⟩
   := by
   -- Unfold pertinent definitions
@@ -134,8 +158,8 @@ theorem add_spec
       grind
 
 /-- Unwraps extracted addition from the result monad -/
-def addOk (valid_n : UScalar.val n.value < 2^31-1)
-          (valid_m : UScalar.val m.value < 2^31-1) : m31 :=
+def addOk (valid_n : UScalar.val n.value ≤ 2^31-1)
+          (valid_m : UScalar.val m.value ≤ 2^31-1) : m31 :=
   match h : n +ₘ m with
   | .ok res => res
   | .fail _ => by rw [add_spec] at h <;> grind
@@ -147,11 +171,236 @@ def addOk (valid_n : UScalar.val n.value < 2^31-1)
 **NOTE**: This is provided that `addOk n m ≠ 2^31 - 1`
 -/
 theorem addOk_in_bounds
-  (valid_n : UScalar.val n.value < 2^31-1) -- valid m31 elements
-  (valid_m : UScalar.val m.value < 2^31-1)
-  (special_case : UScalar.val n.value + ↑m.value ≠ (2^31-1 : ℕ)) :
-  ↑(addOk n m valid_n valid_m).value < (2 ^ 31 - 1 : ℕ) := by
+  (valid_n : UScalar.val n.value ≤ 2^31-1) -- valid m31 elements
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  ↑(addOk n m valid_n valid_m).value ≤ (2 ^ 31 - 1 : ℕ) := by
   simp [addOk]; split <;> rename_i h <;> rw [add_spec] at h
   any_goals assumption
   any_goals contradiction
-  simp at h; simp [←h]; apply add_logic_in_bounds; assumption
+  simp at h; simp [←h]; apply add_logic_in_bounds
+
+/-! # `from_u62` interface
+
+The following are functions and theorems that allow for a better
+interface with the `from_u62` function.
+
+This function converts `u62` integers into `m31` elements by wrapping
+them over the Mersenne 31 prime.
+
+-/
+@[simp]
+lemma srh64_1_62 : 1#u64 <<< 62#i32 = .ok (2^62)#u64 := rfl
+@[simp]
+lemma srh64_1_31 : 1#u64 <<< 31#i32 = .ok (2^31)#u64 := rfl
+@[simp]
+lemma srh32_1_31 : 1#u32 <<< 31#i32 = .ok (2^31)#u32 := rfl
+@[simp] -- For some reason `.ok` doesn't suffice here
+lemma sub64_2_pow31_1 : (2147483648#u64 - 1#u64) = Result.ok (2147483647#u64) := rfl
+@[simp] -- For some reason `.ok` doesn't suffice here
+lemma sub32_2_pow31_1 : (2 ^ 31)#u32 - 1#u32 = Result.ok (2147483647#u32) := rfl
+
+def m31_of_u64 (n : U64) : Result m31 :=
+  Result.ok ⟨
+    U32.ofNatCore ((UScalar.val n % 2^31 + UScalar.val n / 2^31) % (2^31) +
+    (Bool.toNat (decide (UScalar.val n % 2^31 + UScalar.val n / 2^31 > 2^31 - 1))))
+    (by {
+      by_cases ((UScalar.val n % 2^31 + UScalar.val n / 2^31) > 2^31 - 1)
+      <;> simp [UScalarTy.numBits] <;> grind
+    })
+  ⟩
+
+theorem from_u62_spec (n : U64)
+  (n_valid : UScalar.val n < 2^62) :
+  mersenne31.from_u62 n = m31_of_u64 n := by
+  simp [mersenne31.from_u62, m31_of_u64]; simp at n_valid
+  simp [Aeneas.Std.instBindResult, Std.bind, n_valid]
+  simp only [HAnd.hAnd, UScalar.and, AndOp.and]; rw [BitVec.and]
+  have n_rw : (2147483647 : ℕ) = 2^31 - 1 := rfl
+  split <;> rename_i h <;> simp [lift] at h
+  conv_lhs at h =>
+    congr; congr; rw [n_rw]; rw [Nat.and_two_pow_sub_one_eq_mod]
+  simp [lift, HShiftRight.hShiftRight, UScalar.shiftRight_IScalar]
+  simp [UScalar.shiftRight, BitVec.ushiftRight]
+  simp [new_reduced, Aeneas.Std.instBindResult, Std.bind]
+  rw [U32.shr_31_small] <;>
+  try (simp [←h]; simp [UScalar.cast]; unfold UScalar.val; grind)
+  simp
+  rw [U32.shr_31_small] <;>
+  try (simp [UScalar.cast]; unfold UScalar.val; simp; omega)
+  simp
+  conv=>
+    lhs; rw [add_spec, add_logic]
+    · simp only [←h]
+    · tactic=>
+        simp only [←h]
+        simp [UScalar.cast]; unfold UScalar.val
+        simp; grind
+    · tactic=>
+        simp [UScalar.cast]; unfold UScalar.val
+        simp; omega
+  congr; split <;> rename_i h2
+  · revert h2; simp only [UScalar.cast, UScalar.val, UScalar.ofNatCore]
+    simp only [BitVec.zeroExtend_eq_setWidth]
+    simp only [BitVec.setWidth, UScalarTy.numBits]
+    split; contradiction
+    conv=> lhs; congr; simp
+    intro h2; simp [Nat.shiftRight_eq_div_pow] at *
+    simp [U32.ofNatCore, UScalar.ofNatCore]
+    conv=>
+      lhs; rw [Nat.mod_eq_of_lt]
+      · skip
+      · tactic=> grind
+    repeat (rw [@Nat.mod_eq_of_lt _ 4294967296] at h2 <;> try grind)
+  · revert h2; simp only [UScalar.cast, UScalar.val, UScalar.ofNatCore]
+    simp only [BitVec.zeroExtend_eq_setWidth]
+    simp only [BitVec.setWidth, UScalarTy.numBits]
+    split; contradiction
+    conv=> lhs; congr; simp
+    intro h2
+    conv=> lhs; congr; simp
+    conv=> rhs; simp [U32.ofNatCore, UScalar.ofNatCore]
+    simp [Nat.shiftRight_eq_div_pow]
+    simp [Nat.shiftRight_eq_div_pow] at h2
+    repeat (rw [@Nat.mod_eq_of_lt _ 4294967296] at h2 <;>
+    try (refine (Nat.lt_trans (Nat.mod_lt _) ?_)))
+    any_goals omega
+    conv=>
+      rhs
+      simp [decide, Nat.decLt, Nat.decLe]
+      tactic=> split <;> simp <;> try lia
+    conv=>
+        rhs
+        rw [←Nat.mod_add_mod, Nat.mod_eq]
+    simp; split <;> lia
+
+/-- Key insight about modular decomposition in the Mersenne31 prime field -/
+theorem m31_mod_red (n : ℕ) :
+  n % (2 ^ 31 - 1) = (n % (2^31) + n / (2^31)) % (2^31 - 1) := by grind
+
+/-- Useful niche modular equality. Could be generalized -/
+lemma m31_swap_mods (n : ℕ)
+  (n_range_inf : 2^31 - 1 < n)
+  (n_range_sup : n < 2*(2^31 - 1)):
+  n % (2^31 - 1) = n % 2^31 + 1 := by omega
+
+lemma mod_small_swap (n m p : ℕ) (h1 : p < n) (h2 : n < m) :
+  p % n = p % m := by
+  repeat rw [Nat.mod_eq_of_lt] <;> try grind
+
+/-. Succint logic of the `m31_of_u64` function -/
+def m31_of_u64_logic (n : U64) : m31 :=
+  let decomp := UScalar.val n % 2147483648 + ↑n / 2147483648
+  if decomp % (2^31 - 1) = 0 ∧ decomp ≠ 0 then
+    ⟨U32.ofNatCore (2^31-1) (by simp)⟩
+  else
+    ⟨U32.ofNatCore ((UScalar.val n % (2^31 - 1))) (by grind)⟩
+
+theorem m31_of_u64_spec (n : U64)
+  (n_62 : UScalar.val n < 2^62) :
+  m31_of_u64 n = .ok (m31_of_u64_logic n) := by
+  simp [m31_of_u64_logic]
+  let decomp := UScalar.val n % 2147483648 + ↑n / 2147483648
+  have decomp_bound : UScalar.val n % 2147483648 + ↑n / 2147483648 ≤ 2*(2^31 - 1) := by grind
+  simp_all
+  split
+  · simp [m31_of_u64]; congr; simp [decide, Nat.decLt, Nat.decLe]
+    split
+    · simp; have : decomp = 4294967294 := by grind
+      rw [←Nat.mod_add_mod]; simp [decomp] at this; rw [this]
+    · simp_all; rename_i h; simp at h
+      have : decomp = 2147483647 := by grind
+      simp_all [decomp]; rw [←Nat.mod_add_mod]; grind
+  · simp [m31_of_u64]; congr; simp [decide, Nat.decLt, Nat.decLe]
+    split <;> simp_all
+    · rw [←Nat.mod_add_mod]; have := m31_swap_mods
+      simp at this; rw [←this]
+      have := m31_mod_red; simp at this; rw [←this]
+      · grind
+      · have := Nat.lt_or_eq_of_le decomp_bound; simp at this
+        cases this <;> grind
+    · simp_all; rw [←Nat.mod_add_mod]
+      rename_i h _
+      apply Nat.le_pred_of_lt at h; simp at h
+      apply Nat.lt_or_eq_of_le at h; cases h <;> grind
+
+
+/-! # Multiplication interface
+
+The following are functions and theorems that allow for a better
+interface with the extracted multiplication.
+
+-/
+
+/-- Function distilling the logic of Mersenne31 multiplication -/
+def mul_logic : Result m31 :=
+  let n_cast := UScalar.cast .U64 n.value
+  let m_cast := UScalar.cast .U64 m.value
+  do .ok (m31_of_u64_logic (←n_cast * m_cast))
+
+theorem mul_spec
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  n ×ₘ m = mul_logic n m  := by
+  have prod_small : ↑n.value * ↑m.value < (2^62 : ℕ) := by grind
+  simp [mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul]
+  simp [mul_logic, Aeneas.Std.instBindResult, Std.bind, lift]
+  simp [HMul.hMul, UScalar.mul]
+  simp [Mul.mul, UScalar.tryMk,UScalar.tryMkOpt]
+  simp at prod_small
+  split <;> try rfl
+  rename_i h
+  split at h <;> rename_i h2 <;> split at h2 <;> try grind
+  simp_all
+  rw [from_u62_spec] <;> try simp only [UScalar.val]; grind
+  rw [m31_of_u64_spec]; grind
+
+/-- Function distilling the logic of Mersenne31 multiplication
+    in terms of projecting the elements into ℕ -/
+def mul_logic_nat : m31 :=
+  m31_of_u64_logic (@UScalar.ofNatCore .U64 (UScalar.val n.value * ↑m.value) (by simp; grind))
+
+theorem mul_logic_nat_eq
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  mul_logic n m = .ok (mul_logic_nat n m) := by
+  have prod_small : ↑n.value * ↑m.value < (2^62 : ℕ) := by grind
+  simp [mul_logic, mul_logic_nat, Aeneas.Std.instBindResult, Std.bind]
+  simp [HMul.hMul, UScalar.mul]
+  simp [Mul.mul, UScalar.tryMk,UScalar.tryMkOpt]
+  simp at prod_small
+  aesop (add safe (by omega))
+
+theorem mul_spec_nat
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  n ×ₘ m = .ok (mul_logic_nat n m) := by
+  rw [mul_spec, mul_logic_nat_eq] <;> grind
+
+/--
+  Unwraps extracted addition from the result monad
+-/
+def mulOk (valid_n : UScalar.val n.value ≤ 2^31-1)
+          (valid_m : UScalar.val m.value ≤ 2^31-1) : m31 :=
+  match h : n ×ₘ m with
+  | .ok res => res
+  | .fail _ => by rw [mul_spec_nat] at h <;> grind
+  | .div => by
+      rw [mul_spec, mul_logic] at h <;> assumption
+
+theorem mulOk_in_bounds
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1) :
+  ↑(mulOk n m valid_n valid_m).value ≤ (2^31 - 1 : ℕ) := by
+  simp [mulOk]; split <;> try grind
+  rename_i h; rw [mul_spec, mul_logic] at h <;> try assumption
+  revert h
+  simp [Aeneas.Std.instBindResult, Std.bind]
+  simp [HMul.hMul, UScalar.mul, UScalar.tryMk, UScalar.tryMkOpt]
+  have : Mul.mul (UScalar.val n.value) ↑m.value < 18446744073709551616 := by simp [Mul.mul]; grind
+  split <;>  rename_i h <;> split at h <;> rename_i h2 <;> split at h2
+  any_goals contradiction
+  simp [m31_of_u64_logic]; aesop (add safe (by omega))
+
+theorem mul_logic_nat_in_bounds  :
+  ↑(mul_logic_nat n m).value ≤ (2^31 - 1 : ℕ) := by
+  simp [mul_logic_nat, m31_of_u64_logic]; split <;> grind
