@@ -1,16 +1,19 @@
-# Verified zkEVM
+Rust verification in Lean 4
+---------------------------------------
 
 A collection of formal verification projects for zero-knowledge virtual machine components. Each subdirectory is a self-contained project where Rust code is translated to Lean 4 using [Hax](https://github.com/cryspen/hax) or [Aeneas](https://github.com/AeneasVerif/aeneas), and then formally verified.
 
 ## Projects
 
-| Directory | Pipeline | Description |
-|-----------|----------|-------------|
-| `hax-FRI/` | Hax → Lean | Verification of one-step FRI folding from [Plonky3](https://github.com/Plonky3/Plonky3) |
-| `hax-horner/` | Hax → Lean | Horner polynomial evaluation from Plonky3, with CompPoly spec and proofs |
-| `hax-merkle/` | Hax → Lean | Merkle root recomputation and inclusion verification from [RISC Zero](https://github.com/risc0/risc0) |
-| `hax-annotations-adc/` | Hax → Lean | 32-bit limb addition with carry (`adc`), verified via Hax annotations and `bv_decide` |
-| `aeneas-FRI/` | Aeneas → Lean | FRI folding functions (`fold_step`, `fold_arity`) translated via the Aeneas pipeline |
+| Directory                                                            | Pipeline      | Description                                                                                           |
+|----------------------------------------------------------------------|---------------|-------------------------------------------------------------------------------------------------------|
+| [`hax-FRI/`](./hax-FRI/)                                             | Hax → Lean    | Verification of one-step FRI folding from [Plonky3](https://github.com/Plonky3/Plonky3)               |
+| [`hax-horner/`](./hax-horner/)                                       | Hax → Lean    | Horner polynomial evaluation from Plonky3, with CompPoly spec and proofs                              |
+| [`hax-merkle/`](./hax-merkle/)                                       | Hax → Lean    | Merkle root recomputation and inclusion verification from [RISC Zero](https://github.com/risc0/risc0) |
+| [`hax-annotations-adc/`](./hax-annotations-adc/)                     | Hax → Lean    | 32-bit limb addition with carry (`adc`), verified via Hax annotations and `bv_decide`                 |
+| [`aeneas-FRI/`](aeneas-FRI/)                                         | Aeneas → Lean | FRI folding functions (`fold_step`, `fold_arity`) translated via the Aeneas pipeline                  |
+| [`Plonky3-Field-Arithmetic/Hax`](Plonky3-Field-Arithmetic/Hax)       | Hax → Lean    | Generation of Lean 4 code via Hax from Rust models of Plonky3's Mersenne31 and KoalaBear fields       |
+| [`Plonky3-Field-Arithmetic/Aeneas`](Plonky3-Field-Arithmetic/Aeneas) | Aeneas → Lean | Verification of addition and multiplication functions of Rust models of Plonky3's Mersenne31          |
 
 Each project has its own README with details on the verification target, pipeline specifics, and current status.
 
