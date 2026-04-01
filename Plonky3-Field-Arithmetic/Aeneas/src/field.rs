@@ -62,10 +62,12 @@ pub trait PrimeCharacteristicRing:
         self.clone() + self.clone()
     }
 
+    // NOTE: this implemantation has been dummyfied since we can't put the `PrimeField` bound
+    //       in the `PrimeSubfield` associated type
     fn halve(&self) -> Self {
-        // This must be overwritten by PrimeField implementations as this definition
-        // is circular when PrimeSubfield = Self. It should also be overwritten by
-        // most rings to avoid the multiplication.
+        // // This must be overwritten by PrimeField implementations as this definition
+        // // is circular when PrimeSubfield = Self. It should also be overwritten by
+        // // most rings to avoid the multiplication.
         // let half = Self::from_prime_subfield(Self::PrimeSubfield::ONE.halve());
         // self.clone() * half
         self.clone()
