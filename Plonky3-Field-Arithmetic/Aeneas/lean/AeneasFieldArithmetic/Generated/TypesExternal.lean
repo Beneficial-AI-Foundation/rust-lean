@@ -12,13 +12,15 @@ set_option maxHeartbeats 1000000
 
 /-- [core::num::error::TryFromIntError]
     Source: '/rustc/library/core/src/num/error.rs', lines 10:0-10:26
-    Name pattern: [core::num::error::TryFromIntError] -/
+    Name pattern: [core::num::error::TryFromIntError]
+    Visibility: public -/
 @[rust_type "core::num::error::TryFromIntError"]
 axiom core.num.error.TryFromIntError : Type
 
 /-- [num_bigint::biguint::BigUint]
     Source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/biguint.rs', lines 34:0-34:18
-    Name pattern: [num_bigint::biguint::BigUint] -/
+    Name pattern: [num_bigint::biguint::BigUint]
+    Visibility: public -/
 @[rust_type "num_bigint::biguint::BigUint"]
 axiom num_bigint.biguint.BigUint : Type
 

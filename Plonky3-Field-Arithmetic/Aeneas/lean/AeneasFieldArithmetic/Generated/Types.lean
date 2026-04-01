@@ -14,7 +14,8 @@ namespace aeneas_field_arithmetic
 
 /-- Trait declaration: [core::ops::arith::Add]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 77:0-77:31
-    Name pattern: [core::ops::arith::Add] -/
+    Name pattern: [core::ops::arith::Add]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::Add"]
 structure core.ops.arith.Add (Self : Type) (Rhs : Type) (Self_Output : Type)
   where
@@ -22,7 +23,8 @@ structure core.ops.arith.Add (Self : Type) (Rhs : Type) (Self_Output : Type)
 
 /-- Trait declaration: [core::ops::arith::Sub]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 190:0-190:31
-    Name pattern: [core::ops::arith::Sub] -/
+    Name pattern: [core::ops::arith::Sub]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::Sub"]
 structure core.ops.arith.Sub (Self : Type) (Rhs : Type) (Self_Output : Type)
   where
@@ -30,7 +32,8 @@ structure core.ops.arith.Sub (Self : Type) (Rhs : Type) (Self_Output : Type)
 
 /-- Trait declaration: [core::ops::arith::Mul]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 324:0-324:31
-    Name pattern: [core::ops::arith::Mul] -/
+    Name pattern: [core::ops::arith::Mul]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::Mul"]
 structure core.ops.arith.Mul (Self : Type) (Rhs : Type) (Self_Output : Type)
   where
@@ -38,7 +41,8 @@ structure core.ops.arith.Mul (Self : Type) (Rhs : Type) (Self_Output : Type)
 
 /-- Trait declaration: [core::ops::arith::Div]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 462:0-462:31
-    Name pattern: [core::ops::arith::Div] -/
+    Name pattern: [core::ops::arith::Div]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::Div"]
 structure core.ops.arith.Div (Self : Type) (Rhs : Type) (Self_Output : Type)
   where
@@ -46,70 +50,62 @@ structure core.ops.arith.Div (Self : Type) (Rhs : Type) (Self_Output : Type)
 
 /-- Trait declaration: [core::ops::arith::Neg]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 692:0-692:19
-    Name pattern: [core::ops::arith::Neg] -/
+    Name pattern: [core::ops::arith::Neg]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::Neg"]
 structure core.ops.arith.Neg (Self : Type) (Self_Output : Type) where
   neg : Self → Result Self_Output
 
 /-- Trait declaration: [core::ops::arith::AddAssign]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 769:0-769:37
-    Name pattern: [core::ops::arith::AddAssign] -/
+    Name pattern: [core::ops::arith::AddAssign]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::AddAssign"]
 structure core.ops.arith.AddAssign (Self : Type) (Rhs : Type) where
   add_assign : Self → Rhs → Result Self
 
 /-- Trait declaration: [core::ops::arith::SubAssign]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 840:0-840:37
-    Name pattern: [core::ops::arith::SubAssign] -/
+    Name pattern: [core::ops::arith::SubAssign]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::SubAssign"]
 structure core.ops.arith.SubAssign (Self : Type) (Rhs : Type) where
   sub_assign : Self → Rhs → Result Self
 
 /-- Trait declaration: [core::ops::arith::MulAssign]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 902:0-902:37
-    Name pattern: [core::ops::arith::MulAssign] -/
+    Name pattern: [core::ops::arith::MulAssign]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::MulAssign"]
 structure core.ops.arith.MulAssign (Self : Type) (Rhs : Type) where
   mul_assign : Self → Rhs → Result Self
 
 /-- Trait declaration: [core::ops::arith::DivAssign]
     Source: '/rustc/library/core/src/ops/arith.rs', lines 964:0-964:37
-    Name pattern: [core::ops::arith::DivAssign] -/
+    Name pattern: [core::ops::arith::DivAssign]
+    Visibility: public -/
 @[rust_trait "core::ops::arith::DivAssign"]
 structure core.ops.arith.DivAssign (Self : Type) (Rhs : Type) where
   div_assign : Self → Rhs → Result Self
 
 /-- Trait declaration: [aeneas_field_arithmetic::mocks::Hasher]
-    Source: 'src/mocks.rs', lines 5:0-15:1 -/
+    Source: 'src/mocks.rs', lines 5:0-15:1
+    Visibility: public -/
 structure mocks.Hasher (Self : Type) where
   finish : Self → Result Std.U64
   write : Self → Slice Std.U8 → Result Self
   write_u32 : Self → Std.U32 → Result Self
 
 /-- Trait declaration: [aeneas_field_arithmetic::mocks::Hash]
-    Source: 'src/mocks.rs', lines 18:0-21:1 -/
+    Source: 'src/mocks.rs', lines 18:0-21:1
+    Visibility: public -/
 structure mocks.Hash (Self : Type) where
   hash : forall {H : Type} (HasherInst : mocks.Hasher H), Self → H → Result
     H
 
-/-- Trait declaration: [aeneas_field_arithmetic::unimplemented::Iterator]
-    Source: 'src/unimplemented.rs', lines 2:0-5:1 -/
-structure unimplemented.Iterator (Self : Type) (Self_Item : Type) where
-
-/-- Trait declaration: [aeneas_field_arithmetic::unimplemented::Product]
-    Source: 'src/unimplemented.rs', lines 15:0-19:1 -/
-structure unimplemented.Product (Self : Type) (A : Type) where
-  product : forall {I : Type} (IteratorInst : unimplemented.Iterator I A), I
-    → Result Self
-
-/-- Trait declaration: [aeneas_field_arithmetic::unimplemented::Sum]
-    Source: 'src/unimplemented.rs', lines 8:0-12:1 -/
-structure unimplemented.Sum (Self : Type) (A : Type) where
-  sum : forall {I : Type} (IteratorInst : unimplemented.Iterator I A), I →
-    Result Self
-
 /-- Trait declaration: [aeneas_field_arithmetic::field::PrimeCharacteristicRing]
-    Source: 'src/field.rs', lines 37:0-86:1 -/
+    Source: 'src/field.rs', lines 29:0-89:1
+    Visibility: public -/
 structure field.PrimeCharacteristicRing (Self : Type) (Self_PrimeSubfield :
   Type) where
   ZERO : Result Self
@@ -125,16 +121,16 @@ structure field.PrimeCharacteristicRing (Self : Type) (Self_PrimeSubfield :
   coreopsarithNegInst : core.ops.arith.Neg Self Self
   coreopsarithMulInst : core.ops.arith.Mul Self Self Self
   coreopsarithMulAssignInst : core.ops.arith.MulAssign Self Self
-  unimplementedSumInst : unimplemented.Sum Self Self
-  unimplementedProductInst : unimplemented.Product Self Self
   from_prime_subfield : Self_PrimeSubfield → Result Self
   from_bool : Bool → Result Self
   double : Self → Result Self
   halve : Self → Result Self
   div_2exp_u64 : Self → Std.U64 → Result Self
+  mul_2exp_u64 : Self → Std.U64 → Result Self
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::Algebra]
-    Source: 'src/field.rs', lines 97:0-107:1 -/
+    Source: 'src/field.rs', lines 100:0-110:1
+    Visibility: public -/
 structure field.Algebra (Self : Type) (F : Type) (Self_Clause0_PrimeSubfield :
   Type) where
   PrimeCharacteristicRingInst : field.PrimeCharacteristicRing Self
@@ -148,7 +144,8 @@ structure field.Algebra (Self : Type) (F : Type) (Self_Clause0_PrimeSubfield :
   coreopsarithMulAssignInst : core.ops.arith.MulAssign Self F
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::Field]
-    Source: 'src/field.rs', lines 113:0-170:1 -/
+    Source: 'src/field.rs', lines 116:0-173:1
+    Visibility: public -/
 structure field.Field (Self : Type) (Self_Packing : Type)
   (Self_Clause0_Clause0_PrimeSubfield : Type) where
   GENERATOR : Result Self
@@ -169,26 +166,30 @@ structure field.Field (Self : Type) (Self_Packing : Type)
   bits : Result Std.Usize
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::QuotientMap]
-    Source: 'src/field.rs', lines 89:0-95:1 -/
+    Source: 'src/field.rs', lines 92:0-98:1
+    Visibility: public -/
 structure field.QuotientMap (Self : Type) (Int : Type) where
   from_int : Int → Result Self
   from_canonical_checked : Int → Result (Option Self)
   from_canonical_unchecked : Int → Result Self
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::PrimeField]
-    Source: 'src/field.rs', lines 173:0-193:1 -/
+    Source: 'src/field.rs', lines 176:0-196:1
+    Visibility: public -/
 structure field.PrimeField (Self : Type) (Self_Clause0_Packing : Type)
   (Self_Clause0_Clause0_Clause0_PrimeSubfield : Type) where
   FieldInst : field.Field Self Self_Clause0_Packing
     Self_Clause0_Clause0_Clause0_PrimeSubfield
   corecmpOrdInst : core.cmp.Ord Self
   QuotientMapSelfU32Inst : field.QuotientMap Self Std.U32
+  QuotientMapSelfU64Inst : field.QuotientMap Self Std.U64
   QuotientMapSelfI32Inst : field.QuotientMap Self Std.I32
   QuotientMapSelfI64Inst : field.QuotientMap Self Std.I64
   as_canonical_biguint : Self → Result num_bigint.biguint.BigUint
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::PrimeField64]
-    Source: 'src/field.rs', lines 11:0-20:1 -/
+    Source: 'src/field.rs', lines 6:0-15:1
+    Visibility: public -/
 structure field.PrimeField64 (Self : Type) (Self_Clause0_Clause0_Packing :
   Type) (Self_Clause0_Clause0_Clause0_Clause0_PrimeSubfield : Type) where
   ORDER_U64 : Result Std.U64
@@ -198,7 +199,8 @@ structure field.PrimeField64 (Self : Type) (Self_Clause0_Clause0_Packing :
   to_unique_u64 : Self → Result Std.U64
 
 /-- Trait declaration: [aeneas_field_arithmetic::field::PrimeField32]
-    Source: 'src/field.rs', lines 25:0-34:1 -/
+    Source: 'src/field.rs', lines 18:0-27:1
+    Visibility: public -/
 structure field.PrimeField32 (Self : Type)
   (Self_Clause0_Clause0_Clause0_Packing : Type)
   (Self_Clause0_Clause0_Clause0_Clause0_Clause0_PrimeSubfield : Type) where
@@ -210,12 +212,13 @@ structure field.PrimeField32 (Self : Type)
   to_unique_u32 : Self → Result Std.U32
 
 /-- [aeneas_field_arithmetic::mersenne31::Mersenne31]
-    Source: 'src/mersenne31.rs', lines 22:0-25:1 -/
+    Source: 'src/mersenne31.rs', lines 18:0-21:1
+    Visibility: public -/
 structure mersenne31.Mersenne31 where
   value : Std.U32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure]
-    Source: 'src/mersenne31.rs', lines 386:37-386:62 -/
+    Source: 'src/mersenne31.rs', lines 372:37-372:62 -/
 @[reducible]
 def mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure :=
   Std.U32

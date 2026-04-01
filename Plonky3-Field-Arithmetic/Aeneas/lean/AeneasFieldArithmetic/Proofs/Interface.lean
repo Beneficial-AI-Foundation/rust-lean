@@ -36,10 +36,6 @@ def new_of_field : Result m31 := new (Std.U32.ofNatCore p.val (lt_field_u32 p))
 lemma m31_prime_ok :
   mersenne31.P = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
     simp [mersenne31.P]; rfl
-@[simp]
-lemma m31_prime64_ok :
-  mersenne31.P64 = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
-    simp [mersenne31.P64]; rfl
 
 lemma new_of_field_isOk :
   new_of_field p =
