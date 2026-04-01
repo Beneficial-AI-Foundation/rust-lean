@@ -62,3 +62,11 @@ pub const fn gcd_inversion_prime_field_32<const FIELD_BITS: u32>(mut a: u32, mut
     // This implies that `b` must be `1` and so `v = 2^{2 * FIELD_BITS - 2} a0^{-1} mod P` as desired.
     v
 }
+
+/// Given an element x from a 32 bit field F_P compute x/2.
+// Originally from field/src/helpers.rs
+pub const fn halve_u32<const P: u32>(x: u32) -> u32 {
+    let shift = (P + 1) >> 1;
+    let half = x >> 1;
+    if x & 1 == 0 { half } else { half + shift }
+}

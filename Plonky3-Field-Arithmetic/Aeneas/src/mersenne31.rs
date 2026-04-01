@@ -1,8 +1,7 @@
 use crate::field::{
     Algebra, Field, PrimeCharacteristicRing, PrimeField, PrimeField32, PrimeField64, QuotientMap,
 };
-use crate::util::gcd_inversion_prime_field_32;
-// use core::hash::{Hash, Hasher};
+use crate::util::{gcd_inversion_prime_field_32, halve_u32};
 use crate::mocks::{Hash, Hasher};
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use num_bigint::BigUint;
@@ -91,7 +90,12 @@ impl PrimeCharacteristicRing for Mersenne31 {
         Self::new_reduced(b as u32)
     }
 
-    // NOTE: Missing in the trait
+    #[inline]
+    fn halve(&self) -> Self {
+        // In a Mersenne field, division by 2 is a right rotation by 1 bit.
+        Self::new_reduced(halve_u32::<P>(self.value))
+    }
+
     fn div_2exp_u64(&self, exp: u64) -> Self {
         // In a Mersenne field, division by 2^k is just a right rotation by k bits.
         let exp = (exp % 31) as u8;
