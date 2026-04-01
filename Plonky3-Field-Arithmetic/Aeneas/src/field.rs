@@ -37,8 +37,10 @@ pub trait PrimeCharacteristicRing:
     + Neg<Output = Self>
     + Mul<Output = Self>
     + MulAssign
-    + Sum
-    + Product
+    // NOTE: We're not modeling these supertraits at the moment
+    // + Sum
+    // + Product
+    // + Debug
 {
     /// NOTE: This associated type is unbounded. It is originally bounded to `PrimeField`.
     ///       Aeneas doesn't currently support mutually recursive trait delcarations.

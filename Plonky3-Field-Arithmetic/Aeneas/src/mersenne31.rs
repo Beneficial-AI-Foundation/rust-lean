@@ -274,31 +274,6 @@ impl Neg for Mersenne31 {
     }
 }
 
-/// NOTE: Placeholder dummy impl
-impl Sum for Mersenne31 {
-    // #[inline]
-    // fn sum<I: Iterator<Item = Self>>(iter: I) -> Self {
-    //     // This is faster than iter.reduce(|x, y| x + y).unwrap_or(Self::ZERO) for iterators of length >= 6.
-    //     // It assumes that iter.len() < 2^31.
-
-    //     // This sum will not overflow so long as iter.len() < 2^33.
-    //     let sum = iter.map(|x| x.value as u64).sum::<u64>();
-
-    //     // sum is < 2^62 provided iter.len() < 2^31.
-    //     from_u62(sum)
-    // }
-    fn sum<I: Iterator<Item = Self>>(_iter: I) -> Self {
-        Self::new(0)
-    }
-}
-
-/// NOTE: Placeholder dummy impl. Unclear atm where the source is.
-impl Product for Mersenne31 {
-    fn product<I: Iterator<Item = Self>>(_iter: I) -> Self {
-        Self::new(0)
-    }
-}
-
 pub(crate) fn from_u62(input: u64) -> Mersenne31 {
     // debug_assert!(input < (1 << 62));
     assert!(input < (1 << 62));
