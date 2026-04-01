@@ -10,8 +10,6 @@ use num_bigint::BigUint;
 
 /// The Mersenne31 prime
 const P: u32 = (1 << 31) - 1;
-/// The Mersenne31 prime as u64 to avoid casting `P`
-const P64: u64 = (1 << 31) - 1;
 
 /// The prime field `F_p` where `p = 2^31 - 1`.
 #[derive(Copy, Clone, Default)]
@@ -143,8 +141,7 @@ impl Field for Mersenne31 {
 
 /// NOTE: Dummy implementation of a dummy trait
 impl PrimeField64 for Mersenne31 {
-    // const ORDER_U64: u64 = <Self as PrimeField32>::ORDER_U32 as u64;
-    const ORDER_U64: u64 = P64;
+    const ORDER_U64: u64 = <Self as PrimeField32>::ORDER_U32 as u64;
 
     fn as_canonical_u64(&self) -> u64 {
         self.as_canonical_u32().into()
