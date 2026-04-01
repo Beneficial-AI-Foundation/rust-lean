@@ -1,7 +1,6 @@
 use crate::field::{
     Algebra, Field, PrimeCharacteristicRing, PrimeField, PrimeField32, PrimeField64, QuotientMap,
 };
-use crate::unimplemented::*;
 use crate::util::gcd_inversion_prime_field_32;
 // use core::hash::{Hash, Hasher};
 use crate::mocks::{Hash, Hasher};

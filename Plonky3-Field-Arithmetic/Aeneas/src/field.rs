@@ -3,9 +3,6 @@ use crate::mocks::Hash;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use num_bigint::BigUint;
 
-// use core::iter::{Product, Sum}; // Missing from Hax
-use crate::unimplemented::{Product, Sum};
-
 /// NOTE: DUMMY PLACEHOLDER. Missing `PrimeField`
 /// A prime field `ℤ/p` with order, `p < 2^64`.
 pub trait PrimeField64: PrimeField {
