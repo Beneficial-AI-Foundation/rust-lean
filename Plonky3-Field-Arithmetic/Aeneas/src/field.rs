@@ -77,6 +77,13 @@ pub trait PrimeCharacteristicRing:
     //     // exponentiations (and potentially even the multiplication).
     //     self.clone() * Self::from_prime_subfield(Self::PrimeSubfield::ONE.halve().exp_u64(exp))
     // }
+
+    // NOTE: Unimplemented since it's problematic here and it's reimplemented in mersenne31
+    fn mul_2exp_u64(&self, exp: u64) -> Self; //  {
+    //     // Some rings might want to reimplement this to avoid the
+    //     // exponentiations (and potentially even the multiplication).
+    //     self.clone() * Self::TWO.exp_u64(exp)
+    // }
 }
 
 // Defined in field/src/integers.rs

@@ -94,6 +94,17 @@ impl PrimeCharacteristicRing for Mersenne31 {
         Self::new_reduced(halve_u32::<P>(self.value))
     }
 
+    #[inline]
+    fn mul_2exp_u64(&self, exp: u64) -> Self {
+        // In a Mersenne field, multiplication by 2^k is just a left rotation by k bits.
+        let exp = exp % 31;
+        let left = (self.value << exp) & ((1 << 31) - 1);
+        let right = self.value >> (31 - exp);
+        let rotated = left | right;
+        Self::new_reduced(rotated)
+    }
+
+    #[inline]
     fn div_2exp_u64(&self, exp: u64) -> Self {
         // In a Mersenne field, division by 2^k is just a right rotation by k bits.
         let exp = (exp % 31) as u8;
