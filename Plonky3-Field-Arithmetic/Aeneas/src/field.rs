@@ -177,7 +177,7 @@ pub trait PrimeField:
     // + QuotientMap<u8>
     // + QuotientMap<u16>
     + QuotientMap<u32>
-    // + QuotientMap<u64>
+    + QuotientMap<u64>
     // + QuotientMap<u128>
     // + QuotientMap<usize>
     // + QuotientMap<i8>
