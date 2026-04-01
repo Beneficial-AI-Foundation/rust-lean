@@ -1,9 +1,7 @@
-// use core::hash::Hash;
 use crate::mocks::Hash;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use num_bigint::BigUint;
 
-/// NOTE: DUMMY PLACEHOLDER. Missing `PrimeField`
 /// A prime field `ℤ/p` with order, `p < 2^64`.
 pub trait PrimeField64: PrimeField {
     const ORDER_U64: u64;
@@ -16,8 +14,6 @@ pub trait PrimeField64: PrimeField {
     }
 }
 
-/// NOTE: DUMMY PLACEHOLDER. Missing `PrimeField` and `PrimeField64`
-/// NOTE: `PrimeField64` supertrait removed to avoid circularities in the implementation
 /// A prime field `ℤ/p` with order `p < 2^32`.
 pub trait PrimeField32: PrimeField64 {
     const ORDER_U32: u32;
@@ -30,7 +26,6 @@ pub trait PrimeField32: PrimeField64 {
     }
 }
 
-/// NOTE: Removed the equality constraint of associated type for supertraits
 pub trait PrimeCharacteristicRing:
     Sized
     + Default
