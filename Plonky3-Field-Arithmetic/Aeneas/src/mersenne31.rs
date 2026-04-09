@@ -13,8 +13,8 @@ const P: u32 = (1 << 31) - 1;
 
 /// The prime field `F_p` where `p = 2^31 - 1`.
 #[derive(Copy, Clone, Default)]
-#[repr(transparent)] // Important for reasoning about memory layout.
-#[must_use]
+// #[repr(transparent)] // Important for reasoning about memory layout.
+// #[must_use]
 pub struct Mersenne31 {
     /// Not necessarily canonical, but must fit in 31 bits.
     pub(crate) value: u32,
@@ -35,7 +35,6 @@ impl Mersenne31 {
     /// The element must lie in the range: `[0, 2^31 - 1]`.
     #[inline]
     pub(crate) const fn new_reduced(value: u32) -> Self {
-        //debug_assert!((value >> 31) == 0);
         assert!((value >> 31) == 0);
         Self { value }
     }
@@ -119,9 +118,6 @@ impl PrimeCharacteristicRing for Mersenne31 {
 // FIELD IMPLEMENTATIONS //
 ///////////////////////////
 
-// NOTE: This is a workaround because Charon complains about
-impl Algebra<Mersenne31> for Mersenne31 {}
-
 impl Field for Mersenne31 {
     type Packing = Self;
 
@@ -150,7 +146,6 @@ impl Field for Mersenne31 {
     }
 }
 
-/// NOTE: Dummy implementation of a dummy trait
 impl PrimeField64 for Mersenne31 {
     const ORDER_U64: u64 = <Self as PrimeField32>::ORDER_U32 as u64;
 
@@ -159,7 +154,6 @@ impl PrimeField64 for Mersenne31 {
     }
 }
 
-/// NOTE: Dummy implementation of a dummy trait
 impl PrimeField32 for Mersenne31 {
     const ORDER_U32: u32 = P;
     fn as_canonical_u32(&self) -> u32 {
@@ -186,7 +180,7 @@ impl PrimeField for Mersenne31 {
 impl Add for Mersenne31 {
     type Output = Self;
 
-    // #[inline]
+    #[inline]
     fn add(self, rhs: Self) -> Self {
         // See the following for a way to compute the sum that avoids
         // the conditional which may be preferable on some
@@ -217,7 +211,7 @@ impl Sub for Mersenne31 {
 
     #[inline]
     fn sub(self, rhs: Self) -> Self {
-        // NOTE: Removed because of Hax not translating `overflowing_sub`
+
         let (mut sub, over) = self.value.overflowing_sub(rhs.value);
 
         // If we didn't overflow we have the correct value.
@@ -239,8 +233,7 @@ impl SubAssign for Mersenne31 {
 impl Mul for Mersenne31 {
     type Output = Self;
 
-    // #[inline]
-    // #[allow(clippy::cast_possible_truncation)]
+    #[inline]
     fn mul(self, rhs: Self) -> Self {
         let prod = u64::from(self.value) * u64::from(rhs.value);
         from_u62(prod)
@@ -275,7 +268,7 @@ impl DivAssign for Mersenne31 {
 impl Neg for Mersenne31 {
     type Output = Self;
 
-    // #[inline]
+    #[inline]
     fn neg(self) -> Self::Output {
         // Can't underflow, since self.value is 31-bits and thus can't exceed ORDER.
         Self::new_reduced(Self::ORDER_U32 - self.value)
@@ -283,7 +276,6 @@ impl Neg for Mersenne31 {
 }
 
 pub(crate) fn from_u62(input: u64) -> Mersenne31 {
-    // debug_assert!(input < (1 << 62));
     assert!(input < (1 << 62));
     let input_lo = (input & ((1 << 31) - 1)) as u32;
     let input_high = (input >> 31) as u32;
@@ -303,6 +295,7 @@ impl PartialEq for Mersenne31 {
 
 impl Eq for Mersenne31 {}
 
+// NOTE: We're not modelling packable at the moment
 // impl Packable for Mersenne31 {}
 
 impl Hash for Mersenne31 {
@@ -311,13 +304,15 @@ impl Hash for Mersenne31 {
     }
 }
 
+// NOTE: Copied `max`, `min` and `clamp` since Aeneas
+//       is not extracting them from the trait
+// NOTE: We've removed the `where` statements
 impl Ord for Mersenne31 {
     #[inline]
     fn cmp(&self, other: &Self) -> core::cmp::Ordering {
         self.as_canonical_u32().cmp(&other.as_canonical_u32())
     }
-    // NOTE: Copied `max`, `min` and `clamp` since Aeneas
-    //       is not extracting them from the trait
+
     fn max(self, other: Self) -> Self
     // where
     //     Self: Sized + [const] std::marker::Destruct,
@@ -325,14 +320,14 @@ impl Ord for Mersenne31 {
         if other < self { self } else { other }
     }
     fn min(self, other: Self) -> Self
-    where
-        // Self: Sized + [const] std::marker::Destruct,
+    // where
+    //     Self: Sized + [const] std::marker::Destruct,
     {
         if other < self { other } else { self }
     }
     fn clamp(self, min: Self, max: Self) -> Self
-    where
-        // Self: Sized + [const] std::marker::Destruct,
+    // where
+    //     Self: Sized + [const] std::marker::Destruct,
     {
         assert!(min <= max);
         assert!(max >= min); // Added here so that Aeneas produces `ge`

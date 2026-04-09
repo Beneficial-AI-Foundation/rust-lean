@@ -43,7 +43,7 @@ pub trait PrimeCharacteristicRing:
     // + Debug
 {
     /// NOTE: This associated type is unbounded. It is originally bounded to `PrimeField`.
-    ///       Aeneas doesn't currently support mutually recursive trait delcarations.
+    ///       Aeneas doesn't currently support mutually recursive trait declarations.
     type PrimeSubfield; // : PrimeField;
 
     const ZERO: Self;
@@ -62,7 +62,7 @@ pub trait PrimeCharacteristicRing:
         self.clone() + self.clone()
     }
 
-    // NOTE: this implemantation has been dummyfied since we can't put the `PrimeField` bound
+    // NOTE: this implementation has been dummyfied since we can't put the `PrimeField` bound
     //       in the `PrimeSubfield` associated type
     fn halve(&self) -> Self {
         // // This must be overwritten by PrimeField implementations as this definition
@@ -109,10 +109,10 @@ pub trait Algebra<F>:
 {
 }
 
-// NOTE: This is problematic at the Charon level
 // Every ring is an algebra over itself.
-// impl<R: PrimeCharacteristicRing> Algebra<R> for R {}
+impl<R: PrimeCharacteristicRing> Algebra<R> for R {}
 
+// NOTE: Removed some supertraits for simplicity
 pub trait Field:
     Algebra<Self>
     // + RawDataSerializable
@@ -191,6 +191,6 @@ pub trait PrimeField:
 {
     /// Return the representative of `value` in canonical form
     /// which lies in the range `0 <= x < self.order()`.
-    #[must_use]
+    // #[must_use]
     fn as_canonical_biguint(&self) -> BigUint;
 }
