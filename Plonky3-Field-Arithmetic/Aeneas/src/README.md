@@ -18,7 +18,7 @@ Contains the logic of the Mersenne31 field and associated trait implementations.
 
 ## Aeneas Adaptations
 
-> Aeneas version: commit [`1180be60`](https://github.com/AeneasVerif/aeneas/commit/1180be60c7a0e642cb442bfe90fe5cd8c1bb853f)
+> Aeneas version: commit [`c88443af`](https://github.com/AeneasVerif/aeneas/commit/c88443afcc83ac7ad69591ed908afd9eff26dd1e)
 
 The following is a description of Rust changes we made to the targeted code to obtain better Lean 4 generated code.
 For a more detailed diff between the original Rust and our models we recommend looking at the comment annotations in our models.
