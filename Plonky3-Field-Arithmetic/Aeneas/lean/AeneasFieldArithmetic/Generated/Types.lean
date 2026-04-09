@@ -218,7 +218,7 @@ structure mersenne31.Mersenne31 where
   value : Std.U32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure]
-    Source: 'src/mersenne31.rs', lines 372:37-372:62 -/
+    Source: 'src/mersenne31.rs', lines 367:37-367:62 -/
 @[reducible]
 def mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure :=
   Std.U32

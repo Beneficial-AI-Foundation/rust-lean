@@ -92,25 +92,25 @@ axiom num_bigint.biguint.BigUint.bits
   : num_bigint.biguint.BigUint → Result Std.U64
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ge]:
-    Source: 'src/mersenne31.rs', lines 349:0-354:1
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
     Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.ge
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::gt]:
-    Source: 'src/mersenne31.rs', lines 349:0-354:1
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
     Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.gt
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::le]:
-    Source: 'src/mersenne31.rs', lines 349:0-354:1
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
     Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.le
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::lt]:
-    Source: 'src/mersenne31.rs', lines 349:0-354:1
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
     Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.lt
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool

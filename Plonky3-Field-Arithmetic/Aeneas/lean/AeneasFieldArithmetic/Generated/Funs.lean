@@ -95,6 +95,25 @@ def field.PrimeCharacteristicRing.halve.default
   := do
   PrimeCharacteristicRingInst.corecloneCloneInst.clone self
 
+/-- Trait implementation: [aeneas_field_arithmetic::field::{aeneas_field_arithmetic::field::Algebra<R, Clause0_PrimeSubfield> for R}]
+    Source: 'src/field.rs', lines 113:0-113:52 -/
+@[reducible]
+def field.Algebra.Blanket {R : Type} {Clause0_PrimeSubfield : Type}
+  (PrimeCharacteristicRingInst1 : field.PrimeCharacteristicRing R
+  Clause0_PrimeSubfield) : field.Algebra R R Clause0_PrimeSubfield := {
+  PrimeCharacteristicRingInst := PrimeCharacteristicRingInst1
+  coreconvertFromInst := core.convert.FromSame R
+  coreopsarithAddInst := PrimeCharacteristicRingInst1.coreopsarithAddInst
+  coreopsarithAddAssignInst :=
+    PrimeCharacteristicRingInst1.coreopsarithAddAssignInst
+  coreopsarithSubInst := PrimeCharacteristicRingInst1.coreopsarithSubInst
+  coreopsarithSubAssignInst :=
+    PrimeCharacteristicRingInst1.coreopsarithSubAssignInst
+  coreopsarithMulInst := PrimeCharacteristicRingInst1.coreopsarithMulInst
+  coreopsarithMulAssignInst :=
+    PrimeCharacteristicRingInst1.coreopsarithMulAssignInst
+}
+
 /-- [aeneas_field_arithmetic::field::Field::is_zero]:
     Source: 'src/field.rs', lines 140:4-142:5
     Visibility: public -/
@@ -198,7 +217,7 @@ def mersenne31.Mersenne31.new
   ok { value := i1 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_reduced]:
-    Source: 'src/mersenne31.rs', lines 37:4-41:5 -/
+    Source: 'src/mersenne31.rs', lines 37:4-40:5 -/
 def mersenne31.Mersenne31.new_reduced
   (value : Std.U32) : Result mersenne31.Mersenne31 := do
   let i ← value >>> 31#i32
@@ -206,7 +225,7 @@ def mersenne31.Mersenne31.new_reduced
   ok { value }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_checked]:
-    Source: 'src/mersenne31.rs', lines 47:4-53:5
+    Source: 'src/mersenne31.rs', lines 46:4-52:5
     Visibility: public -/
 def mersenne31.Mersenne31.new_checked
   (value : Std.U32) : Result (Option mersenne31.Mersenne31) := do
@@ -216,7 +235,7 @@ def mersenne31.Mersenne31.new_checked
   else ok none
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ORDER_U32]
-    Source: 'src/mersenne31.rs', lines 164:4-164:29
+    Source: 'src/mersenne31.rs', lines 158:4-158:29
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -225,7 +244,7 @@ def
   mersenne31.P
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Neg<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::neg]:
-    Source: 'src/mersenne31.rs', lines 279:4-282:5
+    Source: 'src/mersenne31.rs', lines 272:4-275:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31.neg
   (self : mersenne31.Mersenne31) : Result mersenne31.Mersenne31 := do
@@ -235,7 +254,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31.neg
   mersenne31.Mersenne31.new_reduced i1
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Neg<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 275:0-283:1 -/
+    Source: 'src/mersenne31.rs', lines 268:0-276:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31 : core.ops.arith.Neg
   mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -243,7 +262,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31 : core.ops.arith.Neg
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Add<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add]:
-    Source: 'src/mersenne31.rs', lines 190:4-204:5
+    Source: 'src/mersenne31.rs', lines 184:4-198:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -262,7 +281,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
   mersenne31.Mersenne31.new_reduced sum_corr1
 
 /-- [aeneas_field_arithmetic::mersenne31::from_u62]:
-    Source: 'src/mersenne31.rs', lines 285:0-291:1 -/
+    Source: 'src/mersenne31.rs', lines 278:0-283:1 -/
 def mersenne31.from_u62 (input : Std.U64) : Result mersenne31.Mersenne31 := do
   let i ← 1#u64 <<< 62#i32
   massert (input < i)
@@ -277,7 +296,7 @@ def mersenne31.from_u62 (input : Std.U64) : Result mersenne31.Mersenne31 := do
   mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add m m1
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Mul<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul]:
-    Source: 'src/mersenne31.rs', lines 244:4-247:5
+    Source: 'src/mersenne31.rs', lines 237:4-240:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -289,7 +308,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
   mersenne31.from_u62 prod
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::MulAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_assign]:
-    Source: 'src/mersenne31.rs', lines 253:4-255:5
+    Source: 'src/mersenne31.rs', lines 246:4-248:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31.mul_assign
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -301,7 +320,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31.mul_assign
   mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul self m
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::MulAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 252:0-256:1 -/
+    Source: 'src/mersenne31.rs', lines 245:0-249:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31 :
   core.ops.arith.MulAssign mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -310,7 +329,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31 :
 }
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Mul<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 239:0-248:1 -/
+    Source: 'src/mersenne31.rs', lines 233:0-241:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31 :
   core.ops.arith.Mul mersenne31.Mersenne31 mersenne31.Mersenne31
@@ -319,7 +338,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Sub<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub]:
-    Source: 'src/mersenne31.rs', lines 219:4-228:5
+    Source: 'src/mersenne31.rs', lines 213:4-222:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31.sub
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -334,7 +353,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31.sub
   mersenne31.Mersenne31.new_reduced i2
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::SubAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub_assign]:
-    Source: 'src/mersenne31.rs', lines 234:4-236:5
+    Source: 'src/mersenne31.rs', lines 228:4-230:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31.sub_assign
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -346,7 +365,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31.sub_assign
   mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31.sub self m
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::SubAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 233:0-237:1 -/
+    Source: 'src/mersenne31.rs', lines 227:0-231:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31 :
   core.ops.arith.SubAssign mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -355,7 +374,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31 :
 }
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Sub<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 215:0-229:1 -/
+    Source: 'src/mersenne31.rs', lines 209:0-223:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31 :
   core.ops.arith.Sub mersenne31.Mersenne31 mersenne31.Mersenne31
@@ -364,7 +383,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::AddAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add_assign]:
-    Source: 'src/mersenne31.rs', lines 210:4-212:5
+    Source: 'src/mersenne31.rs', lines 204:4-206:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31.add_assign
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -376,7 +395,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31.add_assign
   mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add self m
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::AddAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 209:0-213:1 -/
+    Source: 'src/mersenne31.rs', lines 203:0-207:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31 :
   core.ops.arith.AddAssign mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -385,7 +404,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31 :
 }
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Add<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 186:0-205:1 -/
+    Source: 'src/mersenne31.rs', lines 180:0-199:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31 :
   core.ops.arith.Add mersenne31.Mersenne31 mersenne31.Mersenne31
@@ -394,7 +413,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_2exp_u64]:
-    Source: 'src/mersenne31.rs', lines 108:4-115:5
+    Source: 'src/mersenne31.rs', lines 107:4-114:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64
@@ -413,7 +432,7 @@ def
   mersenne31.Mersenne31.new_reduced rotated
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_2exp_u64]:
-    Source: 'src/mersenne31.rs', lines 98:4-105:5
+    Source: 'src/mersenne31.rs', lines 97:4-104:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.mul_2exp_u64
@@ -443,7 +462,7 @@ def util.halve_u32 (P : Std.U32) (x : Std.U32) : Result Std.U32 := do
   else half + shift
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::halve]:
-    Source: 'src/mersenne31.rs', lines 92:4-95:5
+    Source: 'src/mersenne31.rs', lines 91:4-94:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.halve
@@ -452,7 +471,7 @@ def
   mersenne31.Mersenne31.new_reduced i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_bool]:
-    Source: 'src/mersenne31.rs', lines 87:4-89:5
+    Source: 'src/mersenne31.rs', lines 86:4-88:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.from_bool
@@ -461,7 +480,7 @@ def
   mersenne31.Mersenne31.new_reduced i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_prime_subfield]:
-    Source: 'src/mersenne31.rs', lines 82:4-84:5
+    Source: 'src/mersenne31.rs', lines 81:4-83:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.from_prime_subfield
@@ -469,7 +488,7 @@ def
   ok f
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::NEG_ONE]
-    Source: 'src/mersenne31.rs', lines 77:4-79:6
+    Source: 'src/mersenne31.rs', lines 76:4-78:6
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -481,7 +500,7 @@ def
   ok { value := i1 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::TWO]
-    Source: 'src/mersenne31.rs', lines 76:4-76:40
+    Source: 'src/mersenne31.rs', lines 75:4-75:40
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -490,7 +509,7 @@ def
   { value := 2#u32 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ONE]
-    Source: 'src/mersenne31.rs', lines 75:4-75:40
+    Source: 'src/mersenne31.rs', lines 74:4-74:40
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -499,7 +518,7 @@ def
   { value := 1#u32 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ZERO]
-    Source: 'src/mersenne31.rs', lines 74:4-74:41
+    Source: 'src/mersenne31.rs', lines 73:4-73:41
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -508,7 +527,7 @@ def
   { value := 0#u32 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::double]:
-    Source: 'src/mersenne31.rs', lines 71:0-116:1
+    Source: 'src/mersenne31.rs', lines 70:0-115:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.double
@@ -520,7 +539,7 @@ def
     m m
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 71:0-116:1 -/
+    Source: 'src/mersenne31.rs', lines 70:0-115:1 -/
 @[reducible]
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31
@@ -563,30 +582,6 @@ def
     mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.mul_2exp_u64
 }
 
-/-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Algebra<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 123:0-123:42 -/
-@[reducible]
-def
-  mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldAlgebraMersenne31Mersenne31
-  : field.Algebra mersenne31.Mersenne31 mersenne31.Mersenne31
-  mersenne31.Mersenne31 := {
-  PrimeCharacteristicRingInst :=
-    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31
-  coreconvertFromInst := core.convert.FromSame mersenne31.Mersenne31
-  coreopsarithAddInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31
-  coreopsarithAddAssignInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31
-  coreopsarithSubInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31
-  coreopsarithSubAssignInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31
-  coreopsarithMulInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31
-  coreopsarithMulAssignInst :=
-    mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31
-}
-
 /-- [aeneas_field_arithmetic::mocks::Hasher::write_u32]:
     Source: 'src/mocks.rs', lines 12:4-14:5
     Visibility: public -/
@@ -599,7 +594,7 @@ def mocks.Hasher.write_u32.default
   HasherInst.write self s
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u32]:
-    Source: 'src/mersenne31.rs', lines 165:4-173:5
+    Source: 'src/mersenne31.rs', lines 159:4-167:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.as_canonical_u32
@@ -611,7 +606,7 @@ def
   else ok self.value
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::to_unique_u32]:
-    Source: 'src/mersenne31.rs', lines 163:0-174:1
+    Source: 'src/mersenne31.rs', lines 157:0-168:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.to_unique_u32
@@ -620,7 +615,7 @@ def
     self
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mocks::Hash for aeneas_field_arithmetic::mersenne31::Mersenne31}::hash]:
-    Source: 'src/mersenne31.rs', lines 309:4-311:5
+    Source: 'src/mersenne31.rs', lines 302:4-304:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash.hash
   {H : Type} (mocksHasherInst : mocks.Hasher H) (self : mersenne31.Mersenne31)
@@ -633,7 +628,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash.hash
   mocksHasherInst.write_u32 state i
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mocks::Hash for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 308:0-312:1 -/
+    Source: 'src/mersenne31.rs', lines 301:0-305:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash : mocks.Hash
   mersenne31.Mersenne31 := {
@@ -643,7 +638,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash : mocks.Hash
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialEq<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::eq]:
-    Source: 'src/mersenne31.rs', lines 299:4-301:5
+    Source: 'src/mersenne31.rs', lines 291:4-293:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31.eq
   (self : mersenne31.Mersenne31) (other : mersenne31.Mersenne31) :
@@ -658,7 +653,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31.eq
   ok (i = i1)
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialEq<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 297:0-302:1 -/
+    Source: 'src/mersenne31.rs', lines 289:0-294:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31 : core.cmp.PartialEq
   mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -666,7 +661,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31 : core.cmp.PartialEq
 }
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::cmp::Eq for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 304:0-304:25 -/
+    Source: 'src/mersenne31.rs', lines 296:0-296:25 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreCmpEq : core.cmp.Eq mersenne31.Mersenne31
   := {
@@ -691,6 +686,7 @@ def util.gcd_inversion_prime_field_32_loop.body
     let (a1, b1, u1, v1) ←
       if i3 != 0#u32
       then
+        do
         let (a2, b2, u2, v2) ←
           if a < b
           then ok (b, a, v, u)
@@ -732,7 +728,7 @@ def util.gcd_inversion_prime_field_32
   util.gcd_inversion_prime_field_32_loop FIELD_BITS a b 1#i64 0#i64 0#u32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked]:
-    Source: 'src/mersenne31.rs', lines 375:4-379:5
+    Source: 'src/mersenne31.rs', lines 370:4-374:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked
@@ -743,7 +739,7 @@ def
   mersenne31.Mersenne31.new_reduced int
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int]:
-    Source: 'src/mersenne31.rs', lines 424:4-434:5
+    Source: 'src/mersenne31.rs', lines 419:4-429:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int
@@ -757,7 +753,7 @@ def
     red
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int]:
-    Source: 'src/mersenne31.rs', lines 467:4-473:5
+    Source: 'src/mersenne31.rs', lines 462:4-468:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int
@@ -776,7 +772,7 @@ def
     mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31.neg m
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::is_zero]:
-    Source: 'src/mersenne31.rs', lines 131:4-133:5
+    Source: 'src/mersenne31.rs', lines 127:4-129:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero
@@ -789,7 +785,7 @@ def
     ok (self.value = i)
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::try_inverse]:
-    Source: 'src/mersenne31.rs', lines 135:4-146:5
+    Source: 'src/mersenne31.rs', lines 131:4-142:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse
@@ -811,7 +807,7 @@ def
     ok (some m1)
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::inverse]:
-    Source: 'src/mersenne31.rs', lines 125:0-151:1
+    Source: 'src/mersenne31.rs', lines 121:0-147:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse
@@ -822,7 +818,7 @@ def
   core.option.Option.expect o (toStr "Tried to invert zero")
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::DivAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_assign]:
-    Source: 'src/mersenne31.rs', lines 270:4-272:5
+    Source: 'src/mersenne31.rs', lines 263:4-265:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31.div_assign
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -836,7 +832,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31.div_assign
     m1
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::DivAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 269:0-273:1 -/
+    Source: 'src/mersenne31.rs', lines 262:0-266:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31 :
   core.ops.arith.DivAssign mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -845,7 +841,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Div<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div]:
-    Source: 'src/mersenne31.rs', lines 262:4-264:5
+    Source: 'src/mersenne31.rs', lines 255:4-257:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31.div
   (self : mersenne31.Mersenne31) (rhs : mersenne31.Mersenne31) :
@@ -858,7 +854,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31.div
   mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul self m1
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::ops::arith::Div<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 260:0-265:1 -/
+    Source: 'src/mersenne31.rs', lines 253:0-258:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31 :
   core.ops.arith.Div mersenne31.Mersenne31 mersenne31.Mersenne31
@@ -867,7 +863,7 @@ def mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::order]:
-    Source: 'src/mersenne31.rs', lines 148:4-150:5
+    Source: 'src/mersenne31.rs', lines 144:4-146:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.order
@@ -877,7 +873,7 @@ def
     num_bigint.biguint.BigUint.Insts.CoreConvertFromU32 i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::GENERATOR]
-    Source: 'src/mersenne31.rs', lines 129:4-129:41
+    Source: 'src/mersenne31.rs', lines 125:4-125:41
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -886,7 +882,7 @@ def
   mersenne31.Mersenne31.new 7#u32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::bits]:
-    Source: 'src/mersenne31.rs', lines 125:0-151:1
+    Source: 'src/mersenne31.rs', lines 121:0-147:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.bits
@@ -897,18 +893,18 @@ def
   ok (UScalar.cast .Usize i)
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::is_one]:
-    Source: 'src/mersenne31.rs', lines 125:0-151:1
+    Source: 'src/mersenne31.rs', lines 121:0-147:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_one
   (self : mersenne31.Mersenne31) : Result Bool := do
-  let m ←
-    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldAlgebraMersenne31Mersenne31.PrimeCharacteristicRingInst.ONE
+  let m :=
+    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.ONE
   mersenne31.Mersenne31.Insts.CoreCmpEq.partialEqInst.eq
     self m
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 125:0-151:1 -/
+    Source: 'src/mersenne31.rs', lines 121:0-147:1 -/
 @[reducible]
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31
@@ -916,8 +912,8 @@ def
   mersenne31.Mersenne31 := {
   GENERATOR :=
     mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.GENERATOR
-  AlgebraInst :=
-    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldAlgebraMersenne31Mersenne31
+  AlgebraInst := field.Algebra.Blanket
+    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31
   coremarkerCopyInst := mersenne31.Mersenne31.Insts.CoreMarkerCopy
   coreopsarithDivInst :=
     mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31
@@ -946,14 +942,14 @@ def
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::try_inverse::NUM_PRIME_BITS]
-    Source: 'src/mersenne31.rs', lines 141:8-141:39 -/
+    Source: 'src/mersenne31.rs', lines 137:8-137:39 -/
 @[global_simps, irreducible]
 def mersenne31.FieldMersenne31Mersenne31Mersenne31.try_inverse.NUM_PRIME_BITS
   : Std.U32 :=
   31#u32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked]:
-    Source: 'src/mersenne31.rs', lines 409:4-415:5
+    Source: 'src/mersenne31.rs', lines 404:4-410:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_canonical_unchecked
@@ -969,7 +965,7 @@ def
     mersenne31.Mersenne31.new_reduced i1
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked]:
-    Source: 'src/mersenne31.rs', lines 494:4-496:5
+    Source: 'src/mersenne31.rs', lines 489:4-491:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_canonical_unchecked
@@ -979,7 +975,7 @@ def
     i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked]:
-    Source: 'src/mersenne31.rs', lines 396:4-406:5
+    Source: 'src/mersenne31.rs', lines 391:4-401:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_canonical_checked
@@ -1017,7 +1013,7 @@ def
     else ok none
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked]:
-    Source: 'src/mersenne31.rs', lines 479:4-487:5
+    Source: 'src/mersenne31.rs', lines 474:4-482:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_canonical_checked
@@ -1034,7 +1030,7 @@ def
   else ok none
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 461:0-497:1 -/
+    Source: 'src/mersenne31.rs', lines 456:0-492:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64 :
   field.QuotientMap mersenne31.Mersenne31 Std.I64 := {
@@ -1047,7 +1043,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked]:
-    Source: 'src/mersenne31.rs', lines 456:4-458:5
+    Source: 'src/mersenne31.rs', lines 451:4-453:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_canonical_unchecked
@@ -1057,7 +1053,7 @@ def
     i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked]:
-    Source: 'src/mersenne31.rs', lines 440:4-449:5
+    Source: 'src/mersenne31.rs', lines 435:4-444:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_canonical_checked
@@ -1075,7 +1071,7 @@ def
   else ok none
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 418:0-459:1 -/
+    Source: 'src/mersenne31.rs', lines 413:0-454:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64 :
   field.QuotientMap mersenne31.Mersenne31 Std.U64 := {
@@ -1088,7 +1084,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int]:
-    Source: 'src/mersenne31.rs', lines 384:4-393:5
+    Source: 'src/mersenne31.rs', lines 379:4-388:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_int
@@ -1109,7 +1105,7 @@ def
       mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.NEG_ONE
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 382:0-416:1 -/
+    Source: 'src/mersenne31.rs', lines 377:0-411:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32 :
   field.QuotientMap mersenne31.Mersenne31 Std.I32 := {
@@ -1122,7 +1118,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::{core::ops::function::FnOnce<(), aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure<0>}::call_once]:
-    Source: 'src/mersenne31.rs', lines 372:37-372:62 -/
+    Source: 'src/mersenne31.rs', lines 367:37-367:62 -/
 def
   mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure.Insts.CoreOpsFunctionFnOnceTupleMersenne31.call_once
   (c : mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure)
@@ -1132,7 +1128,7 @@ def
   mersenne31.Mersenne31.new_reduced c
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::{core::ops::function::FnOnce<(), aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure<0>}]
-    Source: 'src/mersenne31.rs', lines 372:37-372:62 -/
+    Source: 'src/mersenne31.rs', lines 367:37-367:62 -/
 @[reducible]
 def
   mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure.Insts.CoreOpsFunctionFnOnceTupleMersenne31
@@ -1144,7 +1140,7 @@ def
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked]:
-    Source: 'src/mersenne31.rs', lines 371:4-373:5
+    Source: 'src/mersenne31.rs', lines 366:4-368:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_checked
@@ -1156,7 +1152,7 @@ def
     (int < i) int
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int]:
-    Source: 'src/mersenne31.rs', lines 364:4-369:5
+    Source: 'src/mersenne31.rs', lines 359:4-364:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_int
@@ -1170,7 +1166,7 @@ def
   mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add m m1
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 362:0-380:1 -/
+    Source: 'src/mersenne31.rs', lines 357:0-375:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32 :
   field.QuotientMap mersenne31.Mersenne31 Std.U32 := {
@@ -1183,7 +1179,7 @@ def mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::cmp]:
-    Source: 'src/mersenne31.rs', lines 316:4-318:5
+    Source: 'src/mersenne31.rs', lines 312:4-314:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpOrd.cmp
   (self : mersenne31.Mersenne31) (other : mersenne31.Mersenne31) :
@@ -1198,7 +1194,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpOrd.cmp
   ok (core.cmp.impls.OrdU32.cmp i i1)
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::partial_cmp]:
-    Source: 'src/mersenne31.rs', lines 351:4-353:5
+    Source: 'src/mersenne31.rs', lines 346:4-348:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.partial_cmp
   (self : mersenne31.Mersenne31) (other : mersenne31.Mersenne31) :
@@ -1208,7 +1204,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.partial_cmp
   ok (some o)
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 349:0-354:1 -/
+    Source: 'src/mersenne31.rs', lines 344:0-349:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31 :
   core.cmp.PartialOrd mersenne31.Mersenne31 mersenne31.Mersenne31 := {
@@ -1222,7 +1218,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31 :
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::clamp]:
-    Source: 'src/mersenne31.rs', lines 333:4-346:5
+    Source: 'src/mersenne31.rs', lines 328:4-341:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpOrd.clamp
   (self : mersenne31.Mersenne31) (min : mersenne31.Mersenne31)
@@ -1245,7 +1241,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpOrd.clamp
     else ok self
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::min]:
-    Source: 'src/mersenne31.rs', lines 327:4-332:5
+    Source: 'src/mersenne31.rs', lines 322:4-327:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpOrd.min
   (self : mersenne31.Mersenne31) (other : mersenne31.Mersenne31) :
@@ -1258,7 +1254,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpOrd.min
   else ok self
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::max]:
-    Source: 'src/mersenne31.rs', lines 321:4-326:5
+    Source: 'src/mersenne31.rs', lines 316:4-321:5
     Visibility: public -/
 def mersenne31.Mersenne31.Insts.CoreCmpOrd.max
   (self : mersenne31.Mersenne31) (other : mersenne31.Mersenne31) :
@@ -1271,7 +1267,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpOrd.max
   else ok other
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 314:0-347:1 -/
+    Source: 'src/mersenne31.rs', lines 310:0-342:1 -/
 @[reducible]
 def mersenne31.Mersenne31.Insts.CoreCmpOrd : core.cmp.Ord mersenne31.Mersenne31
   := {
@@ -1284,7 +1280,7 @@ def mersenne31.Mersenne31.Insts.CoreCmpOrd : core.cmp.Ord mersenne31.Mersenne31
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_biguint]:
-    Source: 'src/mersenne31.rs', lines 177:4-179:5
+    Source: 'src/mersenne31.rs', lines 171:4-173:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeFieldMersenne31Mersenne31.as_canonical_biguint
@@ -1296,7 +1292,7 @@ def
     num_bigint.biguint.BigUint.Insts.CoreConvertFromU32 i
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 176:0-180:1 -/
+    Source: 'src/mersenne31.rs', lines 170:0-174:1 -/
 @[reducible]
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeFieldMersenne31Mersenne31
@@ -1318,7 +1314,7 @@ def
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u64]:
-    Source: 'src/mersenne31.rs', lines 157:4-159:5
+    Source: 'src/mersenne31.rs', lines 152:4-154:5
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31.as_canonical_u64
@@ -1329,7 +1325,7 @@ def
   core.convert.IntoFrom.into core.convert.FromU64U32 i
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ORDER_U64]
-    Source: 'src/mersenne31.rs', lines 155:4-155:68
+    Source: 'src/mersenne31.rs', lines 150:4-150:68
     Visibility: public -/
 @[global_simps, irreducible]
 def
@@ -1340,7 +1336,7 @@ def
   ok (UScalar.cast .U64 i)
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::to_unique_u64]:
-    Source: 'src/mersenne31.rs', lines 154:0-160:1
+    Source: 'src/mersenne31.rs', lines 149:0-155:1
     Visibility: public -/
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31.to_unique_u64
@@ -1349,7 +1345,7 @@ def
     self
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 154:0-160:1 -/
+    Source: 'src/mersenne31.rs', lines 149:0-155:1 -/
 @[reducible]
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31
@@ -1366,7 +1362,7 @@ def
 }
 
 /-- Trait implementation: [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}]
-    Source: 'src/mersenne31.rs', lines 163:0-174:1 -/
+    Source: 'src/mersenne31.rs', lines 157:0-168:1 -/
 @[reducible]
 def
   mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31
@@ -1383,14 +1379,14 @@ def
 }
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::TWO_EXP_30]
-    Source: 'src/mersenne31.rs', lines 397:8-397:40 -/
+    Source: 'src/mersenne31.rs', lines 392:8-392:40 -/
 @[global_simps, irreducible]
 def mersenne31.QuotientMapMersenne31I32.from_canonical_checked.TWO_EXP_30
   : Result Std.I32 :=
   1#i32 <<< 30#i32
 
 /-- [aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::NEG_TWO_EXP_30_PLUS_1]
-    Source: 'src/mersenne31.rs', lines 398:8-398:58 -/
+    Source: 'src/mersenne31.rs', lines 393:8-393:58 -/
 @[global_simps, irreducible]
 def
   mersenne31.QuotientMapMersenne31I32.from_canonical_checked.NEG_TWO_EXP_30_PLUS_1
