@@ -14,7 +14,8 @@ open aeneas_field_arithmetic
 
 /-- [core::bool::{bool}::then]:
     Source: '/rustc/library/core/src/bool.rs', lines 65:4-65:94
-    Name pattern: [core::bool::{bool}::then] -/
+    Name pattern: [core::bool::{bool}::then]
+    Visibility: public -/
 @[rust_fun "core::bool::{bool}::then"]
 axiom core.bool.Bool.then
   {T : Type} {F : Type} (opsfunctionFnOnceFTupleTInst :
@@ -23,7 +24,8 @@ axiom core.bool.Bool.then
 
 /-- [core::convert::num::{core::convert::TryFrom<i64, core::num::error::TryFromIntError> for i32}::try_from]:
     Source: '/rustc/library/core/src/convert/num.rs', lines 317:12-317:64
-    Name pattern: [core::convert::num::{core::convert::TryFrom<i32, i64, core::num::error::TryFromIntError>}::try_from] -/
+    Name pattern: [core::convert::num::{core::convert::TryFrom<i32, i64, core::num::error::TryFromIntError>}::try_from]
+    Visibility: public -/
 @[rust_fun
   "core::convert::num::{core::convert::TryFrom<i32, i64, core::num::error::TryFromIntError>}::try_from"]
 axiom I32.Insts.CoreConvertTryFromI64TryFromIntError.try_from
@@ -33,7 +35,8 @@ axiom I32.Insts.CoreConvertTryFromI64TryFromIntError.try_from
 
 /-- [core::num::error::{core::fmt::Debug for core::num::error::TryFromIntError}::fmt]:
     Source: '/rustc/library/core/src/num/error.rs', lines 9:9-9:14
-    Name pattern: [core::num::error::{core::fmt::Debug<core::num::error::TryFromIntError>}::fmt] -/
+    Name pattern: [core::num::error::{core::fmt::Debug<core::num::error::TryFromIntError>}::fmt]
+    Visibility: public -/
 @[rust_fun
   "core::num::error::{core::fmt::Debug<core::num::error::TryFromIntError>}::fmt"]
 axiom core.num.error.TryFromIntError.Insts.CoreFmtDebug.fmt
@@ -43,39 +46,38 @@ axiom core.num.error.TryFromIntError.Insts.CoreFmtDebug.fmt
 
 /-- [core::num::{u32}::wrapping_add_signed]:
     Source: '/rustc/library/core/src/num/uint_macros.rs', lines 2416:8-2416:69
-    Name pattern: [core::num::{u32}::wrapping_add_signed] -/
+    Name pattern: [core::num::{u32}::wrapping_add_signed]
+    Visibility: public -/
 @[rust_fun "core::num::{u32}::wrapping_add_signed"]
 axiom core.num.U32.wrapping_add_signed : Std.U32 → Std.I32 → Result Std.U32
 
 /-- [core::num::{u32}::overflowing_sub]:
     Source: '/rustc/library/core/src/num/uint_macros.rs', lines 2868:8-2868:69
-    Name pattern: [core::num::{u32}::overflowing_sub] -/
+    Name pattern: [core::num::{u32}::overflowing_sub]
+    Visibility: public -/
 @[rust_fun "core::num::{u32}::overflowing_sub"]
 axiom core.num.U32.overflowing_sub
   : Std.U32 → Std.U32 → Result (Std.U32 × Bool)
 
 /-- [core::num::{u32}::to_ne_bytes]:
     Source: '/rustc/library/core/src/num/uint_macros.rs', lines 3865:8-3865:65
-    Name pattern: [core::num::{u32}::to_ne_bytes] -/
+    Name pattern: [core::num::{u32}::to_ne_bytes]
+    Visibility: public -/
 @[rust_fun "core::num::{u32}::to_ne_bytes"]
 axiom core.num.U32.to_ne_bytes : Std.U32 → Result (Array Std.U8 4#usize)
 
-/-- [core::option::{core::option::Option<T>}::expect]:
-    Source: '/rustc/library/core/src/option.rs', lines 968:4-968:45
-    Name pattern: [core::option::{core::option::Option<@T>}::expect] -/
-@[rust_fun "core::option::{core::option::Option<@T>}::expect"]
-axiom core.option.Option.expect {T : Type} : Option T → Str → Result T
-
 /-- [core::result::{core::result::Result<T, E>}::is_ok]:
     Source: '/rustc/library/core/src/result.rs', lines 593:4-593:37
-    Name pattern: [core::result::{core::result::Result<@T, @E>}::is_ok] -/
+    Name pattern: [core::result::{core::result::Result<@T, @E>}::is_ok]
+    Visibility: public -/
 @[rust_fun "core::result::{core::result::Result<@T, @E>}::is_ok"]
 axiom core.result.Result.is_ok
   {T : Type} {E : Type} : core.result.Result T E → Result Bool
 
 /-- [num_bigint::biguint::convert::{core::convert::From<u32> for num_bigint::biguint::BigUint}::from]:
     Source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/biguint/convert.rs', lines 523:12-523:34
-    Name pattern: [num_bigint::biguint::convert::{core::convert::From<num_bigint::biguint::BigUint, u32>}::from] -/
+    Name pattern: [num_bigint::biguint::convert::{core::convert::From<num_bigint::biguint::BigUint, u32>}::from]
+    Visibility: public -/
 @[rust_fun
   "num_bigint::biguint::convert::{core::convert::From<num_bigint::biguint::BigUint, u32>}::from"]
 axiom num_bigint.biguint.BigUint.Insts.CoreConvertFromU32.from
@@ -83,28 +85,33 @@ axiom num_bigint.biguint.BigUint.Insts.CoreConvertFromU32.from
 
 /-- [num_bigint::biguint::{num_bigint::biguint::BigUint}::bits]:
     Source: '/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/biguint.rs', lines 850:4-850:29
-    Name pattern: [num_bigint::biguint::{num_bigint::biguint::BigUint}::bits] -/
+    Name pattern: [num_bigint::biguint::{num_bigint::biguint::BigUint}::bits]
+    Visibility: public -/
 @[rust_fun "num_bigint::biguint::{num_bigint::biguint::BigUint}::bits"]
 axiom num_bigint.biguint.BigUint.bits
   : num_bigint.biguint.BigUint → Result Std.U64
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ge]:
-    Source: 'src/mersenne31.rs', lines 363:0-368:1 -/
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
+    Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.ge
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::gt]:
-    Source: 'src/mersenne31.rs', lines 363:0-368:1 -/
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
+    Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.gt
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::le]:
-    Source: 'src/mersenne31.rs', lines 363:0-368:1 -/
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
+    Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.le
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 
 /-- [aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::lt]:
-    Source: 'src/mersenne31.rs', lines 363:0-368:1 -/
+    Source: 'src/mersenne31.rs', lines 344:0-349:1
+    Visibility: public -/
 axiom mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.lt
   : mersenne31.Mersenne31 → mersenne31.Mersenne31 → Result Bool
 

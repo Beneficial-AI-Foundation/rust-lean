@@ -10,7 +10,7 @@ verifying it against [CompPoly](https://github.com/Verified-zkEVM/CompPoly/).
 
 ## Repository Structure
 
-- [`src/`](./src/) contains the Mersenne31 models (and a draft for KoalaBear) that we are incrementally building.
+- [`src/`](./src/) contains the Mersenne31 model that we are incrementally building.
 - [`lean/`](./lean/) holds the extracted code and verification efforts.
 - [`extract-aeneas.sh`](./extract-aeneas.sh) is the extraction script, which also modifies the extracted code for correctness.
 

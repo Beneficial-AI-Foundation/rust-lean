@@ -40,6 +40,10 @@ bad="mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mers
 gud="mersenne31.Mersenne31.Insts.CoreCmpEq"
 sed -i -z -e "s/${bad}/${gud}/" Funs.lean
 
+bad="let m ←\n    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldAlgebraMersenne31Mersenne31.PrimeCharacteristicRingInst.ONE"
+gud="let m :=\n    mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.ONE"
+sed -i -z -e "s/${bad}/${gud}/" Funs.lean
+
 ########
 # MISC #
 ########

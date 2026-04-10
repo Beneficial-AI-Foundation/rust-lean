@@ -1,12 +1,7 @@
-// use core::hash::Hash;
 use crate::mocks::Hash;
 use core::ops::{Add, AddAssign, Div, DivAssign, Mul, MulAssign, Neg, Sub, SubAssign};
 use num_bigint::BigUint;
 
-// use core::iter::{Product, Sum}; // Missing from Hax
-use crate::unimplemented::{Product, Sum};
-
-/// NOTE: DUMMY PLACEHOLDER. Missing `PrimeField`
 /// A prime field `ℤ/p` with order, `p < 2^64`.
 pub trait PrimeField64: PrimeField {
     const ORDER_U64: u64;
@@ -19,8 +14,6 @@ pub trait PrimeField64: PrimeField {
     }
 }
 
-/// NOTE: DUMMY PLACEHOLDER. Missing `PrimeField` and `PrimeField64`
-/// NOTE: `PrimeField64` supertrait removed to avoid circularities in the implementation
 /// A prime field `ℤ/p` with order `p < 2^32`.
 pub trait PrimeField32: PrimeField64 {
     const ORDER_U32: u32;
@@ -33,7 +26,6 @@ pub trait PrimeField32: PrimeField64 {
     }
 }
 
-/// NOTE: Removed the equality constraint of associated type for supertraits
 pub trait PrimeCharacteristicRing:
     Sized
     + Default
@@ -45,11 +37,13 @@ pub trait PrimeCharacteristicRing:
     + Neg<Output = Self>
     + Mul<Output = Self>
     + MulAssign
-    + Sum
-    + Product
+    // NOTE: We're not modeling these supertraits at the moment
+    // + Sum
+    // + Product
+    // + Debug
 {
     /// NOTE: This associated type is unbounded. It is originally bounded to `PrimeField`.
-    ///       Aeneas doesn't currently support mutually recursive trait delcarations.
+    ///       Aeneas doesn't currently support mutually recursive trait declarations.
     type PrimeSubfield; // : PrimeField;
 
     const ZERO: Self;
@@ -68,10 +62,12 @@ pub trait PrimeCharacteristicRing:
         self.clone() + self.clone()
     }
 
+    // NOTE: this implementation has been dummyfied since we can't put the `PrimeField` bound
+    //       in the `PrimeSubfield` associated type
     fn halve(&self) -> Self {
-        // This must be overwritten by PrimeField implementations as this definition
-        // is circular when PrimeSubfield = Self. It should also be overwritten by
-        // most rings to avoid the multiplication.
+        // // This must be overwritten by PrimeField implementations as this definition
+        // // is circular when PrimeSubfield = Self. It should also be overwritten by
+        // // most rings to avoid the multiplication.
         // let half = Self::from_prime_subfield(Self::PrimeSubfield::ONE.halve());
         // self.clone() * half
         self.clone()
@@ -82,6 +78,13 @@ pub trait PrimeCharacteristicRing:
     //     // Some rings might want to reimplement this to avoid the
     //     // exponentiations (and potentially even the multiplication).
     //     self.clone() * Self::from_prime_subfield(Self::PrimeSubfield::ONE.halve().exp_u64(exp))
+    // }
+
+    // NOTE: Unimplemented since it's problematic here and it's reimplemented in mersenne31
+    fn mul_2exp_u64(&self, exp: u64) -> Self; //  {
+    //     // Some rings might want to reimplement this to avoid the
+    //     // exponentiations (and potentially even the multiplication).
+    //     self.clone() * Self::TWO.exp_u64(exp)
     // }
 }
 
@@ -106,10 +109,10 @@ pub trait Algebra<F>:
 {
 }
 
-// NOTE: This is problematic at the Charon level
 // Every ring is an algebra over itself.
-// impl<R: PrimeCharacteristicRing> Algebra<R> for R {}
+impl<R: PrimeCharacteristicRing> Algebra<R> for R {}
 
+// NOTE: Removed some supertraits for simplicity
 pub trait Field:
     Algebra<Self>
     // + RawDataSerializable
@@ -176,7 +179,7 @@ pub trait PrimeField:
     // + QuotientMap<u8>
     // + QuotientMap<u16>
     + QuotientMap<u32>
-    // + QuotientMap<u64>
+    + QuotientMap<u64>
     // + QuotientMap<u128>
     // + QuotientMap<usize>
     // + QuotientMap<i8>
@@ -188,6 +191,6 @@ pub trait PrimeField:
 {
     /// Return the representative of `value` in canonical form
     /// which lies in the range `0 <= x < self.order()`.
-    #[must_use]
+    // #[must_use]
     fn as_canonical_biguint(&self) -> BigUint;
 }
