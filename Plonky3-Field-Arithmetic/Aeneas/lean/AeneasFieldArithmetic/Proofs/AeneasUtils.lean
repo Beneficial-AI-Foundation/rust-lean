@@ -37,11 +37,6 @@ theorem int_nat_val_dist :
   @Nat.cast ℤ _ (UScalar.val n) + ↑(UScalar.val m) =
   ↑(UScalar.val n + UScalar.val m) := by simp only [Nat.cast_add]
 
-/- NOTE: Not used, could remove -/
-theorem Icast_of_bv_of_val_sum (n m : U32) : @IScalar.hcast .I32 UScalarTy.U32 (BitVec.ofInt 32 ↑(UScalar.val n + UScalar.val m)#iscalar) =
-  ⟨n.bv + m.bv⟩ := by
-  simp [BitVec.ofInt, Int.toNat, IScalar.hcast]; congr
-
 theorem Icast_to_U_of_bv_of_int (n : ℤ) :
   @IScalar.hcast .I32 UScalarTy.U32 ((BitVec.ofInt 32 n)#iscalar) =
   ⟨n⟩ := by
@@ -73,9 +68,3 @@ theorem ICast_to_bv_of_Ncast_to_Z_of_N (n : ℕ) :
 theorem UScalar.mk_of_Ncast_to_bv_of_bvcast_to_N_of_bv {ty : UScalarTy} (b : BitVec ty.numBits) :
   UScalar.mk ↑b.toNat = UScalar.mk b := by simp
 
--- NOTE: There must be a better way for performing this rewrite
-theorem UScalar.bv_mk_ext {ty : UScalarTy} (b : BitVec ty.numBits) :
-  UScalar.bv (UScalar.mk b) = b := by simp
-
-lemma UScalar.toNat_lt {ty : UScalarTy} {n m : UScalar ty} :
-  n < m → UScalar.val n < ↑m := by grind
