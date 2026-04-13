@@ -8,11 +8,6 @@ open Aeneas Aeneas.Std
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 
--- Helper lemma
--- This must be accessible somewhere else
-lemma apply_fun {α : Type} {β : Type} {a₁ a₂ : α}
-  (f : α → β) (eq : a₁ = a₂) : f a₁ = f a₂ := by aesop
-
 /--
 Given two implementation `m31` elements such that are valid
 Mersenne31 field elements:
@@ -75,7 +70,7 @@ theorem mul_verify_to_spec
     split at this <;> rename_i h <;> try cases h <;> simp_all
     · intro _ _; rename_i left _ _ _
       have := m31_mod_red; simp at this
-      apply apply_fun (@Nat.cast Mersenne31.Field _) at left
+      have left := congrArg (@Nat.cast Mersenne31.Field _) left
       conv at left=> lhs; rw [←this]
       simp at left; rw [←left]
       simp only [UScalar.val, BitVec.toNat]; congr
