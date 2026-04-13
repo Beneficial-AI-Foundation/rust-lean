@@ -1,3 +1,15 @@
+/// Inverts elements inside the prime field `F_P` with `P < 2^FIELD_BITS`.
+///
+/// Arguments:
+///  - a: The value we want to invert. It must be < P.
+///  - b: The value of the prime `P > 2`.
+///
+/// Output:
+/// - A `64-bit` signed integer `v` equal to `2^{2 * FIELD_BITS - 2} a^{-1} mod P` with
+///   size `|v| < 2^{2 * FIELD_BITS - 2}`.
+///
+/// It is up to the user to ensure that `b` is an odd prime with at most `FIELD_BITS` bits and
+/// `a < b`. If either of these assumptions break, the output is undefined.
 pub const fn gcd_inversion_prime_field_32<const FIELD_BITS: u32>(mut a: u32, mut b: u32) -> i64 {
     const {
         assert!(FIELD_BITS <= 32);
