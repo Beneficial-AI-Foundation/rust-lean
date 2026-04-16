@@ -68,3 +68,53 @@ theorem ICast_to_bv_of_Ncast_to_Z_of_N (n : ℕ) :
 theorem UScalar.mk_of_Ncast_to_bv_of_bvcast_to_N_of_bv {ty : UScalarTy} (b : BitVec ty.numBits) :
   UScalar.mk ↑b.toNat = UScalar.mk b := by simp
 
+/-! ## I64 helpers -/
+
+/-- IScalar.val of a shift-left-by-1 equals 2 * the original value (when in bounds) -/
+theorem I64.shl_1_val (v : I64) (i : ℕ) (h_i : i ≤ 59)
+    (h_bound : (IScalar.val v).natAbs ≤ 2^i) :
+    IScalar.val (⟨v.bv.shiftLeft 1⟩ : I64) = 2 * IScalar.val v := by
+  have h_eq : IScalar.val v = v.bv.toInt := rfl
+  simp only [IScalar.val]
+  change (v.bv <<< 1).toInt = 2 * v.bv.toInt
+  rw [BitVec.shiftLeft_eq_mul_twoPow, BitVec.toInt_mul]
+  have h_two : (BitVec.twoPow 64 1).toInt = 2 := by decide
+  rw [h_two]; ring_nf
+  have h_bound' : (v.bv.toInt).natAbs ≤ 2^59 := by
+    rw [← h_eq]; exact le_trans h_bound (Nat.pow_le_pow_right (by norm_num) h_i)
+  have h_lo : -(2^59 : ℤ) ≤ v.bv.toInt := by omega
+  have h_hi : v.bv.toInt ≤ 2^59 := by omega
+  rw [← h_eq]
+  apply Arith.Int.bmod_pow2_eq_of_inBounds 63
+  · rw [h_eq]; norm_num; linarith
+  · rw [h_eq]; norm_num; linarith
+
+/-- I64 subtraction stays in bounds when both operands have natAbs ≤ 2^i and i ≤ 60 -/
+theorem I64.sub_in_bounds (u v : ℤ) (i : ℕ) (h_i : i ≤ 60)
+    (h_u : u.natAbs ≤ 2^i) (h_v : v.natAbs ≤ 2^i) :
+    I64.min ≤ v - u ∧ v - u ≤ I64.max := by
+  have h_pow : (2 : ℤ)^i ≤ 2^60 :=
+    mod_cast (Nat.pow_le_pow_right (by norm_num) h_i : (2 : ℕ)^i ≤ 2^60)
+  have : u ≤ (2:ℤ)^i := Int.le_natAbs.trans (by exact_mod_cast h_u)
+  have : -u ≤ (2:ℤ)^i := by
+    have := @Int.le_natAbs (-u); rw [Int.natAbs_neg] at this
+    exact this.trans (by exact_mod_cast h_u)
+  have : v ≤ (2:ℤ)^i := Int.le_natAbs.trans (by exact_mod_cast h_v)
+  have : -v ≤ (2:ℤ)^i := by
+    have := @Int.le_natAbs (-v); rw [Int.natAbs_neg] at this
+    exact this.trans (by exact_mod_cast h_v)
+  simp only [I64.min, I64.max, I64.numBits]; norm_num; constructor <;> linarith
+
+/-- Step spec for I64 shift left by 1 (via I32 literal) -/
+@[step]
+theorem I64.shl_1_spec (x : I64) :
+  (x <<< (1#i32 : I32)) ⦃ z => z.bv = x.bv.shiftLeft 1 ⦄ := by
+  unfold WP.spec
+  simp only [HShiftLeft.hShiftLeft, IScalar.shiftLeft_IScalar, IScalar.shiftLeft]
+  have h1 : (1#i32 : I32).val ≥ 0 := by decide
+  have h3 : (1#i32 : I32).toNat = 1 := by simp only [IScalar.toNat]; decide
+  simp only [h1, ↓reduceIte, h3]
+  have h2 : 1 < IScalarTy.I64.numBits := by
+    simp only [IScalarTy.I64_numBits_eq]; decide
+  simp only [h2, ↓reduceIte, WP.theta, WP.wp_return]
+
