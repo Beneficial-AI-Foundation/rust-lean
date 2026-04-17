@@ -699,3 +699,165 @@ theorem div_2exp_u64_zmod (m_val : m31) (exp : U64)
   push_cast at key
   exact key
 
+/-! # `is_zero` interface
+
+`is_zero` checks whether an `m31` element is zero, accounting for the
+non-canonical representation where `value = P` also represents zero.
+
+-/
+
+theorem nonzero_m31_bounds
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    0 < UScalar.val n.value ∧ UScalar.val n.value < 2^31 - 1 := by
+  constructor
+  · by_contra h; push_neg at h
+    exact nonzero
+      (by unfold to_m31_spec; rw [dif_pos (by omega)]
+          simp [show UScalar.val n.value = 0 from by omega])
+  · by_contra h; push_neg at h
+    exact nonzero (by unfold to_m31_spec; rw [dif_neg (by omega)])
+
+theorem is_zero_nonzero_spec
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0) :
+  Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero n = .ok false := by
+  obtain ⟨h_pos, h_lt⟩ := nonzero_m31_bounds n valid_n nonzero
+  have h_ne_zero : n.value ≠ 0#u32 := by scalar_tac
+  simp [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero, h_ne_zero,
+        Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32,
+        Aeneas.Std.instBindResult]
+  change ¬(UScalar.val n.value = 2147483647)
+  omega
+
+/-! # Inverse interface
+
+The inverse relies on `gcd_inversion_prime_field_32`, a 60-iteration
+loop that computes `v = 2^60 · a⁻¹ mod P`. The result is converted
+via `from_int` (i64 → m31) and corrected by `div_2exp_u64(60)`.
+
+ -/
+
+/-- Decompose `try_inverse` into its pipeline steps: GCD → from_int → div_2exp.
+    Returns all intermediate results needed by both `inverse_eq_try` and `try_inverse_to_spec`. -/
+theorem try_inverse_decompose
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    ∃ (v : I64) (m_res result : m31),
+      -- v: GCD inversion output satisfying v * n ≡ 2^60 (mod P)
+      gcd_post (UScalar.val n.value) v ∧
+      -- m_res: v projected into m31 via from_int(i64)
+      Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int v = .ok m_res ∧
+      UScalar.val m_res.value ≤ 2^31-1 ∧
+      -- result: m_res divided by 2^60 via bit rotation
+      Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m_res 60#u64 = .ok result ∧
+      UScalar.val result.value ≤ 2^31-1 ∧
+      -- The full pipeline composes to try_inverse
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n = .ok (some result) := by
+  obtain ⟨h_pos, h_lt⟩ := nonzero_m31_bounds n valid_n nonzero
+  have h_iz := is_zero_nonzero_spec n valid_n nonzero
+  simp only [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse,
+             Aeneas.Std.instBindResult, Std.bind, h_iz]
+  have h_P : mersenne31.P = Result.ok (⟨2147483647#32⟩ : U32) := by simp
+  rw [h_P]; dsimp only
+  have h_coprime : Nat.gcd (UScalar.val n.value) 2147483647 = 1 :=
+    ((Nat.Prime.coprime_iff_not_dvd (by native_decide)).mpr
+      (Nat.not_dvd_of_pos_of_lt h_pos (by omega))).symm
+  obtain ⟨v, hv_ok, hv_post⟩ := gcd_inversion_spec n.value h_lt h_coprime
+  rw [hv_ok]; dsimp only
+  obtain ⟨m_res, hm_ok, hm_bound, _⟩ := from_int_i64_full v hv_post.2
+  rw [hm_ok]; dsimp only
+  obtain ⟨result, hr_ok, hr_bound, _⟩ :=
+    WP.spec_imp_exists (div_2exp_u64_spec m_res 60#u64 hm_bound)
+  rw [hr_ok]; dsimp only
+  exact ⟨v, m_res, result, hv_post, hm_ok, hm_bound, hr_ok, hr_bound, rfl⟩
+
+/-- The `try_inverse` result is a valid Mersenne31 element. -/
+theorem try_inverse_valid (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+      .ok (some inv)) :
+  UScalar.val inv.value ≤ 2^31-1 := by
+  obtain ⟨_, _, div_res, _, _, _, _, h_valid_res, h_try⟩ :=
+    try_inverse_decompose n valid_n nonzero
+  have h_eq : inv = div_res := by rw [h_try] at h_inv; injection h_inv with h; injection h with h; exact h.symm
+  exact h_eq ▸ h_valid_res
+
+/-- The `try_inverse` result, projected to the specification field,
+    equals the field-theoretic inverse. -/
+theorem try_inverse_to_spec (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+      .ok (some inv)) :
+  to_m31_spec inv (try_inverse_valid n inv valid_n nonzero h_inv) =
+    (to_m31_spec n valid_n)⁻¹ := by
+  haveI := fact_prime_2_31_sub_1
+  -- Use decompose to get all intermediate results
+  obtain ⟨v, m_res, div_res, hv_post, hm_ok, hm_bound, hdiv_ok, _, h_try⟩ :=
+    try_inverse_decompose n valid_n nonzero
+  have h_eq : inv = div_res := by rw [h_try] at h_inv; injection h_inv with h; injection h with h; exact h.symm
+  -- Semantic chain in ZMod (2^31-1):
+  have h_gcd := gcd_post_mul_eq_zmod (UScalar.val n.value) v hv_post
+  rw [mersenne_pow_eq 60] at h_gcd
+  have h_from : (UScalar.val m_res.value : ZMod (2^31-1)) = (IScalar.val v : ZMod (2^31-1)) := by
+    obtain ⟨_, hm_ok', _, h⟩ := from_int_i64_full v hv_post.2
+    rw [hm_ok] at hm_ok'; injection hm_ok' with heq; subst heq; exact h
+  have h_div := div_2exp_u64_zmod m_res 60#u64 hm_bound div_res hdiv_ok
+  change (UScalar.val div_res.value * 2^29 : ZMod (2^31-1)) = _ at h_div
+  change _ = (2^29 : ZMod (2^31-1)) at h_gcd
+  rw [to_m31_spec_eq_natCast_general inv (try_inverse_valid n inv valid_n nonzero h_inv),
+      to_m31_spec_eq_natCast_general n valid_n, h_eq]
+  have h_chain : (UScalar.val div_res.value : ZMod (2^31-1)) *
+      (UScalar.val n.value : ZMod (2^31-1)) * (2^29 : ZMod (2^31-1)) =
+      1 * (2^29 : ZMod (2^31-1)) := by
+    rw [mul_assoc, mul_comm (↑(UScalar.val n.value) : ZMod (2^31-1)) (2^29),
+        ← mul_assoc, h_div, h_from, h_gcd, one_mul]
+  exact eq_comm.mpr (inv_eq_of_mul_eq_one_left
+    (mul_right_cancel₀ (pow_two_ne_zero_mersenne _) h_chain))
+
+/-- `inverse` succeeds for valid non-zero inputs, producing a valid result
+    that agrees with `try_inverse`. -/
+theorem inverse_eq_try
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    ∃ inv : m31,
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n = .ok inv ∧
+      UScalar.val inv.value ≤ 2^31-1 ∧
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+        .ok (some inv) := by
+  obtain ⟨_, _, inv, _, _, _, _, h_valid, h_try⟩ := try_inverse_decompose n valid_n nonzero
+  exact ⟨inv, by
+    simp [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse,
+          Aeneas.Std.instBindResult, h_try,
+          core.option.Option.expect, Result.ofOption]
+  , h_valid, h_try⟩
+
+/-- The `inverse` result is a valid Mersenne31 element. -/
+theorem inverse_valid (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n =
+      .ok inv) :
+  UScalar.val inv.value ≤ 2^31-1 := by
+  obtain ⟨inv', h_ok, h_valid', _⟩ := inverse_eq_try n valid_n nonzero
+  rw [h_ok] at h_inv; injection h_inv with h_eq; subst h_eq
+  exact h_valid'
+
+/-- The inverse projected to spec equals the field inverse. -/
+theorem inverse_to_spec (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n =
+      .ok inv) :
+  to_m31_spec inv (inverse_valid n inv valid_n nonzero h_inv) =
+    (to_m31_spec n valid_n)⁻¹ := by
+  obtain ⟨inv', h_ok, _, h_try⟩ := inverse_eq_try n valid_n nonzero
+  rw [h_ok] at h_inv; injection h_inv with h_eq; subst h_eq
+  exact try_inverse_to_spec n inv' valid_n nonzero h_try
+
