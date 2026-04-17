@@ -2,9 +2,14 @@ import Aeneas
 import CompPoly.Fields.Mersenne
 import AeneasFieldArithmetic.Generated.Funs
 import AeneasFieldArithmetic.Proofs.AeneasUtils
+import AeneasFieldArithmetic.Proofs.GcdInversion
+import CompPoly.Data.Nat.Bitwise
+import Mathlib.Data.Nat.Prime.Basic
 
 open Aeneas Aeneas.Std
 open aeneas_field_arithmetic mersenne31.Mersenne31
+
+/-! # Notations -/
 
 abbrev m31 := mersenne31.Mersenne31
 
@@ -16,8 +21,42 @@ instance : ToString m31 where
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 
-infixl:60 " +ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
-infixl:60 " ×ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
+infixl:65 " +ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
+infixl:70 " ×ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
+infixl:70 " /ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31.div
+
+/-! # Misc Results
+
+Helper general results
+
+ -/
+
+@[simp]
+lemma m31_prime_ok :
+  mersenne31.P = Result.ok (⟨2147483647#32⟩ : U32) := by simp [mersenne31.P]; rfl
+
+lemma lt_field_u32 : p.toNat < 2^32 := by cases p; simp; lia
+
+instance : NeZero Mersenne31.fieldSize where
+  out := by simp
+
+/-- Helper to locally introduce Field (ZMod (2^31-1)) via have -/
+theorem fact_prime_2_31_sub_1 : Fact (Nat.Prime (2^31-1)) :=
+  ⟨by rw [show (2^31-1 : ℕ) = Mersenne31.fieldSize from by
+    unfold Mersenne31.fieldSize; ring]; exact Mersenne31.is_prime⟩
+
+/-- 2^e = 2^(e % 31) in ZMod (2^31-1) since 2^31 ≡ 1 -/
+theorem mersenne_pow_eq (e : ℕ) : (2^e : ZMod (2^31-1)) = (2^(e % 31) : ZMod (2^31-1)) := by
+  have h : (2^31 : ZMod (2^31-1)) = 1 := by native_decide
+  conv_lhs => rw [show e = e % 31 + 31 * (e / 31) from (Nat.mod_add_div e 31).symm]
+  rw [pow_add, pow_mul, h, one_pow, mul_one]
+
+/-- 2^k ≠ 0 in ZMod (2^31-1) -/
+theorem pow_two_ne_zero_mersenne (k : ℕ) : (2^k : ZMod (2^31-1)) ≠ 0 := by
+  haveI := fact_prime_2_31_sub_1
+  exact IsUnit.ne_zero (IsUnit.pow k (Ne.isUnit
+    (by change ¬((2 : ℕ) : ZMod (2^31-1)) = 0; rw [ZMod.natCast_eq_zero_iff]; omega)))
+
 
 def to_m31_spec
   (valid_n : UScalar.val n.value ≤ 2^31-1): Mersenne31.Field :=
