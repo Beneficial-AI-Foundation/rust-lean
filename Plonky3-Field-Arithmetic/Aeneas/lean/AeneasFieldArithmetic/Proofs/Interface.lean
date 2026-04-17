@@ -439,3 +439,136 @@ theorem mulOk_in_bounds
 theorem mul_logic_nat_in_bounds  :
   ↑(mul_logic_nat n m).value ≤ (2^31 - 1 : ℕ) := by
   simp [mul_logic_nat, m31_of_u64_logic]; split <;> grind
+
+/-! # `new_reduced` interface -/
+
+theorem new_reduced_ok (v : U32) (h : UScalar.val v < 2^31) :
+  mersenne31.Mersenne31.new_reduced v = .ok ⟨v⟩ := by
+  simp [mersenne31.Mersenne31.new_reduced, Aeneas.Std.instBindResult, Std.bind]
+  rw [U32.shr_31_small v h]
+  simp [massert]
+
+theorem from_canonical_unchecked_ok (v : U32) (h : UScalar.val v < 2^31 - 1) :
+  Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked v =
+    .ok ⟨v⟩ := by
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked
+  rw [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32, m31_prime_ok]
+  simp only [Aeneas.Std.instBindResult, Std.bind]
+  have h_cmp : (↑v : ℕ) < ↑(2147483647#32#uscalar : UScalar .U32) := by
+    change UScalar.val v < 2147483647; exact h
+  simp [massert, h_cmp]
+  exact new_reduced_ok v (by omega)
+
+/-! # Negation interface -/
+
+/-- `neg` succeeds for valid m31 elements, with value `P - n.value` -/
+theorem neg_full (valid_n : UScalar.val n.value ≤ 2^31 - 1) :
+    ∃ result : m31,
+      Insts.CoreOpsArithNegMersenne31.neg n = .ok result ∧
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      UScalar.val result.value = 2147483647 - UScalar.val n.value := by
+  unfold Insts.CoreOpsArithNegMersenne31.neg
+  rw [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32, m31_prime_ok]
+  simp only [Aeneas.Std.instBindResult, Std.bind]
+  have h_ge : UScalar.val n.value ≤ UScalar.val (⟨2147483647#32⟩ : U32) := by
+    change UScalar.val n.value ≤ 2147483647; omega
+  obtain ⟨diff, h_diff_ok, h_diff_val, _⟩ :=
+    (WP.spec_equiv_exists _ _).mp (UScalar.sub_spec h_ge)
+  change UScalar.val diff = 2147483647 - UScalar.val n.value at h_diff_val
+  simp only [h_diff_ok]
+  rw [new_reduced_ok diff (by omega)]
+  refine ⟨⟨diff⟩, rfl, ?_, h_diff_val⟩
+  change UScalar.val diff ≤ 2147483647; omega
+
+/-! # `from_int_u64` interface
+
+Converts a `U64` into an `m31` element by reducing modulo `P`.
+Computes `v % P`, then casts the result down to `U32` via `from_canonical_unchecked`.
+
+-/
+
+theorem cast_u64_u32_val (x : U64) (h : UScalar.val x < 2^32) :
+    UScalar.val (UScalar.cast UScalarTy.U32 x) = UScalar.val x := by
+  rw [UScalar.cast_val_eq]; exact Nat.mod_eq_of_lt h
+
+/-- `from_int_u64` succeeds and the result value equals `v % P` -/
+theorem from_int_u64_full (v : U64) :
+    ∃ result : m31,
+      Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int v = Result.ok result ∧
+      UScalar.val result.value = UScalar.val v % 2147483647 ∧
+      UScalar.val result.value ≤ 2^31 - 1 := by
+  have P_u64_val :
+    UScalar.val (UScalar.cast UScalarTy.U64 (⟨2147483647#32⟩ : U32)) = 2147483647 := by
+    rw [UScalar.cast_val_eq]; decide
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int
+  simp only [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32,
+    m31_prime_ok, Aeneas.Std.instBindResult, Std.bind, lift]
+  obtain ⟨r, hr, hr_val⟩ := WP.spec_imp_exists (UScalar.rem_spec v (by rw [P_u64_val]; omega))
+  rw [hr]; simp only []
+  have h_r_lt : UScalar.val r < 2147483647 := by rw [hr_val, P_u64_val]; exact Nat.mod_lt _ (by omega)
+  have h_cast_lt : UScalar.val (UScalar.cast UScalarTy.U32 r) < 2^31 - 1 := by
+    rw [cast_u64_u32_val r (by omega)]; exact h_r_lt
+  rw [from_canonical_unchecked_ok _ h_cast_lt]
+  refine ⟨_, rfl, ?_, ?_⟩
+  · rw [cast_u64_u32_val r (by omega), hr_val, P_u64_val]
+  · show UScalar.val (UScalar.cast UScalarTy.U32 r) ≤ _; omega
+
+/-! # `from_int_i64` interface
+
+Converts an `I64` into an `m31` element.
+Positive values are cast to `U64` and handled by `from_int_u64`.
+Negative values are negated first, converted via `from_int_u64`, then negated in `m31`.
+
+-/
+
+theorem from_int_i64_full (v : I64) (hv : (IScalar.val v).natAbs ≤ 2^60) :
+    ∃ result : m31,
+      Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int v = Result.ok result ∧
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      (UScalar.val result.value : ZMod (2^31-1)) = (IScalar.val v : ZMod (2^31-1)) := by
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int
+  simp only [Aeneas.Std.instBindResult, Std.bind]
+  by_cases hpos : 0 ≤ IScalar.val v
+  · have h_ge : v >= 0#i64 := by scalar_tac
+    simp only [h_ge, lift]
+    obtain ⟨r, h_ok, h_val, h_bound⟩ := from_int_u64_full (IScalar.hcast .U64 v)
+    refine ⟨r, h_ok, h_bound, ?_⟩
+    simp only [h_val]
+    conv_lhs => rw [show (2147483647 : ℕ) = 2^31-1 from by omega]
+    rw [(CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1) _).symm]
+    have h_cast_val : (UScalar.val (IScalar.hcast .U64 v) : ℤ) = IScalar.val v := by
+      have h_wp := IScalar.hcast_inBounds_spec (src_ty := .I64) .U64 v ⟨hpos, by scalar_tac⟩
+      simp [WP.spec_ok, lift] at h_wp; exact h_wp
+    rw [← Int.cast_natCast (R := ZMod (2^31-1)) (UScalar.val (IScalar.hcast .U64 v)),
+        h_cast_val]
+  · have h_neg : ¬(v >= 0#i64) := by scalar_tac
+    simp only [h_neg, HNeg.hNeg, IScalar.neg, IScalar.tryMk, IScalar.tryMkOpt, Result.ofOption]
+    have hv_neg : IScalar.val v < 0 := by omega
+    -- IScalar.neg.step_spec wraps with `lift` so doesn't match bare `-. v` in do blocks;
+    -- we unfold through tryMkOpt and resolve the bounds check directly with dif_pos.
+    have hcb : IScalar.check_bounds .I64 (-(IScalar.val v)) := by
+      have := v.hBounds; simp [IScalar.check_bounds, IScalarTy.I64_numBits_eq]; omega
+    rw [dif_pos hcb]; simp only [lift]
+    set nv := IScalar.ofIntCore (-(IScalar.val v)) (IScalar.check_bounds_imp_inBounds hcb)
+    have hnv_val : IScalar.val nv = -(IScalar.val v) :=
+      IScalar.ofInt_val_eq (IScalar.check_bounds_imp_inBounds hcb)
+    obtain ⟨m, hm_ok, hm_val, hm_bound⟩ := from_int_u64_full (IScalar.hcast .U64 nv)
+    rw [hm_ok]
+    obtain ⟨result, hr_ok, hr_bound, hr_val⟩ := neg_full ⟨m.value⟩ hm_bound
+    refine ⟨result, hr_ok, hr_bound, ?_⟩
+    simp only [hr_val, hm_val]
+    conv_lhs => rw [show (2147483647 : ℕ) = 2^31-1 from by omega]
+    have h_nv_pos : 0 ≤ IScalar.val nv := by omega
+    have h_cast_val : (UScalar.val (IScalar.hcast .U64 nv) : ℤ) = IScalar.val nv := by
+      have h_wp := IScalar.hcast_inBounds_spec (src_ty := .I64) .U64 nv
+        ⟨h_nv_pos, by scalar_tac⟩
+      simp [WP.spec_ok, lift] at h_wp; exact h_wp
+    rw [Nat.cast_sub (Nat.mod_lt _ (by omega : (0:ℕ) < 2^31-1)).le,
+        CharP.cast_eq_zero (ZMod (2^31-1)) (2^31-1), zero_sub,
+        (CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1) _).symm]
+    rw [show ((UScalar.val (IScalar.hcast .U64 nv) : ℕ) : ZMod (2^31-1)) =
+            ((-IScalar.val v : ℤ) : ZMod (2^31-1)) from by
+      rw [← Int.cast_natCast (R := ZMod (2^31-1)) (UScalar.val (IScalar.hcast .U64 nv)),
+          h_cast_val, hnv_val]]
+    rw [Int.cast_neg, neg_neg]
+
