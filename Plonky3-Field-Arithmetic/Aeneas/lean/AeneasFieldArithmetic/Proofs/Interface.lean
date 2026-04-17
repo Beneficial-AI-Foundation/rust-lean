@@ -572,3 +572,130 @@ theorem from_int_i64_full (v : I64) (hv : (IScalar.val v).natAbs ≤ 2^60) :
           h_cast_val, hnv_val]]
     rw [Int.cast_neg, neg_neg]
 
+/-! # `div_2exp_u64` interface
+
+`div_2exp_u64 m exp` divides `m` by `2^(exp % 31)`
+
+-/
+
+/-- Division by 2^k in Mersenne31: the shift-and-recombine decomposition
+    `(x / 2^k + x % 2^k * 2^(31-k)) * 2^k ≡ x (mod 2^31-1)`. -/
+theorem m31_div_decomp (x k : ℕ) (hk31 : k ≤ 31) :
+    ((x / 2^k + x % 2^k * 2^(31 - k)) * 2^k) % (2^31 - 1) = x % (2^31 - 1) := by
+  have hpk : (0 : ℕ) < 2^k := Nat.pos_of_ne_zero (by positivity)
+  have h_div_mod := Nat.div_add_mod x (2^k)
+  have h_exp : (31 - k) + k = 31 := by omega
+  have h_eq : (x / 2^k + x % 2^k * 2^(31 - k)) * 2^k = x + x % 2^k * (2^31 - 1) := by
+    have h1 : x / 2^k * 2^k + x % 2^k = x := by rw [mul_comm]; exact h_div_mod
+    have h2 : x % 2^k * 2^(31 - k) * 2^k = x % 2^k * 2^31 := by
+      rw [mul_assoc, ← pow_add, h_exp]
+    rw [Nat.add_mul, h2]; omega
+  rw [h_eq, Nat.add_mul_mod_self_right]
+
+/-- Bit disjointness: a < 2^n and 2^n ∣ b implies a &&& b = 0 -/
+theorem nat_and_eq_zero_of_lt_dvd {a b n : ℕ} (ha : a < 2^n) (hb : 2^n ∣ b) :
+    a &&& b = 0 := by
+  apply Nat.zero_of_testBit_eq_false
+  intro i
+  simp only [Nat.testBit_and, Bool.and_eq_false_imp]
+  intro ha_bit
+  have hi : i < n := by
+    by_contra h; push_neg at h
+    have := Nat.testBit_lt_two_pow (Nat.lt_of_lt_of_le ha (Nat.pow_le_pow_right (by omega) h))
+    simp [this] at ha_bit
+  obtain ⟨q, hq⟩ := hb
+  rw [hq, Nat.testBit_two_pow_mul]
+  simp [show ¬(i ≥ n) from by omega]
+
+/-- General `div_2exp_u64` specification: the result is a valid m31 element
+    whose value satisfies the rotation identity `result * 2^k ≡ m.value (mod 2^31-1)`
+    where `k = exp % 31`. -/
+theorem div_2exp_u64_spec (m : m31) (exp : U64) (hm : UScalar.val m.value ≤ 2^31 - 1) :
+    Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m exp
+    ⦃ result =>
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      (UScalar.val result.value * 2^(UScalar.val exp % 31)) % (2^31 - 1) =
+        UScalar.val m.value % (2^31 - 1) ⦄ := by
+  have hk_lt : UScalar.val exp % 31 < 31 := Nat.mod_lt _ (by omega)
+  unfold Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64
+  let* ⟨ i, i_post ⟩ ← U64.rem_spec
+  let* ⟨ exp1, exp1_post ⟩ ← UScalar.cast.step_spec
+  have h_exp1_val : UScalar.val exp1 = UScalar.val exp % 31 := by
+    subst exp1_post; rw [UScalar.cast_val_eq]
+    have : UScalarTy.U8.numBits = 8 := rfl
+    rw [this, i_post]; exact Nat.mod_eq_of_lt (by omega)
+  have h_exp1_lt : UScalar.val exp1 < 31 := by omega
+  let* ⟨ left, left_post, _ ⟩ ← U32.ShiftRight_spec
+  let* ⟨ i1, i1_post, _ ⟩ ← U8.sub_spec
+  let* ⟨ i2, i2_post, _ ⟩ ← U32.ShiftLeft_spec
+  let* ⟨ i3, i3_post, _ ⟩ ← U32.ShiftLeft_IScalar_spec
+  let* ⟨ i4, _, _ ⟩ ← U32.sub_spec
+  let* ⟨ right, right_post, _ ⟩ ← UScalar.and_spec
+  let* ⟨ rotated, rotated_post, _ ⟩ ← UScalar.or_spec
+  -- Key intermediate values
+  have h_left_val : UScalar.val left = UScalar.val m.value / 2^(UScalar.val exp % 31) := by
+    rw [left_post, h_exp1_val, Nat.shiftRight_eq_div_pow]
+  have h_i3_val : UScalar.val i3 = 2147483648 := by rw [i3_post]; native_decide
+  have h_i4_val : UScalar.val i4 = 2^31 - 1 := by
+    have : UScalar.val i4 = UScalar.val i3 - 1 := by scalar_tac
+    omega
+  have h_rotated_or : UScalar.val rotated = UScalar.val left ||| UScalar.val right := by
+    rw [rotated_post]; simp [UScalar.val_or]
+  -- Bound: rotated < 2^31
+  have h_rotated_lt : UScalar.val rotated < 2^31 := by
+    rw [h_rotated_or]; apply Nat.or_lt_two_pow
+    · rw [h_left_val]; exact Nat.lt_of_le_of_lt (Nat.div_le_self _ _) (by omega)
+    · have : UScalar.val right ≤ UScalar.val i4 := by
+        rw [right_post]; simp [UScalar.val_and]; exact Nat.and_le_right
+      omega
+  rw [new_reduced_ok rotated h_rotated_lt]
+  simp only [WP.spec_ok]
+  refine ⟨by omega, ?_⟩
+  -- Value: rotation identity
+  have h_right_eq : UScalar.val right =
+      (UScalar.val m.value % 2^(UScalar.val exp % 31)) * 2^(31 - UScalar.val exp % 31) := by
+    have : UScalar.val right = UScalar.val i2 &&& UScalar.val i4 := by
+      rw [right_post]; simp [UScalar.val_and]
+    rw [this, h_i4_val]
+    have : UScalar.val i2 = (UScalar.val m.value * 2^(31 - UScalar.val exp % 31)) % 2^32 := by
+      rw [i2_post, show UScalar.val i1 = 31 - UScalar.val exp % 31 from by omega,
+          Nat.shiftLeft_eq, U32.size_eq]; norm_num
+    rw [this, Nat.and_two_pow_sub_one_eq_mod, Nat.mod_mod_of_dvd]; swap; omega
+    conv_lhs => rw [show (2 : ℕ)^31 =
+        2^(UScalar.val exp % 31) * 2^(31 - UScalar.val exp % 31) from by
+      rw [← pow_add]; congr 1; omega]
+    rw [Nat.mul_mod_mul_right]
+  -- Bit disjointness → OR = ADD
+  have h_left_lt : UScalar.val left < 2^(31 - UScalar.val exp % 31) := by
+    rw [h_left_val]; apply Nat.div_lt_of_lt_mul
+    calc UScalar.val m.value < 2^31 := by omega
+      _ = 2^(UScalar.val exp % 31) * 2^(31 - UScalar.val exp % 31) := by
+          rw [← pow_add]; congr 1; omega
+  have h_rotated_eq : UScalar.val rotated =
+      UScalar.val m.value / 2^(UScalar.val exp % 31) +
+      (UScalar.val m.value % 2^(UScalar.val exp % 31)) * 2^(31 - UScalar.val exp % 31) := by
+    rw [h_rotated_or,
+        ← Nat.sum_of_and_eq_zero_is_or
+          (nat_and_eq_zero_of_lt_dvd h_left_lt (by rw [h_right_eq]; exact dvd_mul_left _ _)),
+        h_left_val, h_right_eq]
+  rw [h_rotated_eq]
+  exact m31_div_decomp (UScalar.val m.value) (UScalar.val exp % 31) (by omega)
+
+/-- Lifts div_2exp_u64_spec from ℕ modular arithmetic to ZMod (2^31-1):
+    `result * 2^(exp % 31) = m.value` in `ZMod (2^31-1)`. -/
+theorem div_2exp_u64_zmod (m_val : m31) (exp : U64)
+    (hm : UScalar.val m_val.value ≤ 2^31 - 1)
+    (result : m31)
+    (h : Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m_val exp = .ok result) :
+    (UScalar.val result.value * 2^(UScalar.val exp % 31) : ZMod (2^31-1)) =
+      (UScalar.val m_val.value : ZMod (2^31-1)) := by
+  obtain ⟨r, hr_ok, _, hr_post⟩ := WP.spec_imp_exists (div_2exp_u64_spec m_val exp hm)
+  rw [hr_ok] at h; injection h with h_eq; subst h_eq
+  have key : ((UScalar.val r.value * 2^(UScalar.val exp % 31) : ℕ) : ZMod (2^31-1)) =
+             ((UScalar.val m_val.value : ℕ) : ZMod (2^31-1)) := by
+    conv_lhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
+    conv_rhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
+    exact congrArg _ hr_post
+  push_cast at key
+  exact key
+
