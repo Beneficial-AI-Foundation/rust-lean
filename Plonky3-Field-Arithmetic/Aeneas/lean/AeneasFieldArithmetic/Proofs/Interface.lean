@@ -861,3 +861,82 @@ theorem inverse_to_spec (inv : m31)
   rw [h_ok] at h_inv; injection h_inv with h_eq; subst h_eq
   exact try_inverse_to_spec n inv' valid_n nonzero h_try
 
+/-! # Division interface
+
+The following are functions and theorems that allow for a better
+interface with the extracted division.
+
+Division is defined as `div(a, b) = a * inverse(b)`.
+
+ -/
+
+/-- Division decomposes into inverse followed by multiplication -/
+theorem div_as_mul_inverse
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ∃ inv : m31,
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse m =
+      .ok inv ∧
+    UScalar.val inv.value ≤ 2^31-1 ∧
+    n /ₘ m = n ×ₘ inv := by
+  obtain ⟨inv, h_inv_ok, h_valid_inv, _⟩ := inverse_eq_try m valid_m nonzero_m
+  exact ⟨inv, h_inv_ok, h_valid_inv, by
+    simp [Insts.CoreOpsArithDivMersenne31Mersenne31.div,
+          Aeneas.Std.instBindResult, h_inv_ok,
+          lift, core.convert.FromSame.from_]⟩
+
+/-- Division succeeds for valid inputs with non-zero divisor -/
+theorem div_ok
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ∃ result : m31,
+    n /ₘ m = .ok result ∧
+    UScalar.val result.value ≤ 2^31-1 := by
+  obtain ⟨inv, _, h_valid_inv, h_div_eq⟩ :=
+    div_as_mul_inverse n m valid_m nonzero_m
+  rw [h_div_eq, mul_spec_nat n inv valid_n (Nat.le_of_lt_succ (by omega))]
+  exact ⟨mul_logic_nat n inv, rfl, mul_logic_nat_in_bounds n inv⟩
+
+/-- Unwraps extracted division from the result monad -/
+def divOk
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) : m31 :=
+  match h : n /ₘ m with
+  | .ok res => res
+  | .fail _ => by
+      exfalso
+      obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m
+      rw [h_ok] at h; contradiction
+  | .div => by
+      exfalso
+      obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m
+      rw [h_ok] at h; contradiction
+
+/-- `divOk` results are valid Mersenne31 field elements -/
+theorem divOk_in_bounds
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ↑(divOk n m valid_n valid_m nonzero_m).value ≤ (2^31 - 1 : ℕ) := by
+  simp [divOk]; split <;> rename_i h
+  · obtain ⟨result, h_ok, h_bounds⟩ := div_ok n m valid_n valid_m nonzero_m
+    rw [h_ok] at h; injection h with h; rw [←h]; exact h_bounds
+  all_goals (exfalso;
+             obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m;
+             rw [h_ok] at h; contradiction)
+
+/-- `divOk` equals `mul_logic_nat a inv` when division decomposes as `a * inverse(b)`. -/
+theorem divOk_eq_mul (inv : m31)
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (valid_m : UScalar.val m.value ≤ 2^31-1)
+    (nonzero_m : to_m31_spec m valid_m ≠ 0)
+    (h_valid_inv : UScalar.val inv.value ≤ 2^31-1)
+    (h_div_eq : n /ₘ m = n ×ₘ inv) :
+    divOk n m valid_n valid_m nonzero_m = mul_logic_nat n inv := by
+  have h_div_result : n /ₘ m = .ok (mul_logic_nat n inv) := by
+    rw [h_div_eq]; exact mul_spec_nat n inv valid_n h_valid_inv
+  simp only [divOk]; split
+  · rename_i h; rw [h_div_result] at h; exact (Result.ok.injEq _ _).mp h.symm
+  all_goals (rename_i h; rw [h_div_result] at h; contradiction)
