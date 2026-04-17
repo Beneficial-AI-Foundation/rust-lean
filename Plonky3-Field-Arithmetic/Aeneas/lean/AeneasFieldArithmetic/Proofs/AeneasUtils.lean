@@ -71,8 +71,8 @@ theorem UScalar.mk_of_Ncast_to_bv_of_bvcast_to_N_of_bv {ty : UScalarTy} (b : Bit
 /-! ## I64 helpers -/
 
 /-- IScalar.val of a shift-left-by-1 equals 2 * the original value (when in bounds) -/
-theorem I64.shl_1_val (v : I64) (i : ℕ) (h_i : i ≤ 59)
-    (h_bound : (IScalar.val v).natAbs ≤ 2^i) :
+theorem I64.shl_1_val (v : I64)
+    (h_bound : (IScalar.val v).natAbs ≤ 2^59) :
     IScalar.val (⟨v.bv.shiftLeft 1⟩ : I64) = 2 * IScalar.val v := by
   have h_eq : IScalar.val v = v.bv.toInt := rfl
   simp only [IScalar.val]
@@ -80,8 +80,6 @@ theorem I64.shl_1_val (v : I64) (i : ℕ) (h_i : i ≤ 59)
   rw [BitVec.shiftLeft_eq_mul_twoPow, BitVec.toInt_mul]
   have h_two : (BitVec.twoPow 64 1).toInt = 2 := by decide
   rw [h_two]; ring_nf
-  have h_bound' : (v.bv.toInt).natAbs ≤ 2^59 := by
-    rw [← h_eq]; exact le_trans h_bound (Nat.pow_le_pow_right (by norm_num) h_i)
   have h_lo : -(2^59 : ℤ) ≤ v.bv.toInt := by omega
   have h_hi : v.bv.toInt ≤ 2^59 := by omega
   rw [← h_eq]
@@ -90,17 +88,15 @@ theorem I64.shl_1_val (v : I64) (i : ℕ) (h_i : i ≤ 59)
   · rw [h_eq]; norm_num; linarith
 
 /-- I64 subtraction stays in bounds when both operands have natAbs ≤ 2^i and i ≤ 60 -/
-theorem I64.sub_in_bounds (u v : ℤ) (i : ℕ) (h_i : i ≤ 60)
-    (h_u : u.natAbs ≤ 2^i) (h_v : v.natAbs ≤ 2^i) :
+theorem I64.sub_in_bounds (u v : ℤ)
+    (h_u : u.natAbs ≤ 2^60) (h_v : v.natAbs ≤ 2^60) :
     I64.min ≤ v - u ∧ v - u ≤ I64.max := by
-  have h_pow : (2 : ℤ)^i ≤ 2^60 :=
-    mod_cast (Nat.pow_le_pow_right (by norm_num) h_i : (2 : ℕ)^i ≤ 2^60)
-  have : u ≤ (2:ℤ)^i := Int.le_natAbs.trans (by exact_mod_cast h_u)
-  have : -u ≤ (2:ℤ)^i := by
+  have : u ≤ (2:ℤ)^60 := Int.le_natAbs.trans (by exact_mod_cast h_u)
+  have : -u ≤ (2:ℤ)^60 := by
     have := @Int.le_natAbs (-u); rw [Int.natAbs_neg] at this
     exact this.trans (by exact_mod_cast h_u)
-  have : v ≤ (2:ℤ)^i := Int.le_natAbs.trans (by exact_mod_cast h_v)
-  have : -v ≤ (2:ℤ)^i := by
+  have : v ≤ (2:ℤ)^60 := Int.le_natAbs.trans (by exact_mod_cast h_v)
+  have : -v ≤ (2:ℤ)^60 := by
     have := @Int.le_natAbs (-v); rw [Int.natAbs_neg] at this
     exact this.trans (by exact_mod_cast h_v)
   simp only [I64.min, I64.max, I64.numBits]; norm_num; constructor <;> linarith
