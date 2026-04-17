@@ -57,6 +57,11 @@ theorem pow_two_ne_zero_mersenne (k : ℕ) : (2^k : ZMod (2^31-1)) ≠ 0 := by
   exact IsUnit.ne_zero (IsUnit.pow k (Ne.isUnit
     (by change ¬((2 : ℕ) : ZMod (2^31-1)) = 0; rw [ZMod.natCast_eq_zero_iff]; omega)))
 
+/-! # to_m31_spec
+
+Mapping the implementation's `m31` elements to `Mersenne31.Field`
+
+ -/
 
 def to_m31_spec
   (valid_n : UScalar.val n.value ≤ 2^31-1): Mersenne31.Field :=
@@ -66,27 +71,34 @@ def to_m31_spec
 
 postfix:75 "↘" => to_m31_spec
 
-lemma lt_field_u32 : p.toNat < 2^32 := by cases p; simp; lia
-lemma lt_field_m31 : p.toNat < 2^31 - 1 := by cases p; simp; lia
+/-- to_m31_spec is injective for elements with val < P -/
+theorem to_m31_spec_inj (a b : m31)
+    (ha : UScalar.val a.value < 2^31-1) (hb : UScalar.val b.value < 2^31-1)
+    (h : to_m31_spec a (le_of_lt ha) = to_m31_spec b (le_of_lt hb)) : a = b := by
+  unfold to_m31_spec at h
+  rw [dif_pos ha, dif_pos hb] at h
+  have h_val : UScalar.val a.value = UScalar.val b.value := by
+    have := Fin.mk.inj h; exact_mod_cast this
+  cases a; cases b; congr 1; scalar_tac
 
-def new_of_field : Result m31 := new (Std.U32.ofNatCore p.val (lt_field_u32 p))
+/-- to_m31_spec always equals Nat.cast in ZMod P (works even when value = P) -/
+theorem to_m31_spec_eq_natCast_general (a : m31) (ha : UScalar.val a.value ≤ 2^31-1) :
+    to_m31_spec a ha = (UScalar.val a.value : ZMod (2^31-1)) := by
+  unfold to_m31_spec
+  by_cases h : UScalar.val a.value < 2^31-1
+  · rw [dif_pos h]
+    exact Fin.ext (by rw [Fin.val_natCast]; exact (Nat.mod_eq_of_lt h).symm)
+  · rw [dif_neg h]
+    push_neg at h
+    have : UScalar.val a.value = 2^31 - 1 := by omega
+    rw [this]
+    exact (CharP.cast_eq_zero (ZMod (2^31-1)) (2^31-1)).symm
 
-@[simp]
-lemma m31_prime_ok :
-  mersenne31.P = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
-    simp [mersenne31.P]; rfl
+/-! # of_m31_spec
 
-lemma new_of_field_isOk :
-  new_of_field p =
-  .ok { value := Std.U32.ofNatCore p.val (lt_field_u32 p) } := by
-  simp [new_of_field, new]
-  simp [Aeneas.Std.instBindResult, Std.bind]
-  simp [HMod.hMod, UScalar.rem]
-  dsimp [UScalar.val]; congr; simp
-  cases p with | mk p ph
-  simp at ph
-  simp [Mod.mod, BitVec.umod, ZMod.val]
-  congr; omega
+Mapping the specification's `Mersenne31.Field` elements to `m31`
+
+ -/
 
 def of_m31_spec : m31 :=
   {value := Std.U32.ofNatCore p.val (lt_field_u32 p)}
@@ -98,18 +110,10 @@ theorem of_m31_spec_lt_m31 : ↑(of_m31_spec p).value < (2^31 - 1 : ℕ) := by
 
 postfix:50 "↗" => of_m31_spec
 
-theorem neq_of_field_eq_spec : new_of_field p = .ok (p↗) := by
-  simp [of_m31_spec, new_of_field_isOk]
-
-instance : NeZero Mersenne31.fieldSize where
-  out := by simp
-
 theorem to_of_m31_eq:
   (to_m31_spec (of_m31_spec p)
   (by simp only [UScalar.val, of_m31_spec]; grind)) = p := by
   simp [to_m31_spec, of_m31_spec, ZMod.val]
-
-theorem field_size_mod_small : p.val % Mersenne31.fieldSize = p.val := by grind
 
 /-! # Addition interface
 
@@ -317,10 +321,6 @@ lemma m31_swap_mods (n : ℕ)
   (n_range_inf : 2^31 - 1 < n)
   (n_range_sup : n < 2*(2^31 - 1)):
   n % (2^31 - 1) = n % 2^31 + 1 := by omega
-
-lemma mod_small_swap (n m p : ℕ) (h1 : p < n) (h2 : n < m) :
-  p % n = p % m := by
-  repeat rw [Nat.mod_eq_of_lt] <;> try grind
 
 /-. Succint logic of the `m31_of_u64` function -/
 def m31_of_u64_logic (n : U64) : m31 :=
