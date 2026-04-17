@@ -8,3 +8,5 @@ import AeneasFieldArithmetic.Generated.Funs
 import AeneasFieldArithmetic.Proofs.AeneasUtils
 import AeneasFieldArithmetic.Proofs.Interface
 import AeneasFieldArithmetic.Proofs.AddVerify
+import AeneasFieldArithmetic.Proofs.DivVerify
+import AeneasFieldArithmetic.Proofs.GcdInversion
