@@ -28,15 +28,15 @@ theorem size_half_even {n : ℕ} (hn : n ≠ 0) (heven : n % 2 = 0) :
     Nat.size (n / 2) = Nat.size n - 1 := by
   apply Nat.le_antisymm
   · apply Nat.size_le.mpr
-    have := Nat.lt_size_self n
-    have := Nat.size_pos.mpr (Nat.pos_of_ne_zero hn)
+    have h_lt_size := Nat.lt_size_self n
+    have h_size_pos := Nat.size_pos.mpr (Nat.pos_of_ne_zero hn)
     have : 2 ^ Nat.size n = 2 * 2 ^ (Nat.size n - 1) := by
       conv_lhs => rw [show Nat.size n = (Nat.size n - 1) + 1 from by omega]
       rw [pow_succ, mul_comm]
     omega
   · suffices Nat.size n ≤ Nat.size (n / 2) + 1 by omega
     apply Nat.size_le.mpr
-    have := Nat.lt_size_self (n / 2)
+    have h_lt_size_half := Nat.lt_size_self (n / 2)
     have : n = 2 * (n / 2) := by omega
     have : 2 ^ (Nat.size (n / 2) + 1) = 2 * 2 ^ Nat.size (n / 2) := by
       rw [pow_succ, mul_comm]
@@ -46,7 +46,7 @@ theorem size_half_even {n : ℕ} (hn : n ≠ 0) (heven : n % 2 = 0) :
 Under coprimality and oddness of `b`, this forces `b = 1`. -/
 theorem size_terminal {a b : ℕ} (h_sum : Nat.size a + Nat.size b ≤ 2)
     (h_gcd : Nat.gcd a b = 1) (h_odd : b % 2 = 1) : b = 1 := by
-  have := Nat.size_pos.mpr (by omega : 0 < b)
+  have h_size_pos_b := Nat.size_pos.mpr (by omega : 0 < b)
   have : b < 2^2 :=
     (Nat.lt_size_self b).trans_le (Nat.pow_le_pow_right (by norm_num) (by omega))
   by_cases hb3 : b = 3
@@ -212,9 +212,9 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
             Nat.gcd_sub_self_left (by omega), Nat.gcd_comm, h_gcd]
         · rw [h_a2, a3_post1, i4_post1]
           have h_ne : UScalar.val b - UScalar.val a ≠ 0 := by omega
-          have := size_half_even h_ne h_sub_even
-          have := Nat.size_le_size (Nat.sub_le (UScalar.val b) (UScalar.val a))
-          have := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_ne)
+          have h_size_half := size_half_even h_ne h_sub_even
+          have h_size_le := Nat.size_le_size (Nat.sub_le (UScalar.val b) (UScalar.val a))
+          have h_size_pos := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_ne)
           omega
       · -- no swap (a >= b)
         let* ⟨ a3, a3_post1, _ ⟩ ← U32.sub_spec
@@ -252,9 +252,9 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
               rw [h_eq] at h_gcd; simp_all [Nat.gcd_self]
             rw [h_eq, Nat.sub_self, this]; simp; omega
           · have h_ne : UScalar.val a - UScalar.val b ≠ 0 := by omega
-            have := size_half_even h_ne h_sub_even
-            have := Nat.size_le_size (Nat.sub_le (UScalar.val a) (UScalar.val b))
-            have := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_ne)
+            have h_size_half := size_half_even h_ne h_sub_even
+            have h_size_le := Nat.size_le_size (Nat.sub_le (UScalar.val a) (UScalar.val b))
+            have h_size_pos := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_ne)
             omega
     · -- a is even
       have h_a_even : UScalar.val a % 2 = 0 := by rw [← h_a_mod]; scalar_tac
@@ -281,8 +281,8 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
       · rw [h_a2, i4_post1]; by_cases h_a0 : UScalar.val a = 0
         · have : UScalar.val b = 1 := by simp_all
           rw [h_a0, this]; simp; omega
-        · have := size_half_even h_a0 h_a_even
-          have := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_a0)
+        · have h_size_half := size_half_even h_a0 h_a_even
+          have h_size_pos := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_a0)
           omega
   · -- i >= 60: done
     simp only [step_simps]; unfold gcd_post

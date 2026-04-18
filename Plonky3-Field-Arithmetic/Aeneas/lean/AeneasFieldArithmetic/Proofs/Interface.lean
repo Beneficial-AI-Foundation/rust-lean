@@ -78,7 +78,7 @@ theorem to_m31_spec_inj (a b : m31)
   unfold to_m31_spec at h
   rw [dif_pos ha, dif_pos hb] at h
   cases a; cases b; congr 1
-  have := Fin.mk.inj h; scalar_tac
+  have h_inj := Fin.mk.inj h; scalar_tac
 
 /-- to_m31_spec always equals Nat.cast in ZMod P (works even when value = P) -/
 theorem to_m31_spec_eq_natCast_general (a : m31) (ha : UScalar.val a.value ≤ 2^31-1) :
@@ -343,12 +343,12 @@ theorem m31_of_u64_spec (n : U64)
       simp_all [decomp]; rw [←Nat.mod_add_mod]; grind
   · simp [m31_of_u64]; congr; simp [decide, Nat.decLt, Nat.decLe]
     split <;> simp_all
-    · rw [←Nat.mod_add_mod]; have := m31_swap_mods
-      simp at this; rw [←this]
-      have := m31_mod_red; simp at this; rw [←this]
+    · rw [←Nat.mod_add_mod]; have h_swap := m31_swap_mods
+      simp at h_swap; rw [←h_swap]
+      have h_mod_red := m31_mod_red; simp at h_mod_red; rw [←h_mod_red]
       · grind
-      · have := Nat.lt_or_eq_of_le decomp_bound; simp at this
-        cases this <;> grind
+      · have h_lt_or_eq := Nat.lt_or_eq_of_le decomp_bound; simp at h_lt_or_eq
+        cases h_lt_or_eq <;> grind
     · simp_all; rw [←Nat.mod_add_mod]
       rename_i h _
       apply Nat.le_pred_of_lt at h; simp at h
@@ -540,7 +540,7 @@ theorem from_int_i64_full (v : I64) (hv : (IScalar.val v).natAbs ≤ 2^60) :
     -- IScalar.neg.step_spec wraps with `lift` so doesn't match bare `-. v` in do blocks;
     -- we unfold through tryMkOpt and resolve the bounds check directly with dif_pos.
     have hcb : IScalar.check_bounds .I64 (-(IScalar.val v)) := by
-      have := v.hBounds; simp [IScalar.check_bounds, IScalarTy.I64_numBits_eq]; omega
+      have h_vbounds := v.hBounds; simp [IScalar.check_bounds, IScalarTy.I64_numBits_eq]; omega
     rw [dif_pos hcb]; simp only [lift]
     set nv := IScalar.ofIntCore (-(IScalar.val v)) (IScalar.check_bounds_imp_inBounds hcb)
     have hnv_val : IScalar.val nv = -(IScalar.val v) :=
@@ -594,8 +594,8 @@ theorem nat_and_eq_zero_of_lt_dvd {a b n : ℕ} (ha : a < 2^n) (hb : 2^n ∣ b) 
   intro ha_bit
   have hi : i < n := by
     by_contra h; push_neg at h
-    have := Nat.testBit_lt_two_pow (Nat.lt_of_lt_of_le ha (Nat.pow_le_pow_right (by omega) h))
-    simp [this] at ha_bit
+    have h_testBit := Nat.testBit_lt_two_pow (Nat.lt_of_lt_of_le ha (Nat.pow_le_pow_right (by omega) h))
+    simp [h_testBit] at ha_bit
   obtain ⟨q, hq⟩ := hb
   rw [hq, Nat.testBit_two_pow_mul]
   simp [show ¬(i ≥ n) from by omega]
