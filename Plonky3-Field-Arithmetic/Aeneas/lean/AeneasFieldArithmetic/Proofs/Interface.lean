@@ -47,7 +47,7 @@ theorem fact_prime_2_31_sub_1 : Fact (Nat.Prime (2^31-1)) :=
 
 /-- 2^e = 2^(e % 31) in ZMod (2^31-1) since 2^31 ≡ 1 -/
 theorem mersenne_pow_eq (e : ℕ) : (2^e : ZMod (2^31-1)) = (2^(e % 31) : ZMod (2^31-1)) := by
-  have h : (2^31 : ZMod (2^31-1)) = 1 := by native_decide
+  have h : (2^31 : ZMod (2^31-1)) = 1 := by rfl
   conv_lhs => rw [show e = e % 31 + 31 * (e / 31) from (Nat.mod_add_div e 31).symm]
   rw [pow_add, pow_mul, h, one_pow, mul_one]
 
@@ -635,7 +635,8 @@ theorem div_2exp_u64_spec (m : m31) (exp : U64) (hm : UScalar.val m.value ≤ 2^
   -- Key intermediate values
   have h_left_val : UScalar.val left = UScalar.val m.value / 2^(UScalar.val exp % 31) := by
     rw [left_post, h_exp1_val, Nat.shiftRight_eq_div_pow]
-  have h_i3_val : UScalar.val i3 = 2147483648 := by rw [i3_post]; native_decide
+  have h_i3_val : UScalar.val i3 = 2147483648 := by
+    rw [i3_post]; simp [U32.size_eq]
   have h_i4_val : UScalar.val i4 = 2^31 - 1 := by
     have : UScalar.val i4 = UScalar.val i3 - 1 := by scalar_tac
     omega
@@ -761,7 +762,10 @@ theorem try_inverse_decompose
   have h_P : mersenne31.P = Result.ok (⟨2147483647#32⟩ : U32) := by simp
   rw [h_P]; dsimp only
   have h_coprime : Nat.gcd (UScalar.val n.value) 2147483647 = 1 :=
-    ((Nat.Prime.coprime_iff_not_dvd (by native_decide)).mpr
+    ((Nat.Prime.coprime_iff_not_dvd (by
+        rw [show (2147483647 : ℕ) = Mersenne31.fieldSize from by
+          unfold Mersenne31.fieldSize; ring]
+        exact Mersenne31.is_prime)).mpr
       (Nat.not_dvd_of_pos_of_lt h_pos (by omega))).symm
   obtain ⟨v, hv_ok, hv_post⟩ := gcd_inversion_spec n.value h_lt h_coprime
   rw [hv_ok]; dsimp only

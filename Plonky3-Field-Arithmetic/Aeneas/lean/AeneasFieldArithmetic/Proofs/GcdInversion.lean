@@ -47,7 +47,7 @@ theorem size_terminal {a b : ℕ} (h_sum : Nat.size a + Nat.size b ≤ 2)
     (Nat.lt_size_self b).trans_le (Nat.pow_le_pow_right (by norm_num) (by omega))
   by_cases hb3 : b = 3
   · subst hb3
-    have : Nat.size 3 = 2 := (by native_decide)
+    have : Nat.size 3 = 2 := by decide
     have : a = 0 := Nat.size_eq_zero.mp (by omega)
     simp [this] at h_gcd
   · omega
@@ -146,7 +146,7 @@ theorem gcd_inv_init (a0 : U32) (h_a0_lt : UScalar.val a0 < 2^31 - 1) :
   · change Nat.gcd (UScalar.val a0) 2147483647 = Nat.gcd (UScalar.val a0) (2^31-1); norm_num
   · change 2147483647 % 2 = 1; norm_num
   · change Nat.size (UScalar.val a0) + Nat.size 2147483647 ≤ 62 - 0
-    have : Nat.size 2147483647 = 31 := by native_decide
+    have : Nat.size 2147483647 = 31 := by decide
     have := Nat.size_le.mpr (by omega : UScalar.val a0 < 2^31); omega
 
 /-- One iteration of the loop body preserves the invariant and decreases the measure,
