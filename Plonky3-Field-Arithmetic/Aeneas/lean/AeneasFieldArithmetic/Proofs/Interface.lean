@@ -40,10 +40,11 @@ lemma lt_field_u32 : p.toNat < 2^32 := by cases p; simp; lia
 instance : NeZero Mersenne31.fieldSize where
   out := by simp
 
-/-- Helper to locally introduce Field (ZMod (2^31-1)) via have -/
-theorem fact_prime_2_31_sub_1 : Fact (Nat.Prime (2^31-1)) :=
-  ⟨by rw [show (2^31-1 : ℕ) = Mersenne31.fieldSize from by
-    unfold Mersenne31.fieldSize; ring]; exact Mersenne31.is_prime⟩
+/-- Global `Fact` witness that `Mersenne31.fieldSize = 2^31-1` is prime.
+    Needed to resolve the `Field (ZMod Mersenne31.fieldSize)` instance for division.
+    Reducibility of `fieldSize` lets it unify with `Nat.Prime (2^31-1)` queries. -/
+instance fact_prime_mersenne31 : Fact (Nat.Prime Mersenne31.fieldSize) :=
+  ⟨Mersenne31.is_prime⟩
 
 /-- 2^e = 2^(e % 31) in ZMod (2^31-1) since 2^31 ≡ 1 -/
 theorem mersenne_pow_eq (e : ℕ) : (2^e : ZMod (2^31-1)) = (2^(e % 31) : ZMod (2^31-1)) := by
@@ -52,9 +53,8 @@ theorem mersenne_pow_eq (e : ℕ) : (2^e : ZMod (2^31-1)) = (2^(e % 31) : ZMod (
   rw [pow_add, pow_mul, h, one_pow, mul_one]
 
 /-- 2^k ≠ 0 in ZMod (2^31-1) -/
-theorem pow_two_ne_zero_mersenne (k : ℕ) : (2^k : ZMod (2^31-1)) ≠ 0 := by
-  haveI := fact_prime_2_31_sub_1
-  exact IsUnit.ne_zero (IsUnit.pow k (Ne.isUnit
+theorem pow_two_ne_zero_mersenne (k : ℕ) : (2^k : ZMod (2^31-1)) ≠ 0 :=
+  IsUnit.ne_zero (IsUnit.pow k (Ne.isUnit
     (by change ¬((2 : ℕ) : ZMod (2^31-1)) = 0; rw [ZMod.natCast_eq_zero_iff]; omega)))
 
 /-! # to_m31_spec
@@ -799,7 +799,6 @@ theorem try_inverse_to_spec (inv : m31)
       .ok (some inv)) :
   to_m31_spec inv (try_inverse_valid n inv valid_n nonzero h_inv) =
     (to_m31_spec n valid_n)⁻¹ := by
-  haveI := fact_prime_2_31_sub_1
   -- Use decompose to get all intermediate results
   obtain ⟨v, m_res, div_res, hv_post, hm_ok, hm_bound, hdiv_ok, _, h_try⟩ :=
     try_inverse_decompose n valid_n nonzero
