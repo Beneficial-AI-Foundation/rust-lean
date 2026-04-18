@@ -2,9 +2,14 @@ import Aeneas
 import CompPoly.Fields.Mersenne
 import AeneasFieldArithmetic.Generated.Funs
 import AeneasFieldArithmetic.Proofs.AeneasUtils
+import AeneasFieldArithmetic.Proofs.GcdInversion
+import CompPoly.Data.Nat.Bitwise
+import Mathlib.Data.Nat.Prime.Basic
 
 open Aeneas Aeneas.Std
 open aeneas_field_arithmetic mersenne31.Mersenne31
+
+/-! # Notations -/
 
 abbrev m31 := mersenne31.Mersenne31
 
@@ -16,8 +21,47 @@ instance : ToString m31 where
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 
-infixl:60 " +ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
-infixl:60 " ×ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
+infixl:65 " +ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add
+infixl:70 " ×ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul
+infixl:70 " /ₘ " => mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31.div
+
+/-! # Misc Results
+
+Helper general results
+
+ -/
+
+@[simp]
+lemma m31_prime_ok :
+  mersenne31.P = Result.ok (⟨2147483647#32⟩ : U32) := by simp [mersenne31.P]; rfl
+
+lemma lt_field_u32 : p.toNat < 2^32 := by cases p; simp; lia
+
+instance : NeZero Mersenne31.fieldSize where
+  out := by simp
+
+/-- Global `Fact` witness that `Mersenne31.fieldSize = 2^31-1` is prime.
+    Needed to resolve the `Field (ZMod Mersenne31.fieldSize)` instance for division.
+    Reducibility of `fieldSize` lets it unify with `Nat.Prime (2^31-1)` queries. -/
+instance fact_prime_mersenne31 : Fact (Nat.Prime Mersenne31.fieldSize) :=
+  ⟨Mersenne31.is_prime⟩
+
+/-- 2^e = 2^(e % 31) in ZMod (2^31-1) since 2^31 ≡ 1 -/
+theorem mersenne_pow_eq (e : ℕ) : (2^e : ZMod (2^31-1)) = (2^(e % 31) : ZMod (2^31-1)) := by
+  have h : (2^31 : ZMod (2^31-1)) = 1 := by rfl
+  conv_lhs => rw [show e = e % 31 + 31 * (e / 31) from (Nat.mod_add_div e 31).symm]
+  rw [pow_add, pow_mul, h, one_pow, mul_one]
+
+/-- 2^k ≠ 0 in ZMod (2^31-1) -/
+theorem pow_two_ne_zero_mersenne (k : ℕ) : (2^k : ZMod (2^31-1)) ≠ 0 :=
+  IsUnit.ne_zero (IsUnit.pow k (Ne.isUnit
+    (by change ¬((2 : ℕ) : ZMod (2^31-1)) = 0; rw [ZMod.natCast_eq_zero_iff]; omega)))
+
+/-! # to_m31_spec
+
+Mapping the implementation's `m31` elements to `Mersenne31.Field`
+
+ -/
 
 def to_m31_spec
   (valid_n : UScalar.val n.value ≤ 2^31-1): Mersenne31.Field :=
@@ -27,27 +71,30 @@ def to_m31_spec
 
 postfix:75 "↘" => to_m31_spec
 
-lemma lt_field_u32 : p.toNat < 2^32 := by cases p; simp; lia
-lemma lt_field_m31 : p.toNat < 2^31 - 1 := by cases p; simp; lia
+/-- to_m31_spec is injective for elements with val < P -/
+theorem to_m31_spec_inj (a b : m31)
+    (ha : UScalar.val a.value < 2^31-1) (hb : UScalar.val b.value < 2^31-1)
+    (h : to_m31_spec a (le_of_lt ha) = to_m31_spec b (le_of_lt hb)) : a = b := by
+  unfold to_m31_spec at h
+  rw [dif_pos ha, dif_pos hb] at h
+  cases a; cases b; congr 1
+  have h_inj := Fin.mk.inj h; scalar_tac
 
-def new_of_field : Result m31 := new (Std.U32.ofNatCore p.val (lt_field_u32 p))
+/-- to_m31_spec always equals Nat.cast in ZMod P (works even when value = P) -/
+theorem to_m31_spec_eq_natCast_general (a : m31) (ha : UScalar.val a.value ≤ 2^31-1) :
+    to_m31_spec a ha = (UScalar.val a.value : ZMod (2^31-1)) := by
+  unfold to_m31_spec
+  by_cases h : UScalar.val a.value < 2^31-1
+  · rw [dif_pos h]
+    exact Fin.ext (by rw [Fin.val_natCast]; exact (Nat.mod_eq_of_lt h).symm)
+  · rw [dif_neg h]; push_neg at h
+    rw [show UScalar.val a.value = 2^31 - 1 from by omega, CharP.cast_eq_zero]
 
-@[simp]
-lemma m31_prime_ok :
-  mersenne31.P = Result.ok { bv := ⟨2^31 - 1, (by simp)⟩} := by
-    simp [mersenne31.P]; rfl
+/-! # of_m31_spec
 
-lemma new_of_field_isOk :
-  new_of_field p =
-  .ok { value := Std.U32.ofNatCore p.val (lt_field_u32 p) } := by
-  simp [new_of_field, new]
-  simp [Aeneas.Std.instBindResult, Std.bind]
-  simp [HMod.hMod, UScalar.rem]
-  dsimp [UScalar.val]; congr; simp
-  cases p with | mk p ph
-  simp at ph
-  simp [Mod.mod, BitVec.umod, ZMod.val]
-  congr; omega
+Mapping the specification's `Mersenne31.Field` elements to `m31`
+
+ -/
 
 def of_m31_spec : m31 :=
   {value := Std.U32.ofNatCore p.val (lt_field_u32 p)}
@@ -59,18 +106,10 @@ theorem of_m31_spec_lt_m31 : ↑(of_m31_spec p).value < (2^31 - 1 : ℕ) := by
 
 postfix:50 "↗" => of_m31_spec
 
-theorem neq_of_field_eq_spec : new_of_field p = .ok (p↗) := by
-  simp [of_m31_spec, new_of_field_isOk]
-
-instance : NeZero Mersenne31.fieldSize where
-  out := by simp
-
 theorem to_of_m31_eq:
   (to_m31_spec (of_m31_spec p)
   (by simp only [UScalar.val, of_m31_spec]; grind)) = p := by
   simp [to_m31_spec, of_m31_spec, ZMod.val]
-
-theorem field_size_mod_small : p.val % Mersenne31.fieldSize = p.val := by grind
 
 /-! # Addition interface
 
@@ -279,10 +318,6 @@ lemma m31_swap_mods (n : ℕ)
   (n_range_sup : n < 2*(2^31 - 1)):
   n % (2^31 - 1) = n % 2^31 + 1 := by omega
 
-lemma mod_small_swap (n m p : ℕ) (h1 : p < n) (h2 : n < m) :
-  p % n = p % m := by
-  repeat rw [Nat.mod_eq_of_lt] <;> try grind
-
 /-. Succint logic of the `m31_of_u64` function -/
 def m31_of_u64_logic (n : U64) : m31 :=
   let decomp := UScalar.val n % 2147483648 + ↑n / 2147483648
@@ -308,12 +343,12 @@ theorem m31_of_u64_spec (n : U64)
       simp_all [decomp]; rw [←Nat.mod_add_mod]; grind
   · simp [m31_of_u64]; congr; simp [decide, Nat.decLt, Nat.decLe]
     split <;> simp_all
-    · rw [←Nat.mod_add_mod]; have := m31_swap_mods
-      simp at this; rw [←this]
-      have := m31_mod_red; simp at this; rw [←this]
+    · rw [←Nat.mod_add_mod]; have h_swap := m31_swap_mods
+      simp at h_swap; rw [←h_swap]
+      have h_mod_red := m31_mod_red; simp at h_mod_red; rw [←h_mod_red]
       · grind
-      · have := Nat.lt_or_eq_of_le decomp_bound; simp at this
-        cases this <;> grind
+      · have h_lt_or_eq := Nat.lt_or_eq_of_le decomp_bound; simp at h_lt_or_eq
+        cases h_lt_or_eq <;> grind
     · simp_all; rw [←Nat.mod_add_mod]
       rename_i h _
       apply Nat.le_pred_of_lt at h; simp at h
@@ -400,3 +435,486 @@ theorem mulOk_in_bounds
 theorem mul_logic_nat_in_bounds  :
   ↑(mul_logic_nat n m).value ≤ (2^31 - 1 : ℕ) := by
   simp [mul_logic_nat, m31_of_u64_logic]; split <;> grind
+
+/-! # `new_reduced` interface -/
+
+theorem new_reduced_ok (v : U32) (h : UScalar.val v < 2^31) :
+  mersenne31.Mersenne31.new_reduced v = .ok ⟨v⟩ := by
+  simp [mersenne31.Mersenne31.new_reduced, Aeneas.Std.instBindResult, Std.bind,
+    U32.shr_31_small v h, massert]
+
+theorem from_canonical_unchecked_ok (v : U32) (h : UScalar.val v < 2^31 - 1) :
+  Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked v =
+    .ok ⟨v⟩ := by
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked
+  rw [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32, m31_prime_ok]
+  have h_cmp : (↑v : ℕ) < ↑(2147483647#32#uscalar : UScalar .U32) := by
+    show UScalar.val v < 2147483647; omega
+  simp [Aeneas.Std.instBindResult, Std.bind, massert, h_cmp, new_reduced_ok v (by omega)]
+
+/-! # Negation interface -/
+
+/-- `neg` succeeds for valid m31 elements, with value `P - n.value` -/
+theorem neg_full (valid_n : UScalar.val n.value ≤ 2^31 - 1) :
+    ∃ result : m31,
+      Insts.CoreOpsArithNegMersenne31.neg n = .ok result ∧
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      UScalar.val result.value = 2147483647 - UScalar.val n.value := by
+  unfold Insts.CoreOpsArithNegMersenne31.neg
+  rw [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32, m31_prime_ok]
+  simp only [Aeneas.Std.instBindResult, Std.bind]
+  have h_ge : UScalar.val n.value ≤ UScalar.val (⟨2147483647#32⟩ : U32) := by
+    change UScalar.val n.value ≤ 2147483647; omega
+  obtain ⟨diff, h_diff_ok, h_diff_val, _⟩ :=
+    (WP.spec_equiv_exists _ _).mp (UScalar.sub_spec h_ge)
+  change UScalar.val diff = 2147483647 - UScalar.val n.value at h_diff_val
+  simp only [h_diff_ok]
+  rw [new_reduced_ok diff (by omega)]
+  refine ⟨⟨diff⟩, rfl, ?_, h_diff_val⟩
+  change UScalar.val diff ≤ 2147483647; omega
+
+/-! # `from_int_u64` interface
+
+Converts a `U64` into an `m31` element by reducing modulo `P`.
+Computes `v % P`, then casts the result down to `U32` via `from_canonical_unchecked`.
+
+-/
+
+theorem cast_u64_u32_val (x : U64) (h : UScalar.val x < 2^32) :
+    UScalar.val (UScalar.cast UScalarTy.U32 x) = UScalar.val x := by
+  rw [UScalar.cast_val_eq]; exact Nat.mod_eq_of_lt h
+
+/-- `from_int_u64` succeeds and the result value equals `v % P` -/
+theorem from_int_u64_full (v : U64) :
+    ∃ result : m31,
+      Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int v = Result.ok result ∧
+      UScalar.val result.value = UScalar.val v % 2147483647 ∧
+      UScalar.val result.value ≤ 2^31 - 1 := by
+  have P_u64_val :
+    UScalar.val (UScalar.cast UScalarTy.U64 (⟨2147483647#32⟩ : U32)) = 2147483647 := by
+    rw [UScalar.cast_val_eq]; decide
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int
+  simp only [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32,
+    m31_prime_ok, Aeneas.Std.instBindResult, Std.bind, lift]
+  obtain ⟨r, hr, hr_val⟩ := WP.spec_imp_exists (UScalar.rem_spec v (by rw [P_u64_val]; omega))
+  rw [hr]; simp only []
+  have h_r_lt : UScalar.val r < 2147483647 := by rw [hr_val, P_u64_val]; grind
+  have h_cast_lt : UScalar.val (UScalar.cast UScalarTy.U32 r) < 2^31 - 1 := by
+    rw [cast_u64_u32_val r (by omega)]; omega
+  rw [from_canonical_unchecked_ok _ h_cast_lt]
+  refine ⟨_, rfl, ?_, ?_⟩
+  · rw [cast_u64_u32_val r (by omega), hr_val, P_u64_val]
+  · show UScalar.val (UScalar.cast UScalarTy.U32 r) ≤ _; omega
+
+/-! # `from_int_i64` interface
+
+Converts an `I64` into an `m31` element.
+Positive values are cast to `U64` and handled by `from_int_u64`.
+Negative values are negated first, converted via `from_int_u64`, then negated in `m31`.
+
+-/
+
+theorem from_int_i64_full (v : I64) (hv : (IScalar.val v).natAbs ≤ 2^60) :
+    ∃ result : m31,
+      Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int v = Result.ok result ∧
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      (UScalar.val result.value : ZMod (2^31-1)) = (IScalar.val v : ZMod (2^31-1)) := by
+  unfold Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int
+  simp only [Aeneas.Std.instBindResult, Std.bind]
+  by_cases hpos : 0 ≤ IScalar.val v
+  · have h_ge : v >= 0#i64 := by scalar_tac
+    simp only [h_ge, lift]
+    obtain ⟨r, h_ok, h_val, h_bound⟩ := from_int_u64_full (IScalar.hcast .U64 v)
+    refine ⟨r, h_ok, h_bound, ?_⟩
+    simp only [h_val]
+    conv_lhs => rw [show (2147483647 : ℕ) = 2^31-1 from by omega]
+    rw [(CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1) _).symm]
+    have h_cast_val : (UScalar.val (IScalar.hcast .U64 v) : ℤ) = IScalar.val v := by
+      have h_wp := IScalar.hcast_inBounds_spec (src_ty := .I64) .U64 v ⟨hpos, by scalar_tac⟩
+      simp [WP.spec_ok, lift] at h_wp; exact h_wp
+    rw [← Int.cast_natCast (R := ZMod (2^31-1)) (UScalar.val (IScalar.hcast .U64 v)),
+        h_cast_val]
+  · have h_neg : ¬(v >= 0#i64) := by scalar_tac
+    simp only [h_neg, HNeg.hNeg, IScalar.neg, IScalar.tryMk, IScalar.tryMkOpt, Result.ofOption]
+    have hv_neg : IScalar.val v < 0 := by omega
+    -- IScalar.neg.step_spec wraps with `lift` so doesn't match bare `-. v` in do blocks;
+    -- we unfold through tryMkOpt and resolve the bounds check directly with dif_pos.
+    have hcb : IScalar.check_bounds .I64 (-(IScalar.val v)) := by
+      have h_vbounds := v.hBounds; simp [IScalar.check_bounds, IScalarTy.I64_numBits_eq]; omega
+    rw [dif_pos hcb]; simp only [lift]
+    set nv := IScalar.ofIntCore (-(IScalar.val v)) (IScalar.check_bounds_imp_inBounds hcb)
+    have hnv_val : IScalar.val nv = -(IScalar.val v) :=
+      IScalar.ofInt_val_eq (IScalar.check_bounds_imp_inBounds hcb)
+    obtain ⟨m, hm_ok, hm_val, hm_bound⟩ := from_int_u64_full (IScalar.hcast .U64 nv)
+    rw [hm_ok]
+    obtain ⟨result, hr_ok, hr_bound, hr_val⟩ := neg_full ⟨m.value⟩ hm_bound
+    refine ⟨result, hr_ok, hr_bound, ?_⟩
+    simp only [hr_val, hm_val]
+    conv_lhs => rw [show (2147483647 : ℕ) = 2^31-1 from by omega]
+    have h_nv_pos : 0 ≤ IScalar.val nv := by omega
+    have h_cast_val : (UScalar.val (IScalar.hcast .U64 nv) : ℤ) = IScalar.val nv := by
+      have h_wp := IScalar.hcast_inBounds_spec (src_ty := .I64) .U64 nv
+        ⟨h_nv_pos, by scalar_tac⟩
+      simp [WP.spec_ok, lift] at h_wp; exact h_wp
+    rw [Nat.cast_sub (Nat.mod_lt _ (by omega : (0:ℕ) < 2^31-1)).le,
+        CharP.cast_eq_zero (ZMod (2^31-1)) (2^31-1), zero_sub,
+        (CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1) _).symm]
+    rw [show ((UScalar.val (IScalar.hcast .U64 nv) : ℕ) : ZMod (2^31-1)) =
+            ((-IScalar.val v : ℤ) : ZMod (2^31-1)) from by
+      rw [← Int.cast_natCast (R := ZMod (2^31-1)) (UScalar.val (IScalar.hcast .U64 nv)),
+          h_cast_val, hnv_val]]
+    rw [Int.cast_neg, neg_neg]
+
+/-! # `div_2exp_u64` interface
+
+`div_2exp_u64 m exp` divides `m` by `2^(exp % 31)`
+
+-/
+
+/-- Division by 2^k in Mersenne31: the shift-and-recombine decomposition
+    `(x / 2^k + x % 2^k * 2^(31-k)) * 2^k ≡ x (mod 2^31-1)`. -/
+theorem m31_div_decomp (x k : ℕ) (hk31 : k ≤ 31) :
+    ((x / 2^k + x % 2^k * 2^(31 - k)) * 2^k) % (2^31 - 1) = x % (2^31 - 1) := by
+  have hpk : (0 : ℕ) < 2^k := Nat.pos_of_ne_zero (by positivity)
+  have h_div_mod := Nat.div_add_mod x (2^k)
+  have h_exp : (31 - k) + k = 31 := by omega
+  have h_eq : (x / 2^k + x % 2^k * 2^(31 - k)) * 2^k = x + x % 2^k * (2^31 - 1) := by
+    have h1 : x / 2^k * 2^k + x % 2^k = x := by rw [mul_comm]; exact h_div_mod
+    have h2 : x % 2^k * 2^(31 - k) * 2^k = x % 2^k * 2^31 := by
+      rw [mul_assoc, ← pow_add, h_exp]
+    rw [Nat.add_mul, h2]; omega
+  rw [h_eq, Nat.add_mul_mod_self_right]
+
+/-- Bit disjointness: a < 2^n and 2^n ∣ b implies a &&& b = 0 -/
+theorem nat_and_eq_zero_of_lt_dvd {a b n : ℕ} (ha : a < 2^n) (hb : 2^n ∣ b) :
+    a &&& b = 0 := by
+  apply Nat.zero_of_testBit_eq_false
+  intro i
+  simp only [Nat.testBit_and, Bool.and_eq_false_imp]
+  intro ha_bit
+  have hi : i < n := by
+    by_contra h; push_neg at h
+    have h_testBit := Nat.testBit_lt_two_pow (Nat.lt_of_lt_of_le ha (Nat.pow_le_pow_right (by omega) h))
+    simp [h_testBit] at ha_bit
+  obtain ⟨q, hq⟩ := hb
+  rw [hq, Nat.testBit_two_pow_mul]
+  simp [show ¬(i ≥ n) from by omega]
+
+/-- General `div_2exp_u64` specification: the result is a valid m31 element
+    whose value satisfies the rotation identity `result * 2^k ≡ m.value (mod 2^31-1)`
+    where `k = exp % 31`. -/
+theorem div_2exp_u64_spec (m : m31) (exp : U64) (hm : UScalar.val m.value ≤ 2^31 - 1) :
+    Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m exp
+    ⦃ result =>
+      UScalar.val result.value ≤ 2^31 - 1 ∧
+      (UScalar.val result.value * 2^(UScalar.val exp % 31)) % (2^31 - 1) =
+        UScalar.val m.value % (2^31 - 1) ⦄ := by
+  have hk_lt : UScalar.val exp % 31 < 31 := Nat.mod_lt _ (by omega)
+  unfold Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64
+  let* ⟨ i, i_post ⟩ ← U64.rem_spec
+  let* ⟨ exp1, exp1_post ⟩ ← UScalar.cast.step_spec
+  have h_exp1_val : UScalar.val exp1 = UScalar.val exp % 31 := by
+    subst exp1_post; rw [UScalar.cast_val_eq, i_post]; grind
+  have h_exp1_lt : UScalar.val exp1 < 31 := by omega
+  let* ⟨ left, left_post, _ ⟩ ← U32.ShiftRight_spec
+  let* ⟨ i1, i1_post, _ ⟩ ← U8.sub_spec
+  let* ⟨ i2, i2_post, _ ⟩ ← U32.ShiftLeft_spec
+  let* ⟨ i3, i3_post, _ ⟩ ← U32.ShiftLeft_IScalar_spec
+  let* ⟨ i4, _, _ ⟩ ← U32.sub_spec
+  let* ⟨ right, right_post, _ ⟩ ← UScalar.and_spec
+  let* ⟨ rotated, rotated_post, _ ⟩ ← UScalar.or_spec
+  -- Key intermediate values
+  have h_left_val : UScalar.val left = UScalar.val m.value / 2^(UScalar.val exp % 31) := by
+    rw [left_post, h_exp1_val, Nat.shiftRight_eq_div_pow]
+  have h_i3_val : UScalar.val i3 = 2147483648 := by
+    rw [i3_post]; simp [U32.size_eq]
+  have h_i4_val : UScalar.val i4 = 2^31 - 1 := by
+    have : UScalar.val i4 = UScalar.val i3 - 1 := by scalar_tac
+    omega
+  have h_rotated_or : UScalar.val rotated = UScalar.val left ||| UScalar.val right := by
+    rw [rotated_post]; simp [UScalar.val_or]
+  -- Bound: rotated < 2^31
+  have h_rotated_lt : UScalar.val rotated < 2^31 := by
+    rw [h_rotated_or]; apply Nat.or_lt_two_pow
+    · rw [h_left_val]; exact Nat.lt_of_le_of_lt (Nat.div_le_self _ _) (by omega)
+    · have : UScalar.val right ≤ UScalar.val i4 := by
+        rw [right_post]; simp [UScalar.val_and, Nat.and_le_right]
+      omega
+  rw [new_reduced_ok rotated h_rotated_lt]
+  simp only [WP.spec_ok]
+  refine ⟨by omega, ?_⟩
+  -- Value: rotation identity
+  have h_right_eq : UScalar.val right =
+      (UScalar.val m.value % 2^(UScalar.val exp % 31)) * 2^(31 - UScalar.val exp % 31) := by
+    have : UScalar.val right = UScalar.val i2 &&& UScalar.val i4 := by
+      rw [right_post]; simp [UScalar.val_and]
+    rw [this, h_i4_val]
+    have : UScalar.val i2 = (UScalar.val m.value * 2^(31 - UScalar.val exp % 31)) % 2^32 := by
+      rw [i2_post, show UScalar.val i1 = 31 - UScalar.val exp % 31 from by omega,
+          Nat.shiftLeft_eq, U32.size_eq]; norm_num
+    rw [this, Nat.and_two_pow_sub_one_eq_mod, Nat.mod_mod_of_dvd]; swap; omega
+    conv_lhs => rw [show (2 : ℕ)^31 =
+        2^(UScalar.val exp % 31) * 2^(31 - UScalar.val exp % 31) from by
+      rw [← pow_add]; congr 1; omega]
+    rw [Nat.mul_mod_mul_right]
+  -- Bit disjointness → OR = ADD
+  have h_left_lt : UScalar.val left < 2^(31 - UScalar.val exp % 31) := by
+    rw [h_left_val]; apply Nat.div_lt_of_lt_mul
+    calc UScalar.val m.value < 2^31 := by omega
+      _ = 2^(UScalar.val exp % 31) * 2^(31 - UScalar.val exp % 31) := by
+          rw [← pow_add]; congr 1; omega
+  have h_rotated_eq : UScalar.val rotated =
+      UScalar.val m.value / 2^(UScalar.val exp % 31) +
+      (UScalar.val m.value % 2^(UScalar.val exp % 31)) * 2^(31 - UScalar.val exp % 31) := by
+    rw [h_rotated_or,
+        ← Nat.sum_of_and_eq_zero_is_or
+          (nat_and_eq_zero_of_lt_dvd h_left_lt (by rw [h_right_eq]; exact dvd_mul_left _ _)),
+        h_left_val, h_right_eq]
+  rw [h_rotated_eq]
+  exact m31_div_decomp (UScalar.val m.value) (UScalar.val exp % 31) (by omega)
+
+/-- Lifts div_2exp_u64_spec from ℕ modular arithmetic to ZMod (2^31-1):
+    `result * 2^(exp % 31) = m.value` in `ZMod (2^31-1)`. -/
+theorem div_2exp_u64_zmod (m_val : m31) (exp : U64)
+    (hm : UScalar.val m_val.value ≤ 2^31 - 1)
+    (result : m31)
+    (h : Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m_val exp = .ok result) :
+    (UScalar.val result.value * 2^(UScalar.val exp % 31) : ZMod (2^31-1)) =
+      (UScalar.val m_val.value : ZMod (2^31-1)) := by
+  obtain ⟨r, hr_ok, _, hr_post⟩ := WP.spec_imp_exists (div_2exp_u64_spec m_val exp hm)
+  rw [hr_ok] at h; injection h with h_eq; subst h_eq
+  have key : ((UScalar.val r.value * 2^(UScalar.val exp % 31) : ℕ) : ZMod (2^31-1)) =
+             ((UScalar.val m_val.value : ℕ) : ZMod (2^31-1)) := by
+    conv_lhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
+    conv_rhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
+    rw [hr_post]
+  exact_mod_cast key
+
+/-! # `is_zero` interface
+
+`is_zero` checks whether an `m31` element is zero, accounting for the
+non-canonical representation where `value = P` also represents zero.
+
+-/
+
+theorem nonzero_m31_bounds
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    0 < UScalar.val n.value ∧ UScalar.val n.value < 2^31 - 1 := by
+  refine ⟨?_, ?_⟩ <;> by_contra h <;> push_neg at h <;> apply nonzero <;>
+    unfold to_m31_spec
+  · rw [dif_pos (by omega)]; simp [show UScalar.val n.value = 0 from by omega]
+  · rw [dif_neg (by omega)]
+
+theorem is_zero_nonzero_spec
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0) :
+  Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero n = .ok false := by
+  obtain ⟨h_pos, h_lt⟩ := nonzero_m31_bounds n valid_n nonzero
+  have h_ne_zero : n.value ≠ 0#u32 := by scalar_tac
+  simp [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero, h_ne_zero,
+        Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32,
+        Aeneas.Std.instBindResult]
+  change ¬(UScalar.val n.value = 2147483647)
+  omega
+
+/-! # Inverse interface
+
+The inverse relies on `gcd_inversion_prime_field_32`, a 60-iteration
+loop that computes `v = 2^60 · a⁻¹ mod P`. The result is converted
+via `from_int` (i64 → m31) and corrected by `div_2exp_u64(60)`.
+
+ -/
+
+/-- Decompose `try_inverse` into its pipeline steps: GCD → from_int → div_2exp.
+    Returns all intermediate results needed by both `inverse_eq_try` and `try_inverse_to_spec`. -/
+theorem try_inverse_decompose
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    ∃ (v : I64) (m_res result : m31),
+      -- v: GCD inversion output satisfying v * n ≡ 2^60 (mod P)
+      gcd_post (UScalar.val n.value) v ∧
+      -- m_res: v projected into m31 via from_int(i64)
+      Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int v = .ok m_res ∧
+      UScalar.val m_res.value ≤ 2^31-1 ∧
+      -- result: m_res divided by 2^60 via bit rotation
+      Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64 m_res 60#u64 = .ok result ∧
+      UScalar.val result.value ≤ 2^31-1 ∧
+      -- The full pipeline composes to try_inverse
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n = .ok (some result) := by
+  obtain ⟨h_pos, h_lt⟩ := nonzero_m31_bounds n valid_n nonzero
+  simp only [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse,
+             Aeneas.Std.instBindResult, Std.bind,
+             is_zero_nonzero_spec n valid_n nonzero]
+  rw [m31_prime_ok]; dsimp only
+  have h_coprime : Nat.gcd (UScalar.val n.value) 2147483647 = 1 :=
+    (Mersenne31.is_prime.coprime_iff_not_dvd.mpr
+      (Nat.not_dvd_of_pos_of_lt h_pos (by omega))).symm
+  obtain ⟨v, hv_ok, hv_post⟩ := gcd_inversion_spec n.value h_lt h_coprime
+  rw [hv_ok]; dsimp only
+  obtain ⟨m_res, hm_ok, hm_bound, _⟩ := from_int_i64_full v hv_post.2
+  rw [hm_ok]; dsimp only
+  obtain ⟨result, hr_ok, hr_bound, _⟩ :=
+    WP.spec_imp_exists (div_2exp_u64_spec m_res 60#u64 hm_bound)
+  rw [hr_ok]; dsimp only
+  exact ⟨v, m_res, result, hv_post, hm_ok, hm_bound, hr_ok, hr_bound, rfl⟩
+
+/-- The `try_inverse` result is a valid Mersenne31 element. -/
+theorem try_inverse_valid (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+      .ok (some inv)) :
+  UScalar.val inv.value ≤ 2^31-1 := by
+  obtain ⟨_, _, _, _, _, _, _, h_valid_res, h_try⟩ :=
+    try_inverse_decompose n valid_n nonzero
+  rw [h_try] at h_inv; simp_all
+
+/-- The `try_inverse` result, projected to the specification field,
+    equals the field-theoretic inverse. -/
+theorem try_inverse_to_spec (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+      .ok (some inv)) :
+  to_m31_spec inv (try_inverse_valid n inv valid_n nonzero h_inv) =
+    (to_m31_spec n valid_n)⁻¹ := by
+  -- Use decompose to get all intermediate results
+  obtain ⟨v, m_res, div_res, hv_post, hm_ok, hm_bound, hdiv_ok, _, h_try⟩ :=
+    try_inverse_decompose n valid_n nonzero
+  have h_eq : inv = div_res := by rw [h_try] at h_inv; simp_all
+  -- Semantic chain in ZMod (2^31-1):
+  have h_gcd := gcd_post_mul_eq_zmod (UScalar.val n.value) v hv_post
+  rw [mersenne_pow_eq 60] at h_gcd
+  have h_from : (UScalar.val m_res.value : ZMod (2^31-1)) = (IScalar.val v : ZMod (2^31-1)) := by
+    obtain ⟨_, hm_ok', _, h⟩ := from_int_i64_full v hv_post.2
+    rw [hm_ok] at hm_ok'; simp_all
+  have h_div := div_2exp_u64_zmod m_res 60#u64 hm_bound div_res hdiv_ok
+  change (UScalar.val div_res.value * 2^29 : ZMod (2^31-1)) = _ at h_div
+  change _ = (2^29 : ZMod (2^31-1)) at h_gcd
+  rw [to_m31_spec_eq_natCast_general inv (try_inverse_valid n inv valid_n nonzero h_inv),
+      to_m31_spec_eq_natCast_general n valid_n, h_eq]
+  have h_chain : (UScalar.val div_res.value : ZMod (2^31-1)) *
+      (UScalar.val n.value : ZMod (2^31-1)) * (2^29 : ZMod (2^31-1)) =
+      1 * (2^29 : ZMod (2^31-1)) := by
+    rw [mul_right_comm, h_div, h_from, h_gcd, one_mul]
+  exact eq_comm.mpr (inv_eq_of_mul_eq_one_left
+    (mul_right_cancel₀ (pow_two_ne_zero_mersenne _) h_chain))
+
+/-- `inverse` succeeds for valid non-zero inputs, producing a valid result
+    that agrees with `try_inverse`. -/
+theorem inverse_eq_try
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (nonzero : to_m31_spec n valid_n ≠ 0) :
+    ∃ inv : m31,
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n = .ok inv ∧
+      UScalar.val inv.value ≤ 2^31-1 ∧
+      Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
+        .ok (some inv) := by
+  obtain ⟨_, _, inv, _, _, _, _, h_valid, h_try⟩ := try_inverse_decompose n valid_n nonzero
+  exact ⟨inv, by
+    simp [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse,
+          Aeneas.Std.instBindResult, h_try,
+          core.option.Option.expect, Result.ofOption]
+  , h_valid, h_try⟩
+
+/-- The `inverse` result is a valid Mersenne31 element. -/
+theorem inverse_valid (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n =
+      .ok inv) :
+  UScalar.val inv.value ≤ 2^31-1 := by
+  obtain ⟨inv', h_ok, h_valid', _⟩ := inverse_eq_try n valid_n nonzero
+  rw [h_ok] at h_inv; simp_all
+
+/-- The inverse projected to spec equals the field inverse. -/
+theorem inverse_to_spec (inv : m31)
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (nonzero : to_m31_spec n valid_n ≠ 0)
+  (h_inv :
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse n =
+      .ok inv) :
+  to_m31_spec inv (inverse_valid n inv valid_n nonzero h_inv) =
+    (to_m31_spec n valid_n)⁻¹ := by
+  obtain ⟨inv', h_ok, _, h_try⟩ := inverse_eq_try n valid_n nonzero
+  rw [h_ok] at h_inv; injection h_inv with h_eq; subst h_eq
+  exact try_inverse_to_spec n inv' valid_n nonzero h_try
+
+/-! # Division interface
+
+The following are functions and theorems that allow for a better
+interface with the extracted division.
+
+Division is defined as `div(a, b) = a * inverse(b)`.
+
+ -/
+
+/-- Division decomposes into inverse followed by multiplication -/
+theorem div_as_mul_inverse
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ∃ inv : m31,
+    Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse m =
+      .ok inv ∧
+    UScalar.val inv.value ≤ 2^31-1 ∧
+    n /ₘ m = n ×ₘ inv := by
+  obtain ⟨inv, h_inv_ok, h_valid_inv, _⟩ := inverse_eq_try m valid_m nonzero_m
+  exact ⟨inv, h_inv_ok, h_valid_inv, by
+    simp [Insts.CoreOpsArithDivMersenne31Mersenne31.div,
+          Aeneas.Std.instBindResult, h_inv_ok,
+          lift, core.convert.FromSame.from_]⟩
+
+/-- Division succeeds for valid inputs with non-zero divisor -/
+theorem div_ok
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ∃ result : m31,
+    n /ₘ m = .ok result ∧
+    UScalar.val result.value ≤ 2^31-1 := by
+  obtain ⟨inv, _, h_valid_inv, h_div_eq⟩ :=
+    div_as_mul_inverse n m valid_m nonzero_m
+  rw [h_div_eq, mul_spec_nat n inv valid_n (Nat.le_of_lt_succ (by omega))]
+  exact ⟨mul_logic_nat n inv, rfl, mul_logic_nat_in_bounds n inv⟩
+
+/-- Unwraps extracted division from the result monad -/
+def divOk
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) : m31 :=
+  match h : n /ₘ m with
+  | .ok res => res
+  | .fail _ => by
+      exfalso
+      obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m
+      rw [h_ok] at h; contradiction
+  | .div => by
+      exfalso
+      obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m
+      rw [h_ok] at h; contradiction
+
+/-- `divOk` results are valid Mersenne31 field elements -/
+theorem divOk_in_bounds
+  (valid_n : UScalar.val n.value ≤ 2^31-1)
+  (valid_m : UScalar.val m.value ≤ 2^31-1)
+  (nonzero_m : to_m31_spec m valid_m ≠ 0) :
+  ↑(divOk n m valid_n valid_m nonzero_m).value ≤ (2^31 - 1 : ℕ) := by
+  simp [divOk]
+  obtain ⟨_, h_ok, h_bounds⟩ := div_ok n m valid_n valid_m nonzero_m
+  split <;> rename_i h <;> rw [h_ok] at h <;> simp_all
+
+/-- `divOk` equals `mul_logic_nat a inv` when division decomposes as `a * inverse(b)`. -/
+theorem divOk_eq_mul (inv : m31)
+    (valid_n : UScalar.val n.value ≤ 2^31-1)
+    (valid_m : UScalar.val m.value ≤ 2^31-1)
+    (nonzero_m : to_m31_spec m valid_m ≠ 0)
+    (h_valid_inv : UScalar.val inv.value ≤ 2^31-1)
+    (h_div_eq : n /ₘ m = n ×ₘ inv) :
+    divOk n m valid_n valid_m nonzero_m = mul_logic_nat n inv := by
+  have h_div_result : n /ₘ m = .ok (mul_logic_nat n inv) := by
+    rw [h_div_eq, mul_spec_nat n inv valid_n h_valid_inv]
+  simp only [divOk]; split <;> rename_i h <;> rw [h_div_result] at h <;> grind

@@ -8,11 +8,6 @@ open Aeneas Aeneas.Std
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 
--- Helper lemma
--- This must be accessible somewhere else
-lemma apply_fun {α : Type} {β : Type} {a₁ a₂ : α}
-  (f : α → β) (eq : a₁ = a₂) : f a₁ = f a₂ := by aesop
-
 /--
 Given two implementation `m31` elements such that are valid
 Mersenne31 field elements:
@@ -68,35 +63,48 @@ theorem mul_verify_to_spec
         · skip
         tactic=> omega
       rfl
-  · simp_all
+  · simp_all [-zero_eq_mul]
     have : ↑(mul_logic_nat n m).value = (2147483647 : ℕ) := by
       have := mul_logic_nat_in_bounds; grind
     simp [mul_logic_nat, m31_of_u64_logic, U32.ofNatCore, UScalar.ofNatCore] at this
-    split at this <;> rename_i h <;> try cases h <;> simp_all
+    split at this <;> rename_i h <;> try cases h <;> simp_all [-zero_eq_mul]
     · intro _ _; rename_i left _ _ _
       have := m31_mod_red; simp at this
-      apply apply_fun (@Nat.cast Mersenne31.Field _) at left
+      have left := congrArg (@Nat.cast Mersenne31.Field _) left
       conv at left=> lhs; rw [←this]
       simp at left; rw [←left]
       simp only [UScalar.val, BitVec.toNat]; congr
     · intro _ _; simp only [UScalar.val, BitVec.toNat] at this; lia
 
-/--
-Given two specification `Mersenne31.Field` elements such that:
-- The modular decomposition of their natural projection product is
-  not zero nor a multiple of the Mersenne 31 prime
+/-- The non-canonical zero representation `2^31-1` is unreachable in multiplication's
+    modular reduction. -/
+theorem mul_decomp_ne_noncanonical_zero :
+    let prod := ZMod.val p * ZMod.val q
+    let decomp := prod % 2147483648 + prod / 2147483648
+    ¬(decomp % (2^31 - 1) = 0 ∧ decomp ≠ 0) := by
+  simp only; intro ⟨h_mod, h_ne⟩; apply h_ne
+  have hfs : Mersenne31.fieldSize = 2^31 - 1 := by unfold Mersenne31.fieldSize; ring
+  have hp : ZMod.val p < 2^31 - 1 := hfs ▸ ZMod.val_lt p
+  have hq : ZMod.val q < 2^31 - 1 := hfs ▸ ZMod.val_lt q
+  have h_dvd : (2^31-1) ∣ (ZMod.val p * ZMod.val q) := by
+    refine Nat.dvd_of_mod_eq_zero ?_
+    have : ZMod.val p * ZMod.val q =
+      (ZMod.val p * ZMod.val q % 2147483648 + ZMod.val p * ZMod.val q / 2147483648) +
+      ZMod.val p * ZMod.val q / 2147483648 * (2^31 - 1) := by omega
+    omega
+  rcases fact_prime_mersenne31.out.dvd_mul.mp h_dvd with ⟨c, hc⟩ | ⟨c, hc⟩
+  · unfold Mersenne31.fieldSize at hc; simp [show ZMod.val p = 0 from by omega]
+  · unfold Mersenne31.fieldSize at hc; simp [show ZMod.val q = 0 from by omega]
 
+/--
 Projecting the specification multiplication into the implementation's field is
 the same as projecting each element and performing the impl's multiplication.
 -/
-theorem mul_verify_of_spec
-  (special_case:
-    let prod := ZMod.val p * ZMod.val q
-    let decomp := prod % 2147483648 + prod / 2147483648
-    ¬(decomp % (2^31 - 1) = 0 ∧ decomp ≠ 0)) :
+theorem mul_verify_of_spec :
   of_m31_spec (p * q) =
   mul_logic_nat (of_m31_spec p) (of_m31_spec q)
   := by
+  have special_case := mul_decomp_ne_noncanonical_zero p q
   have := m31_mod_red; simp at this
   have m31_rw : 2^31 - 1 = 2147483647 := rfl
   simp only [not_and_or] at special_case; cases special_case <;>
