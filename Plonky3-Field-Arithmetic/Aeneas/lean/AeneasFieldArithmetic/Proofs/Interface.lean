@@ -77,9 +77,8 @@ theorem to_m31_spec_inj (a b : m31)
     (h : to_m31_spec a (le_of_lt ha) = to_m31_spec b (le_of_lt hb)) : a = b := by
   unfold to_m31_spec at h
   rw [dif_pos ha, dif_pos hb] at h
-  have h_val : UScalar.val a.value = UScalar.val b.value := by
-    have := Fin.mk.inj h; exact_mod_cast this
-  cases a; cases b; congr 1; scalar_tac
+  cases a; cases b; congr 1
+  have := Fin.mk.inj h; scalar_tac
 
 /-- to_m31_spec always equals Nat.cast in ZMod P (works even when value = P) -/
 theorem to_m31_spec_eq_natCast_general (a : m31) (ha : UScalar.val a.value ≤ 2^31-1) :
@@ -88,11 +87,8 @@ theorem to_m31_spec_eq_natCast_general (a : m31) (ha : UScalar.val a.value ≤ 2
   by_cases h : UScalar.val a.value < 2^31-1
   · rw [dif_pos h]
     exact Fin.ext (by rw [Fin.val_natCast]; exact (Nat.mod_eq_of_lt h).symm)
-  · rw [dif_neg h]
-    push_neg at h
-    have : UScalar.val a.value = 2^31 - 1 := by omega
-    rw [this]
-    exact (CharP.cast_eq_zero (ZMod (2^31-1)) (2^31-1)).symm
+  · rw [dif_neg h]; push_neg at h
+    rw [show UScalar.val a.value = 2^31 - 1 from by omega, CharP.cast_eq_zero]
 
 /-! # of_m31_spec
 
@@ -444,20 +440,17 @@ theorem mul_logic_nat_in_bounds  :
 
 theorem new_reduced_ok (v : U32) (h : UScalar.val v < 2^31) :
   mersenne31.Mersenne31.new_reduced v = .ok ⟨v⟩ := by
-  simp [mersenne31.Mersenne31.new_reduced, Aeneas.Std.instBindResult, Std.bind]
-  rw [U32.shr_31_small v h]
-  simp [massert]
+  simp [mersenne31.Mersenne31.new_reduced, Aeneas.Std.instBindResult, Std.bind,
+    U32.shr_31_small v h, massert]
 
 theorem from_canonical_unchecked_ok (v : U32) (h : UScalar.val v < 2^31 - 1) :
   Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked v =
     .ok ⟨v⟩ := by
   unfold Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked
   rw [Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32, m31_prime_ok]
-  simp only [Aeneas.Std.instBindResult, Std.bind]
   have h_cmp : (↑v : ℕ) < ↑(2147483647#32#uscalar : UScalar .U32) := by
-    change UScalar.val v < 2147483647; exact h
-  simp [massert, h_cmp]
-  exact new_reduced_ok v (by omega)
+    show UScalar.val v < 2147483647; omega
+  simp [Aeneas.Std.instBindResult, Std.bind, massert, h_cmp, new_reduced_ok v (by omega)]
 
 /-! # Negation interface -/
 
@@ -505,9 +498,9 @@ theorem from_int_u64_full (v : U64) :
     m31_prime_ok, Aeneas.Std.instBindResult, Std.bind, lift]
   obtain ⟨r, hr, hr_val⟩ := WP.spec_imp_exists (UScalar.rem_spec v (by rw [P_u64_val]; omega))
   rw [hr]; simp only []
-  have h_r_lt : UScalar.val r < 2147483647 := by rw [hr_val, P_u64_val]; exact Nat.mod_lt _ (by omega)
+  have h_r_lt : UScalar.val r < 2147483647 := by rw [hr_val, P_u64_val]; grind
   have h_cast_lt : UScalar.val (UScalar.cast UScalarTy.U32 r) < 2^31 - 1 := by
-    rw [cast_u64_u32_val r (by omega)]; exact h_r_lt
+    rw [cast_u64_u32_val r (by omega)]; omega
   rw [from_canonical_unchecked_ok _ h_cast_lt]
   refine ⟨_, rfl, ?_, ?_⟩
   · rw [cast_u64_u32_val r (by omega), hr_val, P_u64_val]
@@ -621,9 +614,7 @@ theorem div_2exp_u64_spec (m : m31) (exp : U64) (hm : UScalar.val m.value ≤ 2^
   let* ⟨ i, i_post ⟩ ← U64.rem_spec
   let* ⟨ exp1, exp1_post ⟩ ← UScalar.cast.step_spec
   have h_exp1_val : UScalar.val exp1 = UScalar.val exp % 31 := by
-    subst exp1_post; rw [UScalar.cast_val_eq]
-    have : UScalarTy.U8.numBits = 8 := rfl
-    rw [this, i_post]; exact Nat.mod_eq_of_lt (by omega)
+    subst exp1_post; rw [UScalar.cast_val_eq, i_post]; grind
   have h_exp1_lt : UScalar.val exp1 < 31 := by omega
   let* ⟨ left, left_post, _ ⟩ ← U32.ShiftRight_spec
   let* ⟨ i1, i1_post, _ ⟩ ← U8.sub_spec
@@ -647,7 +638,7 @@ theorem div_2exp_u64_spec (m : m31) (exp : U64) (hm : UScalar.val m.value ≤ 2^
     rw [h_rotated_or]; apply Nat.or_lt_two_pow
     · rw [h_left_val]; exact Nat.lt_of_le_of_lt (Nat.div_le_self _ _) (by omega)
     · have : UScalar.val right ≤ UScalar.val i4 := by
-        rw [right_post]; simp [UScalar.val_and]; exact Nat.and_le_right
+        rw [right_post]; simp [UScalar.val_and, Nat.and_le_right]
       omega
   rw [new_reduced_ok rotated h_rotated_lt]
   simp only [WP.spec_ok]
@@ -696,9 +687,8 @@ theorem div_2exp_u64_zmod (m_val : m31) (exp : U64)
              ((UScalar.val m_val.value : ℕ) : ZMod (2^31-1)) := by
     conv_lhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
     conv_rhs => rw [CharP.natCast_eq_natCast_mod (ZMod (2^31-1)) (2^31-1)]
-    exact congrArg _ hr_post
-  push_cast at key
-  exact key
+    rw [hr_post]
+  exact_mod_cast key
 
 /-! # `is_zero` interface
 
@@ -711,13 +701,10 @@ theorem nonzero_m31_bounds
     (valid_n : UScalar.val n.value ≤ 2^31-1)
     (nonzero : to_m31_spec n valid_n ≠ 0) :
     0 < UScalar.val n.value ∧ UScalar.val n.value < 2^31 - 1 := by
-  constructor
-  · by_contra h; push_neg at h
-    exact nonzero
-      (by unfold to_m31_spec; rw [dif_pos (by omega)]
-          simp [show UScalar.val n.value = 0 from by omega])
-  · by_contra h; push_neg at h
-    exact nonzero (by unfold to_m31_spec; rw [dif_neg (by omega)])
+  refine ⟨?_, ?_⟩ <;> by_contra h <;> push_neg at h <;> apply nonzero <;>
+    unfold to_m31_spec
+  · rw [dif_pos (by omega)]; simp [show UScalar.val n.value = 0 from by omega]
+  · rw [dif_neg (by omega)]
 
 theorem is_zero_nonzero_spec
   (valid_n : UScalar.val n.value ≤ 2^31-1)
@@ -756,16 +743,12 @@ theorem try_inverse_decompose
       -- The full pipeline composes to try_inverse
       Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n = .ok (some result) := by
   obtain ⟨h_pos, h_lt⟩ := nonzero_m31_bounds n valid_n nonzero
-  have h_iz := is_zero_nonzero_spec n valid_n nonzero
   simp only [Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse,
-             Aeneas.Std.instBindResult, Std.bind, h_iz]
-  have h_P : mersenne31.P = Result.ok (⟨2147483647#32⟩ : U32) := by simp
-  rw [h_P]; dsimp only
+             Aeneas.Std.instBindResult, Std.bind,
+             is_zero_nonzero_spec n valid_n nonzero]
+  rw [m31_prime_ok]; dsimp only
   have h_coprime : Nat.gcd (UScalar.val n.value) 2147483647 = 1 :=
-    ((Nat.Prime.coprime_iff_not_dvd (by
-        rw [show (2147483647 : ℕ) = Mersenne31.fieldSize from by
-          unfold Mersenne31.fieldSize; ring]
-        exact Mersenne31.is_prime)).mpr
+    (Mersenne31.is_prime.coprime_iff_not_dvd.mpr
       (Nat.not_dvd_of_pos_of_lt h_pos (by omega))).symm
   obtain ⟨v, hv_ok, hv_post⟩ := gcd_inversion_spec n.value h_lt h_coprime
   rw [hv_ok]; dsimp only
@@ -784,10 +767,9 @@ theorem try_inverse_valid (inv : m31)
     Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse n =
       .ok (some inv)) :
   UScalar.val inv.value ≤ 2^31-1 := by
-  obtain ⟨_, _, div_res, _, _, _, _, h_valid_res, h_try⟩ :=
+  obtain ⟨_, _, _, _, _, _, _, h_valid_res, h_try⟩ :=
     try_inverse_decompose n valid_n nonzero
-  have h_eq : inv = div_res := by rw [h_try] at h_inv; injection h_inv with h; injection h with h; exact h.symm
-  exact h_eq ▸ h_valid_res
+  rw [h_try] at h_inv; simp_all
 
 /-- The `try_inverse` result, projected to the specification field,
     equals the field-theoretic inverse. -/
@@ -802,13 +784,13 @@ theorem try_inverse_to_spec (inv : m31)
   -- Use decompose to get all intermediate results
   obtain ⟨v, m_res, div_res, hv_post, hm_ok, hm_bound, hdiv_ok, _, h_try⟩ :=
     try_inverse_decompose n valid_n nonzero
-  have h_eq : inv = div_res := by rw [h_try] at h_inv; injection h_inv with h; injection h with h; exact h.symm
+  have h_eq : inv = div_res := by rw [h_try] at h_inv; simp_all
   -- Semantic chain in ZMod (2^31-1):
   have h_gcd := gcd_post_mul_eq_zmod (UScalar.val n.value) v hv_post
   rw [mersenne_pow_eq 60] at h_gcd
   have h_from : (UScalar.val m_res.value : ZMod (2^31-1)) = (IScalar.val v : ZMod (2^31-1)) := by
     obtain ⟨_, hm_ok', _, h⟩ := from_int_i64_full v hv_post.2
-    rw [hm_ok] at hm_ok'; injection hm_ok' with heq; subst heq; exact h
+    rw [hm_ok] at hm_ok'; simp_all
   have h_div := div_2exp_u64_zmod m_res 60#u64 hm_bound div_res hdiv_ok
   change (UScalar.val div_res.value * 2^29 : ZMod (2^31-1)) = _ at h_div
   change _ = (2^29 : ZMod (2^31-1)) at h_gcd
@@ -817,8 +799,7 @@ theorem try_inverse_to_spec (inv : m31)
   have h_chain : (UScalar.val div_res.value : ZMod (2^31-1)) *
       (UScalar.val n.value : ZMod (2^31-1)) * (2^29 : ZMod (2^31-1)) =
       1 * (2^29 : ZMod (2^31-1)) := by
-    rw [mul_assoc, mul_comm (↑(UScalar.val n.value) : ZMod (2^31-1)) (2^29),
-        ← mul_assoc, h_div, h_from, h_gcd, one_mul]
+    rw [mul_right_comm, h_div, h_from, h_gcd, one_mul]
   exact eq_comm.mpr (inv_eq_of_mul_eq_one_left
     (mul_right_cancel₀ (pow_two_ne_zero_mersenne _) h_chain))
 
@@ -848,8 +829,7 @@ theorem inverse_valid (inv : m31)
       .ok inv) :
   UScalar.val inv.value ≤ 2^31-1 := by
   obtain ⟨inv', h_ok, h_valid', _⟩ := inverse_eq_try n valid_n nonzero
-  rw [h_ok] at h_inv; injection h_inv with h_eq; subst h_eq
-  exact h_valid'
+  rw [h_ok] at h_inv; simp_all
 
 /-- The inverse projected to spec equals the field inverse. -/
 theorem inverse_to_spec (inv : m31)
@@ -923,12 +903,9 @@ theorem divOk_in_bounds
   (valid_m : UScalar.val m.value ≤ 2^31-1)
   (nonzero_m : to_m31_spec m valid_m ≠ 0) :
   ↑(divOk n m valid_n valid_m nonzero_m).value ≤ (2^31 - 1 : ℕ) := by
-  simp [divOk]; split <;> rename_i h
-  · obtain ⟨result, h_ok, h_bounds⟩ := div_ok n m valid_n valid_m nonzero_m
-    rw [h_ok] at h; injection h with h; rw [←h]; exact h_bounds
-  all_goals (exfalso;
-             obtain ⟨_, h_ok, _⟩ := div_ok n m valid_n valid_m nonzero_m;
-             rw [h_ok] at h; contradiction)
+  simp [divOk]
+  obtain ⟨_, h_ok, h_bounds⟩ := div_ok n m valid_n valid_m nonzero_m
+  split <;> rename_i h <;> rw [h_ok] at h <;> simp_all
 
 /-- `divOk` equals `mul_logic_nat a inv` when division decomposes as `a * inverse(b)`. -/
 theorem divOk_eq_mul (inv : m31)
@@ -939,7 +916,5 @@ theorem divOk_eq_mul (inv : m31)
     (h_div_eq : n /ₘ m = n ×ₘ inv) :
     divOk n m valid_n valid_m nonzero_m = mul_logic_nat n inv := by
   have h_div_result : n /ₘ m = .ok (mul_logic_nat n inv) := by
-    rw [h_div_eq]; exact mul_spec_nat n inv valid_n h_valid_inv
-  simp only [divOk]; split
-  · rename_i h; rw [h_div_result] at h; exact (Result.ok.injEq _ _).mp h.symm
-  all_goals (rename_i h; rw [h_div_result] at h; contradiction)
+    rw [h_div_eq, mul_spec_nat n inv valid_n h_valid_inv]
+  simp only [divOk]; split <;> rename_i h <;> rw [h_div_result] at h <;> grind

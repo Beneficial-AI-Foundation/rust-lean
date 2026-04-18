@@ -47,8 +47,7 @@ theorem Ucast_to_I_of_U (n : U32) : @UScalar.hcast UScalarTy.U32 IScalarTy.I32 n
 
 theorem U32.shr_31_small (u : U32) (h : ↑u < (2^31 : ℕ)) : u >>> 31#i32 = .ok 0#u32 := by
   simp only [HShiftRight.hShiftRight, UScalar.shiftRight_IScalar, UScalar.shiftRight]
-  split <;> try contradiction
-  simp [BitVec.ushiftRight]; congr; omega
+  split <;> first | contradiction | (simp [BitVec.ushiftRight]; congr; omega)
 
 theorem UScalar.ofNatCore_add_eq (n m : U32) (inBounds : UScalar.val n + ↑m < (2^32 : ℕ)) :
   @UScalar.ofNatCore .U32 (UScalar.val n + ↑m) (by grind) = ⟨n.bv + m.bv⟩ := by
@@ -77,40 +76,25 @@ theorem I64.shl_1_val (v : I64)
   have h_eq : IScalar.val v = v.bv.toInt := rfl
   simp only [IScalar.val]
   change (v.bv <<< 1).toInt = 2 * v.bv.toInt
-  rw [BitVec.shiftLeft_eq_mul_twoPow, BitVec.toInt_mul]
-  have h_two : (BitVec.twoPow 64 1).toInt = 2 := by decide
-  rw [h_two]; ring_nf
-  have h_lo : -(2^59 : ℤ) ≤ v.bv.toInt := by omega
-  have h_hi : v.bv.toInt ≤ 2^59 := by omega
-  rw [← h_eq]
-  apply Arith.Int.bmod_pow2_eq_of_inBounds 63
-  · rw [h_eq]; norm_num; linarith
-  · rw [h_eq]; norm_num; linarith
+  rw [BitVec.shiftLeft_eq_mul_twoPow, BitVec.toInt_mul,
+      show (BitVec.twoPow 64 1).toInt = 2 from by decide]
+  ring_nf; rw [← h_eq]
+  apply Arith.Int.bmod_pow2_eq_of_inBounds 63 <;> (rw [h_eq]; norm_num; omega)
 
 /-- I64 subtraction stays in bounds when both operands have natAbs ≤ 2^i and i ≤ 60 -/
 theorem I64.sub_in_bounds (u v : ℤ)
     (h_u : u.natAbs ≤ 2^60) (h_v : v.natAbs ≤ 2^60) :
     I64.min ≤ v - u ∧ v - u ≤ I64.max := by
-  have : u ≤ (2:ℤ)^60 := Int.le_natAbs.trans (by exact_mod_cast h_u)
-  have : -u ≤ (2:ℤ)^60 := by
-    have := @Int.le_natAbs (-u); rw [Int.natAbs_neg] at this
-    exact this.trans (by exact_mod_cast h_u)
-  have : v ≤ (2:ℤ)^60 := Int.le_natAbs.trans (by exact_mod_cast h_v)
-  have : -v ≤ (2:ℤ)^60 := by
-    have := @Int.le_natAbs (-v); rw [Int.natAbs_neg] at this
-    exact this.trans (by exact_mod_cast h_v)
-  simp only [I64.min, I64.max, I64.numBits]; norm_num; constructor <;> linarith
+  simp only [I64.min, I64.max, I64.numBits]; norm_num; omega
 
 /-- Step spec for I64 shift left by 1 (via I32 literal) -/
 @[step]
 theorem I64.shl_1_spec (x : I64) :
   (x <<< (1#i32 : I32)) ⦃ z => z.bv = x.bv.shiftLeft 1 ⦄ := by
   unfold WP.spec
-  simp only [HShiftLeft.hShiftLeft, IScalar.shiftLeft_IScalar, IScalar.shiftLeft]
-  have h1 : (1#i32 : I32).val ≥ 0 := by decide
-  have h3 : (1#i32 : I32).toNat = 1 := by simp only [IScalar.toNat]; decide
-  simp only [h1, ↓reduceIte, h3]
-  have h2 : 1 < IScalarTy.I64.numBits := by
-    simp only [IScalarTy.I64_numBits_eq]; decide
-  simp only [h2, ↓reduceIte, WP.theta, WP.wp_return]
+  simp only [HShiftLeft.hShiftLeft, IScalar.shiftLeft_IScalar, IScalar.shiftLeft,
+    show (1#i32 : I32).val ≥ 0 from by decide,
+    show (1#i32 : I32).toNat = 1 from by simp only [IScalar.toNat]; decide,
+    show 1 < IScalarTy.I64.numBits from by simp only [IScalarTy.I64_numBits_eq]; decide,
+    ↓reduceIte, WP.theta, WP.wp_return]
 

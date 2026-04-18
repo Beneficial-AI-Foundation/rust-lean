@@ -126,7 +126,7 @@ theorem gcd_post_mul_eq_zmod (a0 : ℕ) (v : I64) (hpost : gcd_post a0 v) :
     unfold P; push_cast] at h
   have : ((IScalar.val v * ↑a0 - 2^60 : ℤ) : ZMod (2^31-1)) = 0 :=
     (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (Int.dvd_of_emod_eq_zero h)
-  apply sub_eq_zero.mp; push_cast at this; exact this
+  push_cast at this; exact sub_eq_zero.mp this
 
 /-- Termination measure: 60 - i decreases each iteration. -/
 def gcd_measure : GcdState → ℕ
@@ -137,21 +137,15 @@ def gcd_measure : GcdState → ℕ
 /-- The initial state (a0, P, 1, 0, 0) satisfies the loop invariant. -/
 theorem gcd_inv_init (a0 : U32) (h_a0_lt : UScalar.val a0 < 2^31 - 1) :
     gcd_loop_inv (UScalar.val a0) (a0, ⟨2147483647#32⟩, 1#i64, 0#i64, 0#u32) := by
+  have h_size : Nat.size 2147483647 = 31 := by decide
+  have h_size_a0 : Nat.size (UScalar.val a0) ≤ 31 :=
+    Nat.size_le.mpr (by omega : UScalar.val a0 < 2^31)
+  have h_val : UScalar.val (⟨2147483647#32⟩ : U32) = 2147483647 := by decide
+  have h_zero : UScalar.val (0#u32 : U32) = 0 := by decide
   unfold gcd_loop_inv P
-  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-  · change (0 : ℕ) ≤ 60; omega
-  · exact h_a0_lt.le.trans_lt (by omega)
-  · change (2147483647 : ℕ) < 2^31; omega
-  · change (1 : ℤ).natAbs ≤ 2^(0 : ℕ); simp
-  · change (0 : ℤ).natAbs ≤ 2^(0 : ℕ); simp
-  · change ((↑(UScalar.val a0) : ℤ) * 2^(0:ℕ) - 1 * ↑(UScalar.val a0)) % ↑(2^31-1:ℕ) = 0
-    ring_nf; simp
-  · change ((2147483647 : ℤ) * 2^(0:ℕ) - 0 * ↑(UScalar.val a0)) % ↑(2^31-1:ℕ) = 0; simp
-  · change Nat.gcd (UScalar.val a0) 2147483647 = Nat.gcd (UScalar.val a0) (2^31-1); norm_num
-  · change 2147483647 % 2 = 1; norm_num
-  · change Nat.size (UScalar.val a0) + Nat.size 2147483647 ≤ 62 - 0
-    have : Nat.size 2147483647 = 31 := by decide
-    have := Nat.size_le.mpr (by omega : UScalar.val a0 < 2^31); omega
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;>
+    (try simp only [h_val, h_size, h_zero]) <;>
+    first | omega | simp | norm_num
 
 /-- One iteration of the loop body preserves the invariant and decreases the measure,
 or produces the final result satisfying gcd_post.
@@ -215,8 +209,7 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
           exact congruence_half_sub _ _ _ _ _ _ (by omega) h_sub_even h_cong_b h_cong_a
         · rw [i4_post1, h_v2]; exact congruence_double _ _ _ _ h_cong_a
         · rw [h_a2, a3_post1, gcd_half_odd _ _ h_sub_even h_a_odd,
-            Nat.gcd_sub_self_left (by omega), Nat.gcd_comm]
-          exact h_gcd
+            Nat.gcd_sub_self_left (by omega), Nat.gcd_comm, h_gcd]
         · rw [h_a2, a3_post1, i4_post1]
           have h_ne : UScalar.val b - UScalar.val a ≠ 0 := by omega
           have := size_half_even h_ne h_sub_even
@@ -252,13 +245,11 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
           exact congruence_half_sub _ _ _ _ _ _ (by omega) h_sub_even h_cong_a h_cong_b
         · rw [i4_post1, h_v2]; exact congruence_double _ _ _ _ h_cong_b
         · rw [h_a2, a3_post1, gcd_half_odd _ _ h_sub_even h_b_odd,
-            Nat.gcd_sub_self_left (by omega)]
-          exact h_gcd
+            Nat.gcd_sub_self_left (by omega), h_gcd]
         · rw [h_a2, a3_post1, i4_post1]
           by_cases h_eq : UScalar.val a = UScalar.val b
           · have : UScalar.val b = 1 := by
-              rw [h_eq] at h_gcd; simp [Nat.gcd_self] at h_gcd
-              rw [h_gcd]; exact h_coprime
+              rw [h_eq] at h_gcd; simp_all [Nat.gcd_self]
             rw [h_eq, Nat.sub_self, this]; simp; omega
           · have h_ne : UScalar.val a - UScalar.val b ≠ 0 := by omega
             have := size_half_even h_ne h_sub_even
@@ -286,10 +277,9 @@ theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
           ← mul_assoc, this]
         exact h_cong_a
       · rw [i4_post1, h_v2]; exact congruence_double _ _ _ _ h_cong_b
-      · rw [h_a2, gcd_half_odd _ _ h_a_even h_b_odd]; exact h_gcd
+      · rw [h_a2, gcd_half_odd _ _ h_a_even h_b_odd, h_gcd]
       · rw [h_a2, i4_post1]; by_cases h_a0 : UScalar.val a = 0
-        · have : UScalar.val b = 1 := by
-            simp [h_a0] at h_gcd; rw [h_gcd]; exact h_coprime
+        · have : UScalar.val b = 1 := by simp_all
           rw [h_a0, this]; simp; omega
         · have := size_half_even h_a0 h_a_even
           have := Nat.size_pos.mpr (Nat.pos_of_ne_zero h_a0)
