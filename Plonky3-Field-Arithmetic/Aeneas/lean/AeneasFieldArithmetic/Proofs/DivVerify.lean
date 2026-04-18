@@ -7,9 +7,6 @@ import CompPoly.Fields.Mersenne
 open Aeneas Aeneas.Std
 open aeneas_field_arithmetic mersenne31.Mersenne31
 
--- Provides the Field instance for ZMod (2^31-1), enabling division
-instance : Fact (Nat.Prime Mersenne31.fieldSize) := ⟨Mersenne31.is_prime⟩
-
 variable (n m : m31)
 variable (p q : Mersenne31.Field)
 

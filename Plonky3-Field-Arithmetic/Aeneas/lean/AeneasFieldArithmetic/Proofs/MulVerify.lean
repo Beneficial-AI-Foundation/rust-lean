@@ -63,11 +63,11 @@ theorem mul_verify_to_spec
         · skip
         tactic=> omega
       rfl
-  · simp_all
+  · simp_all [-zero_eq_mul]
     have : ↑(mul_logic_nat n m).value = (2147483647 : ℕ) := by
       have := mul_logic_nat_in_bounds; grind
     simp [mul_logic_nat, m31_of_u64_logic, U32.ofNatCore, UScalar.ofNatCore] at this
-    split at this <;> rename_i h <;> try cases h <;> simp_all
+    split at this <;> rename_i h <;> try cases h <;> simp_all [-zero_eq_mul]
     · intro _ _; rename_i left _ _ _
       have := m31_mod_red; simp at this
       have left := congrArg (@Nat.cast Mersenne31.Field _) left
@@ -92,9 +92,9 @@ theorem mul_decomp_ne_noncanonical_zero :
       (ZMod.val p * ZMod.val q % 2147483648 + ZMod.val p * ZMod.val q / 2147483648) +
       ZMod.val p * ZMod.val q / 2147483648 * (2^31 - 1) := by omega
     omega
-  rcases fact_prime_2_31_sub_1.out.dvd_mul.mp h_dvd with ⟨c, hc⟩ | ⟨c, hc⟩
-  · simp [show ZMod.val p = 0 from by omega]
-  · simp [show ZMod.val q = 0 from by omega]
+  rcases fact_prime_mersenne31.out.dvd_mul.mp h_dvd with ⟨c, hc⟩ | ⟨c, hc⟩
+  · unfold Mersenne31.fieldSize at hc; simp [show ZMod.val p = 0 from by omega]
+  · unfold Mersenne31.fieldSize at hc; simp [show ZMod.val q = 0 from by omega]
 
 /--
 Projecting the specification multiplication into the implementation's field is
