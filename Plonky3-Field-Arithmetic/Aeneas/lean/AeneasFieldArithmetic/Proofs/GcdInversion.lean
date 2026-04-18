@@ -1,6 +1,7 @@
 import Aeneas
 import AeneasFieldArithmetic.Generated.Funs
 import AeneasFieldArithmetic.Proofs.AeneasUtils
+import CompPoly.Fields.Mersenne
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Size
 import Mathlib.Data.Nat.Log
@@ -16,6 +17,9 @@ postcondition above. The proof proceeds by showing a loop invariant is preserved
 across 60 iterations, with a bit-length termination measure. -/
 
 open Aeneas Aeneas.Std aeneas_field_arithmetic
+
+/-- Local alias for the Mersenne31 prime, from `CompPoly.Fields.Mersenne`. -/
+private abbrev P : ℕ := Mersenne31.fieldSize
 
 /-! ## Arithmetic helpers -/
 
@@ -83,9 +87,6 @@ theorem congruence_half_sub (x y : ℕ) (wx wy : ℤ) (i a0 : ℕ)
 
 /-! ## Definitions -/
 
-/-- The Mersenne31 prime. -/
-def P : ℕ := 2^31 - 1
-
 /-- Loop state for binary GCD inversion: `(a, b, u, v, i)` where
 - `a`, `b` : gcd operands (`a` may be even, `b` stays odd)
 - `u`, `v` : satisfy `a·2^i ≡ u·a0` and `b·2^i ≡ v·a0 (mod P)`;
@@ -120,7 +121,9 @@ def gcd_post (a0 : ℕ) (v : I64) : Prop :=
 /-- gcd_post implies the product identity in ZMod -/
 theorem gcd_post_mul_eq_zmod (a0 : ℕ) (v : I64) (hpost : gcd_post a0 v) :
     (IScalar.val v : ZMod (2^31-1)) * (a0 : ZMod (2^31-1)) = (2^60 : ZMod (2^31-1)) := by
-  have h := hpost.1; rw [show (P : ℤ) = (2^31 - 1 : ℤ) from by simp [P]] at h
+  have h := hpost.1
+  rw [show (P : ℤ) = (2^31 - 1 : ℤ) from by
+    unfold P; push_cast] at h
   have : ((IScalar.val v * ↑a0 - 2^60 : ℤ) : ZMod (2^31-1)) = 0 :=
     (ZMod.intCast_zmod_eq_zero_iff_dvd _ _).mpr (Int.dvd_of_emod_eq_zero h)
   apply sub_eq_zero.mp; push_cast at this; exact this
@@ -134,7 +137,8 @@ def gcd_measure : GcdState → ℕ
 /-- The initial state (a0, P, 1, 0, 0) satisfies the loop invariant. -/
 theorem gcd_inv_init (a0 : U32) (h_a0_lt : UScalar.val a0 < 2^31 - 1) :
     gcd_loop_inv (UScalar.val a0) (a0, ⟨2147483647#32⟩, 1#i64, 0#i64, 0#u32) := by
-  unfold gcd_loop_inv P; refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+  unfold gcd_loop_inv P
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · change (0 : ℕ) ≤ 60; omega
   · exact h_a0_lt.le.trans_lt (by omega)
   · change (2147483647 : ℕ) < 2^31; omega
@@ -158,7 +162,8 @@ a odd with a ≥ b (subtract), a even (halve a).
 - `u`, `v` : congruence coefficients (see `gcd_loop_inv`)
 - `i` : loop counter -/
 theorem gcd_loop_body_spec (a0 : ℕ) (a b : U32) (u v : I64) (i : U32)
-    (h_inv : gcd_loop_inv a0 (a, b, u, v, i)) (h_coprime : Nat.gcd a0 P = 1) :
+    (h_inv : gcd_loop_inv a0 (a, b, u, v, i))
+    (h_coprime : Nat.gcd a0 P = 1) :
     util.gcd_inversion_prime_field_32_loop.body
       31#u32 a b u v i ⦃ r =>
       match r with
