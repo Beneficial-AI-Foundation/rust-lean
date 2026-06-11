@@ -1,0 +1,1020 @@
+{
+  "functions": [
+    {
+      "lean_name": "aeneas_field_arithmetic.core.num.error.TryFromIntError.Insts.CoreFmtDebug",
+      "rust_name": "core::num::error::{core::fmt::Debug for core::num::error::TryFromIntError}",
+      "source": "/rustc/library/core/src/num/error.rs",
+      "lines": "L9-L9",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.num_bigint.biguint.BigUint.Insts.CoreConvertFromU32",
+      "rust_name": "num_bigint::biguint::convert::{core::convert::From<u32> for num_bigint::biguint::BigUint}",
+      "source": "/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/num-bigint-0.4.6/src/biguint/convert.rs",
+      "lines": "L521-L521",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeField64.to_unique_u64.default",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeField64::to_unique_u64",
+      "source": "src/field.rs",
+      "lines": "L11-L14",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeField32.to_unique_u32.default",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeField32::to_unique_u32",
+      "source": "src/field.rs",
+      "lines": "L23-L26",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeCharacteristicRing.from_bool.default",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::from_bool",
+      "source": "src/field.rs",
+      "lines": "L56-L59",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeCharacteristicRing.double.default",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::double",
+      "source": "src/field.rs",
+      "lines": "L61-L63",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeCharacteristicRing.halve.default",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::halve",
+      "source": "src/field.rs",
+      "lines": "L67-L74",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Algebra.Blanket",
+      "rust_name": "aeneas_field_arithmetic::field::{aeneas_field_arithmetic::field::Algebra<R, Clause0_PrimeSubfield> for R}",
+      "source": "src/field.rs",
+      "lines": "L113-L113",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Field.is_zero.default",
+      "rust_name": "aeneas_field_arithmetic::field::Field::is_zero",
+      "source": "src/field.rs",
+      "lines": "L140-L142",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Field.is_one.default",
+      "rust_name": "aeneas_field_arithmetic::field::Field::is_one",
+      "source": "src/field.rs",
+      "lines": "L144-L146",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Field.inverse.default",
+      "rust_name": "aeneas_field_arithmetic::field::Field::inverse",
+      "source": "src/field.rs",
+      "lines": "L150-L152",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Field.bits.default",
+      "rust_name": "aeneas_field_arithmetic::field::Field::bits",
+      "source": "src/field.rs",
+      "lines": "L170-L172",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.P",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::P",
+      "source": "src/mersenne31.rs",
+      "lines": "L12-L12",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCloneClone.clone",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::clone::Clone for aeneas_field_arithmetic::mersenne31::Mersenne31}::clone",
+      "source": "src/mersenne31.rs",
+      "lines": "L15-L15",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCloneClone",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::clone::Clone for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L15-L15",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreMarkerCopy",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::marker::Copy for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L15-L15",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreDefaultDefault.default",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::default::Default for aeneas_field_arithmetic::mersenne31::Mersenne31}::default",
+      "source": "src/mersenne31.rs",
+      "lines": "L15-L15",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreDefaultDefault",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::default::Default for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L15-L15",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.new",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new",
+      "source": "src/mersenne31.rs",
+      "lines": "L28-L30",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.new_reduced",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_reduced",
+      "source": "src/mersenne31.rs",
+      "lines": "L37-L40",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.new_checked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_checked",
+      "source": "src/mersenne31.rs",
+      "lines": "L46-L52",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.ORDER_U32",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ORDER_U32",
+      "source": "src/mersenne31.rs",
+      "lines": "L158-L158",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31.neg",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Neg<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::neg",
+      "source": "src/mersenne31.rs",
+      "lines": "L272-L275",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithNegMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Neg<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L268-L276",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31.add",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Add<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add",
+      "source": "src/mersenne31.rs",
+      "lines": "L184-L198",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.from_u62",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::from_u62",
+      "source": "src/mersenne31.rs",
+      "lines": "L278-L283",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31.mul",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Mul<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul",
+      "source": "src/mersenne31.rs",
+      "lines": "L237-L240",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31.mul_assign",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::MulAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_assign",
+      "source": "src/mersenne31.rs",
+      "lines": "L246-L248",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithMulAssignMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::MulAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L245-L249",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithMulMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Mul<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L233-L241",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31.sub",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Sub<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub",
+      "source": "src/mersenne31.rs",
+      "lines": "L213-L222",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31.sub_assign",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::SubAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub_assign",
+      "source": "src/mersenne31.rs",
+      "lines": "L228-L230",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithSubAssignMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::SubAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L227-L231",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithSubMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Sub<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L209-L223",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31.add_assign",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::AddAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add_assign",
+      "source": "src/mersenne31.rs",
+      "lines": "L204-L206",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithAddAssignMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::AddAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L203-L207",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithAddMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Add<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L180-L199",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.div_2exp_u64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_2exp_u64",
+      "source": "src/mersenne31.rs",
+      "lines": "L107-L114",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.mul_2exp_u64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_2exp_u64",
+      "source": "src/mersenne31.rs",
+      "lines": "L97-L104",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.util.halve_u32",
+      "rust_name": "aeneas_field_arithmetic::util::halve_u32",
+      "source": "src/util.rs",
+      "lines": "L68-L72",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.halve",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::halve",
+      "source": "src/mersenne31.rs",
+      "lines": "L91-L94",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.from_bool",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_bool",
+      "source": "src/mersenne31.rs",
+      "lines": "L86-L88",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.from_prime_subfield",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_prime_subfield",
+      "source": "src/mersenne31.rs",
+      "lines": "L81-L83",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.NEG_ONE",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::NEG_ONE",
+      "source": "src/mersenne31.rs",
+      "lines": "L76-L78",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.TWO",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::TWO",
+      "source": "src/mersenne31.rs",
+      "lines": "L75-L75",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.ONE",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ONE",
+      "source": "src/mersenne31.rs",
+      "lines": "L74-L74",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.ZERO",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ZERO",
+      "source": "src/mersenne31.rs",
+      "lines": "L73-L73",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31.double",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::double",
+      "source": "src/mersenne31.rs",
+      "lines": "L70-L115",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeCharacteristicRingMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L70-L115",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mocks.Hasher.write_u32.default",
+      "rust_name": "aeneas_field_arithmetic::mocks::Hasher::write_u32",
+      "source": "src/mocks.rs",
+      "lines": "L12-L14",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.as_canonical_u32",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u32",
+      "source": "src/mersenne31.rs",
+      "lines": "L159-L167",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31.to_unique_u32",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::to_unique_u32",
+      "source": "src/mersenne31.rs",
+      "lines": "L157-L168",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash.hash",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mocks::Hash for aeneas_field_arithmetic::mersenne31::Mersenne31}::hash",
+      "source": "src/mersenne31.rs",
+      "lines": "L302-L304",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticMocksHash",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mocks::Hash for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L301-L305",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31.eq",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialEq<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::eq",
+      "source": "src/mersenne31.rs",
+      "lines": "L291-L293",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpPartialEqMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialEq<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L289-L294",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpEq",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Eq for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L296-L296",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.util.gcd_inversion_prime_field_32_loop.body",
+      "rust_name": "aeneas_field_arithmetic::util::gcd_inversion_prime_field_32",
+      "source": "src/util.rs",
+      "lines": "L18-L56",
+      "is_hidden": false,
+      "is_extraction_artifact": true
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.util.gcd_inversion_prime_field_32_loop",
+      "rust_name": "aeneas_field_arithmetic::util::gcd_inversion_prime_field_32",
+      "source": "src/util.rs",
+      "lines": "L18-L56",
+      "is_hidden": false,
+      "is_extraction_artifact": true
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.util.gcd_inversion_prime_field_32",
+      "rust_name": "aeneas_field_arithmetic::util::gcd_inversion_prime_field_32",
+      "source": "src/util.rs",
+      "lines": "L1-L64",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_unchecked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "source": "src/mersenne31.rs",
+      "lines": "L370-L374",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_int",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "source": "src/mersenne31.rs",
+      "lines": "L419-L429",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_int",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "source": "src/mersenne31.rs",
+      "lines": "L462-L468",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_zero",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::is_zero",
+      "source": "src/mersenne31.rs",
+      "lines": "L127-L129",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.try_inverse",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::try_inverse",
+      "source": "src/mersenne31.rs",
+      "lines": "L131-L142",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.inverse",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::inverse",
+      "source": "src/mersenne31.rs",
+      "lines": "L121-L147",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31.div_assign",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::DivAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_assign",
+      "source": "src/mersenne31.rs",
+      "lines": "L263-L265",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithDivAssignMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::DivAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L262-L266",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31.div",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Div<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div",
+      "source": "src/mersenne31.rs",
+      "lines": "L255-L257",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreOpsArithDivMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Div<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L253-L258",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.order",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::order",
+      "source": "src/mersenne31.rs",
+      "lines": "L144-L146",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.GENERATOR",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::GENERATOR",
+      "source": "src/mersenne31.rs",
+      "lines": "L125-L125",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.bits",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::bits",
+      "source": "src/mersenne31.rs",
+      "lines": "L121-L147",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31.is_one",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::is_one",
+      "source": "src/mersenne31.rs",
+      "lines": "L121-L147",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldFieldMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L121-L147",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.FieldMersenne31Mersenne31Mersenne31.try_inverse.NUM_PRIME_BITS",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::try_inverse::NUM_PRIME_BITS",
+      "source": "src/mersenne31.rs",
+      "lines": "L137-L137",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_canonical_unchecked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "source": "src/mersenne31.rs",
+      "lines": "L404-L410",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_canonical_unchecked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "source": "src/mersenne31.rs",
+      "lines": "L489-L491",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_canonical_checked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "source": "src/mersenne31.rs",
+      "lines": "L391-L401",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64.from_canonical_checked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "source": "src/mersenne31.rs",
+      "lines": "L474-L482",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i64> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L456-L492",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_canonical_unchecked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "source": "src/mersenne31.rs",
+      "lines": "L451-L453",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64.from_canonical_checked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "source": "src/mersenne31.rs",
+      "lines": "L435-L444",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u64> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L413-L454",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32.from_int",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "source": "src/mersenne31.rs",
+      "lines": "L379-L388",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapI32",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L377-L411",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure.Insts.CoreOpsFunctionFnOnceTupleMersenne31.call_once",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::{core::ops::function::FnOnce<(), aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure<0>}::call_once",
+      "source": "src/mersenne31.rs",
+      "lines": "L367-L367",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure.Insts.CoreOpsFunctionFnOnceTupleMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::{core::ops::function::FnOnce<(), aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure<0>}",
+      "source": "src/mersenne31.rs",
+      "lines": "L367-L367",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_canonical_checked",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "source": "src/mersenne31.rs",
+      "lines": "L366-L368",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32.from_int",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "source": "src/mersenne31.rs",
+      "lines": "L359-L364",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldQuotientMapU32",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L357-L375",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpOrd.cmp",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::cmp",
+      "source": "src/mersenne31.rs",
+      "lines": "L312-L314",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31.partial_cmp",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::partial_cmp",
+      "source": "src/mersenne31.rs",
+      "lines": "L346-L348",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpPartialOrdMersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L344-L349",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpOrd.clamp",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::clamp",
+      "source": "src/mersenne31.rs",
+      "lines": "L328-L341",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpOrd.min",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::min",
+      "source": "src/mersenne31.rs",
+      "lines": "L322-L327",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpOrd.max",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::max",
+      "source": "src/mersenne31.rs",
+      "lines": "L316-L321",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.CoreCmpOrd",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L310-L342",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeFieldMersenne31Mersenne31.as_canonical_biguint",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_biguint",
+      "source": "src/mersenne31.rs",
+      "lines": "L171-L173",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeFieldMersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L170-L174",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31.as_canonical_u64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u64",
+      "source": "src/mersenne31.rs",
+      "lines": "L152-L154",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31.ORDER_U64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::ORDER_U64",
+      "source": "src/mersenne31.rs",
+      "lines": "L150-L150",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31.to_unique_u64",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::to_unique_u64",
+      "source": "src/mersenne31.rs",
+      "lines": "L149-L155",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField64Mersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L149-L155",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31.Insts.Aeneas_field_arithmeticFieldPrimeField32Mersenne31Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}",
+      "source": "src/mersenne31.rs",
+      "lines": "L157-L168",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.QuotientMapMersenne31I32.from_canonical_checked.TWO_EXP_30",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::TWO_EXP_30",
+      "source": "src/mersenne31.rs",
+      "lines": "L392-L392",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.QuotientMapMersenne31I32.from_canonical_checked.NEG_TWO_EXP_30_PLUS_1",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<i32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::NEG_TWO_EXP_30_PLUS_1",
+      "source": "src/mersenne31.rs",
+      "lines": "L393-L393",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.Add",
+      "rust_name": "core::ops::arith::Add",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L77-L77",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.Sub",
+      "rust_name": "core::ops::arith::Sub",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L190-L190",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.Mul",
+      "rust_name": "core::ops::arith::Mul",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L324-L324",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.Div",
+      "rust_name": "core::ops::arith::Div",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L462-L462",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.Neg",
+      "rust_name": "core::ops::arith::Neg",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L692-L692",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.AddAssign",
+      "rust_name": "core::ops::arith::AddAssign",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L769-L769",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.SubAssign",
+      "rust_name": "core::ops::arith::SubAssign",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L840-L840",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.MulAssign",
+      "rust_name": "core::ops::arith::MulAssign",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L902-L902",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.core.ops.arith.DivAssign",
+      "rust_name": "core::ops::arith::DivAssign",
+      "source": "/rustc/library/core/src/ops/arith.rs",
+      "lines": "L964-L964",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mocks.Hasher",
+      "rust_name": "aeneas_field_arithmetic::mocks::Hasher",
+      "source": "src/mocks.rs",
+      "lines": "L5-L15",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mocks.Hash",
+      "rust_name": "aeneas_field_arithmetic::mocks::Hash",
+      "source": "src/mocks.rs",
+      "lines": "L18-L21",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeCharacteristicRing",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing",
+      "source": "src/field.rs",
+      "lines": "L29-L89",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Algebra",
+      "rust_name": "aeneas_field_arithmetic::field::Algebra",
+      "source": "src/field.rs",
+      "lines": "L100-L110",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.Field",
+      "rust_name": "aeneas_field_arithmetic::field::Field",
+      "source": "src/field.rs",
+      "lines": "L116-L173",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.QuotientMap",
+      "rust_name": "aeneas_field_arithmetic::field::QuotientMap",
+      "source": "src/field.rs",
+      "lines": "L92-L98",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeField",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeField",
+      "source": "src/field.rs",
+      "lines": "L176-L196",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeField64",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeField64",
+      "source": "src/field.rs",
+      "lines": "L6-L15",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.field.PrimeField32",
+      "rust_name": "aeneas_field_arithmetic::field::PrimeField32",
+      "source": "src/field.rs",
+      "lines": "L18-L27",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.Mersenne31",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::Mersenne31",
+      "source": "src/mersenne31.rs",
+      "lines": "L18-L21",
+      "is_hidden": false,
+      "is_extraction_artifact": false
+    },
+    {
+      "lean_name": "aeneas_field_arithmetic.mersenne31.QuotientMapMersenne31U32.from_canonical_checked.closure",
+      "rust_name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap<u32> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked::closure",
+      "source": "src/mersenne31.rs",
+      "lines": "L367-L367",
+      "is_hidden": true,
+      "is_extraction_artifact": false
+    }
+  ]
+}

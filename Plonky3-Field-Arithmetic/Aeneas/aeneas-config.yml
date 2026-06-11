@@ -1,0 +1,18 @@
+# Aeneas extraction configuration
+# Used by `probe-aeneas extract` to auto-detect Rust/Lean paths and run charon + aeneas.
+
+aeneas:
+  commit: "main"
+  repo: "https://github.com/AeneasVerif/aeneas.git"
+
+crate:
+  dir: "."
+  name: "aeneas_field_arithmetic"
+
+charon:
+  preset: aeneas
+
+aeneas_args:
+  options:
+    - split-files
+  dest: "AeneasFieldArithmetic/Generated"
