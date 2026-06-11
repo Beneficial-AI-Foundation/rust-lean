@@ -1,0 +1,1300 @@
+{
+  "schema": "probe-rust/extract",
+  "schema-version": "2.3",
+  "tool": {
+    "name": "probe-rust",
+    "version": "0.6.4",
+    "command": "extract"
+  },
+  "source": {
+    "repo": "https://github.com/Verified-zkEVM/rust-lean.git",
+    "commit": "49a83d2a231c24f8a26a694ca2badaa36fb3914d",
+    "language": "rust",
+    "package": "aeneas-field-arithmetic",
+    "package-version": "0.1.0"
+  },
+  "timestamp": "2026-06-11T09:13:09Z",
+  "data": {
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#Field#inverse()": {
+      "display-name": "Field::inverse",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/Field#try_inverse()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/option/impl#[`Option<T>`]expect()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 150,
+        "lines-end": 152
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::Field::inverse",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#Field<bool>#is_one()": {
+      "display-name": "Field::is_one",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 144,
+        "lines-end": 146
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::Field::is_one",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#Field<bool>#is_zero()": {
+      "display-name": "Field::is_zero",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 140,
+        "lines-end": 142
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::Field::is_zero",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#PrimeCharacteristicRing#double()": {
+      "display-name": "PrimeCharacteristicRing::double",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/clone/Clone#clone()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 61,
+        "lines-end": 63
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::double",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#PrimeCharacteristicRing#halve()": {
+      "display-name": "PrimeCharacteristicRing::halve",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/clone/Clone#clone()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 67,
+        "lines-end": 74
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::halve",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#PrimeField32<u32>#to_unique_u32()": {
+      "display-name": "PrimeField32::to_unique_u32",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/PrimeField32#as_canonical_u32()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 23,
+        "lines-end": 26
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeField32::to_unique_u32",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/&Self#PrimeField64<u64>#to_unique_u64()": {
+      "display-name": "PrimeField64::to_unique_u64",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/PrimeField64#as_canonical_u64()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 11,
+        "lines-end": 14
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeField64::to_unique_u64",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/Field#try_inverse()": {
+      "display-name": "try_inverse",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/Field<BigUint>#order()": {
+      "display-name": "Field::order",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 168,
+        "lines-end": 168
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::Field::order",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/Field<usize>#bits()": {
+      "display-name": "Field::bits",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/Field<BigUint>#order()",
+        "probe:num-bigint/0.4.6/biguint/impl#[BigUint]bits()"
+      ],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 170,
+        "lines-end": 172
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::Field::bits",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/PrimeCharacteristicRing<Self::PrimeSubfield>#from_prime_subfield()": {
+      "display-name": "PrimeCharacteristicRing::from_prime_subfield",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 54,
+        "lines-end": 54
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::from_prime_subfield",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/PrimeCharacteristicRing<bool>#from_bool()": {
+      "display-name": "PrimeCharacteristicRing::from_bool",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 56,
+        "lines-end": 59
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::PrimeCharacteristicRing::from_bool",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/PrimeField32#as_canonical_u32()": {
+      "display-name": "as_canonical_u32",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/PrimeField64#as_canonical_u64()": {
+      "display-name": "as_canonical_u64",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/QuotientMap<Int>#from_canonical_checked()": {
+      "display-name": "QuotientMap::from_canonical_checked",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 95,
+        "lines-end": 95
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::QuotientMap::from_canonical_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/QuotientMap<Int>#from_canonical_unchecked()": {
+      "display-name": "QuotientMap::from_canonical_unchecked",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 97,
+        "lines-end": 97
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::QuotientMap::from_canonical_unchecked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/field/QuotientMap<Int>#from_int()": {
+      "display-name": "QuotientMap::from_int",
+      "dependencies": [],
+      "code-module": "field",
+      "code-path": "src/field.rs",
+      "code-text": {
+        "lines-start": 93,
+        "lines-end": 93
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::field::QuotientMap::from_int",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl#[Mersenne31][PrimeCharacteristicRing]halve()": {
+      "display-name": "Mersenne31::halve",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:aeneas-field-arithmetic/0.1.0/util/halve_u32()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 91,
+        "lines-end": 94
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::halve",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<&H>#[Mersenne31][Hash]hash()": {
+      "display-name": "Mersenne31::hash",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/&Self#PrimeField32<u32>#to_unique_u32()",
+        "probe:aeneas-field-arithmetic/0.1.0/mocks/&Self#Hasher<u32>#write_u32()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 302,
+        "lines-end": 304
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mocks::Hash for aeneas_field_arithmetic::mersenne31::Mersenne31}::hash",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<&Self>#[Mersenne31][Ord]cmp()": {
+      "display-name": "Mersenne31::cmp",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u32>#[Mersenne31][PrimeField32]as_canonical_u32()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/cmp/impls/impl#[u32][Ord]cmp()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 312,
+        "lines-end": 314
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::cmp",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<&Self>#[Mersenne31][`PartialEq<Self>`]eq()": {
+      "display-name": "Mersenne31::eq",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u32>#[Mersenne31][PrimeField32]as_canonical_u32()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 291,
+        "lines-end": 293
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialEq<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::eq",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<&Self>#[Mersenne31][`PartialOrd<Self>`]partial_cmp()": {
+      "display-name": "Mersenne31::partial_cmp",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<&Self>#[Mersenne31][Ord]cmp()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 346,
+        "lines-end": 348
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::PartialOrd<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::partial_cmp",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<BigUint>#[Mersenne31][PrimeField]as_canonical_biguint()": {
+      "display-name": "Mersenne31::as_canonical_biguint",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u32>#[Mersenne31][PrimeField32]as_canonical_u32()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 171,
+        "lines-end": 173
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_biguint",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<Mersenne31>#[Mersenne31][`AddAssign<Self>`]add_assign()": {
+      "display-name": "Mersenne31::add_assign",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 204,
+        "lines-end": 206
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::AddAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add_assign",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<Mersenne31>#[Mersenne31][`DivAssign<Self>`]div_assign()": {
+      "display-name": "Mersenne31::div_assign",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/&Self#Field#inverse()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`From<Self>`]from()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 263,
+        "lines-end": 265
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::DivAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_assign",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<Mersenne31>#[Mersenne31][`MulAssign<Self>`]mul_assign()": {
+      "display-name": "Mersenne31::mul_assign",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 246,
+        "lines-end": 248
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::MulAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_assign",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<Mersenne31>#[Mersenne31][`SubAssign<Self>`]sub_assign()": {
+      "display-name": "Mersenne31::sub_assign",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 228,
+        "lines-end": 230
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::SubAssign<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub_assign",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<Option<Self>>#[Mersenne31][Field]try_inverse()": {
+      "display-name": "Mersenne31::try_inverse",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<bool>#[Mersenne31][Field]is_zero()",
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u64>#[Mersenne31][PrimeCharacteristicRing]div_2exp_u64()",
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i64>#[Mersenne31][`QuotientMap<i64>`]from_int()",
+        "probe:aeneas-field-arithmetic/0.1.0/util/gcd_inversion_prime_field_32()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 131,
+        "lines-end": 142
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::try_inverse",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<bool>#[Mersenne31][Field]is_zero()": {
+      "display-name": "Mersenne31::is_zero",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 127,
+        "lines-end": 129
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::is_zero",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u32>#[Mersenne31][PrimeField32]as_canonical_u32()": {
+      "display-name": "Mersenne31::as_canonical_u32",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 159,
+        "lines-end": 167
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField32<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u32",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u64>#[Mersenne31][PrimeCharacteristicRing]div_2exp_u64()": {
+      "display-name": "Mersenne31::div_2exp_u64",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31]new()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 107,
+        "lines-end": 114
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div_2exp_u64",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u64>#[Mersenne31][PrimeCharacteristicRing]mul_2exp_u64()": {
+      "display-name": "Mersenne31::mul_2exp_u64",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 97,
+        "lines-end": 104
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul_2exp_u64",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u64>#[Mersenne31][PrimeField64]as_canonical_u64()": {
+      "display-name": "Mersenne31::as_canonical_u64",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/&Mersenne31#impl<u32>#[Mersenne31][PrimeField32]as_canonical_u32()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 152,
+        "lines-end": 154
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeField64<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::as_canonical_u64",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Mersenne31>#[Mersenne31][`Div<Self>`]div()": {
+      "display-name": "Mersenne31::div",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/field/&Self#Field#inverse()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`From<Self>`]from()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 255,
+        "lines-end": 257
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Div<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::div",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self::Output>#[Mersenne31][Neg]neg()": {
+      "display-name": "Mersenne31::neg",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 272,
+        "lines-end": 275
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Neg<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::neg",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][Ord]clamp()": {
+      "display-name": "Mersenne31::clamp",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 328,
+        "lines-end": 341
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::clamp",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][Ord]max()": {
+      "display-name": "Mersenne31::max",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 316,
+        "lines-end": 321
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::max",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][Ord]min()": {
+      "display-name": "Mersenne31::min",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 322,
+        "lines-end": 327
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::cmp::Ord for aeneas_field_arithmetic::mersenne31::Mersenne31}::min",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][`Add<Self>`]add()": {
+      "display-name": "Mersenne31::add",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[i32]overflowing_add()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_sub()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 184,
+        "lines-end": 198
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Add<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::add",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][`Mul<Self>`]mul()": {
+      "display-name": "Mersenne31::mul",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/from_u62()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/num/impl#[u64][`From<u32>`]from()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 237,
+        "lines-end": 240
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Mul<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::mul",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/Mersenne31#impl<Self>#[Mersenne31][`Sub<Self>`]sub()": {
+      "display-name": "Mersenne31::sub",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]overflowing_sub()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 213,
+        "lines-end": 222
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{core::ops::arith::Sub<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::sub",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/from_u62()": {
+      "display-name": "from_u62",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 278,
+        "lines-end": 283
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::from_u62",
+      "is-disabled": false,
+      "is-public": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()": {
+      "display-name": "Mersenne31::new_reduced",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 37,
+        "lines-end": 40
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_reduced",
+      "is-disabled": false,
+      "is-public": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<BigUint>#[Mersenne31][Field]order()": {
+      "display-name": "Mersenne31::order",
+      "dependencies": [
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 144,
+        "lines-end": 146
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::Field<aeneas_field_arithmetic::mersenne31::Mersenne31, aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::order",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<Self::PrimeSubfield>#[Mersenne31][PrimeCharacteristicRing]from_prime_subfield()": {
+      "display-name": "Mersenne31::from_prime_subfield",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 81,
+        "lines-end": 83
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_prime_subfield",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<bool>#[Mersenne31][PrimeCharacteristicRing]from_bool()": {
+      "display-name": "Mersenne31::from_bool",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 86,
+        "lines-end": 88
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::PrimeCharacteristicRing<aeneas_field_arithmetic::mersenne31::Mersenne31> for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_bool",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i32>#[Mersenne31][`QuotientMap<i32>`]from_canonical_checked()": {
+      "display-name": "Mersenne31::from_canonical_checked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_add_signed()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 391,
+        "lines-end": 401
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i32>#[Mersenne31][`QuotientMap<i32>`]from_canonical_unchecked()": {
+      "display-name": "Mersenne31::from_canonical_unchecked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_add_signed()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 404,
+        "lines-end": 410
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i32>#[Mersenne31][`QuotientMap<i32>`]from_int()": {
+      "display-name": "Mersenne31::from_int",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_add_signed()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 379,
+        "lines-end": 388
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i64>#[Mersenne31][`QuotientMap<i64>`]from_canonical_checked()": {
+      "display-name": "Mersenne31::from_canonical_checked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i32>#[Mersenne31][`QuotientMap<i32>`]from_canonical_checked()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`TryInto<U>`]try_into()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/result/impl#[`Result<T,/E>`]is_ok()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/result/impl#[`Result<T,/E>`]unwrap()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 474,
+        "lines-end": 482
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i64>#[Mersenne31][`QuotientMap<i64>`]from_canonical_unchecked()": {
+      "display-name": "Mersenne31::from_canonical_unchecked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i32>#[Mersenne31][`QuotientMap<i32>`]from_canonical_unchecked()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 489,
+        "lines-end": 491
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<i64>#[Mersenne31][`QuotientMap<i64>`]from_int()": {
+      "display-name": "Mersenne31::from_int",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u64>#[Mersenne31][`QuotientMap<u64>`]from_int()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 462,
+        "lines-end": 468
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_canonical_checked()": {
+      "display-name": "Mersenne31::from_canonical_checked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/bool/impl#[bool]then()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 366,
+        "lines-end": 368
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_canonical_unchecked()": {
+      "display-name": "Mersenne31::from_canonical_unchecked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 370,
+        "lines-end": 374
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_int()": {
+      "display-name": "Mersenne31::from_int",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl#[Mersenne31]new_reduced()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 359,
+        "lines-end": 364
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31]new()": {
+      "display-name": "Mersenne31::new",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 28,
+        "lines-end": 30
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31]new_checked()": {
+      "display-name": "Mersenne31::new_checked",
+      "dependencies": [],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 46,
+        "lines-end": 52
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::mersenne31::Mersenne31}::new_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u64>#[Mersenne31][`QuotientMap<u64>`]from_canonical_checked()": {
+      "display-name": "Mersenne31::from_canonical_checked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_canonical_unchecked()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 435,
+        "lines-end": 444
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_checked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u64>#[Mersenne31][`QuotientMap<u64>`]from_canonical_unchecked()": {
+      "display-name": "Mersenne31::from_canonical_unchecked",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_canonical_unchecked()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 451,
+        "lines-end": 453
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_canonical_unchecked",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u64>#[Mersenne31][`QuotientMap<u64>`]from_int()": {
+      "display-name": "Mersenne31::from_int",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mersenne31/impl<u32>#[Mersenne31][`QuotientMap<u32>`]from_canonical_unchecked()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/mem/size_of()"
+      ],
+      "code-module": "mersenne31",
+      "code-path": "src/mersenne31.rs",
+      "code-text": {
+        "lines-start": 419,
+        "lines-end": 429
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mersenne31::{aeneas_field_arithmetic::field::QuotientMap for aeneas_field_arithmetic::mersenne31::Mersenne31}::from_int",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mocks/&Self#Hasher<u32>#write_u32()": {
+      "display-name": "Hasher::write_u32",
+      "dependencies": [
+        "probe:aeneas-field-arithmetic/0.1.0/mocks/Hasher#write()",
+        "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]to_ne_bytes()"
+      ],
+      "code-module": "mocks",
+      "code-path": "src/mocks.rs",
+      "code-text": {
+        "lines-start": 12,
+        "lines-end": 14
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::mocks::Hasher::write_u32",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/mocks/Hasher#write()": {
+      "display-name": "write",
+      "dependencies": [],
+      "code-module": "mocks",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/util/gcd_inversion_prime_field_32()": {
+      "display-name": "gcd_inversion_prime_field_32",
+      "dependencies": [],
+      "code-module": "util",
+      "code-path": "src/util.rs",
+      "code-text": {
+        "lines-start": 13,
+        "lines-end": 76
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::util::gcd_inversion_prime_field_32",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:aeneas-field-arithmetic/0.1.0/util/halve_u32()": {
+      "display-name": "halve_u32",
+      "dependencies": [],
+      "code-module": "util",
+      "code-path": "src/util.rs",
+      "code-text": {
+        "lines-start": 80,
+        "lines-end": 84
+      },
+      "kind": "exec",
+      "language": "rust",
+      "rust-qualified-name": "aeneas_field_arithmetic::util::halve_u32",
+      "is-disabled": false,
+      "is-public": true
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/bool/impl#[bool]then()": {
+      "display-name": "then",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/bool",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/clone/Clone#clone()": {
+      "display-name": "clone",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/clone",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/cmp/impls/impl#[u32][Ord]cmp()": {
+      "display-name": "cmp",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/cmp/impls",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`From<Self>`]from()": {
+      "display-name": "from",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/convert",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`Into<U>`]into()": {
+      "display-name": "into",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/convert",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/convert/impl#[T][`TryInto<U>`]try_into()": {
+      "display-name": "try_into",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/convert",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/convert/num/impl#[u64][`From<u32>`]from()": {
+      "display-name": "from",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/convert/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/mem/size_of()": {
+      "display-name": "size_of",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/mem",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[i32]overflowing_add()": {
+      "display-name": "overflowing_add",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]overflowing_sub()": {
+      "display-name": "overflowing_sub",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]to_ne_bytes()": {
+      "display-name": "to_ne_bytes",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_add_signed()": {
+      "display-name": "wrapping_add_signed",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/num/impl#[u32]wrapping_sub()": {
+      "display-name": "wrapping_sub",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/num",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/option/impl#[`Option<T>`]expect()": {
+      "display-name": "expect",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/option",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/result/impl#[`Result<T,/E>`]is_ok()": {
+      "display-name": "is_ok",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/result",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:core/https://github.com/rust-lang/rust/library/core/result/impl#[`Result<T,/E>`]unwrap()": {
+      "display-name": "unwrap",
+      "dependencies": [],
+      "code-module": "/github.com/rust-lang/rust/library/core/result",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    },
+    "probe:num-bigint/0.4.6/biguint/impl#[BigUint]bits()": {
+      "display-name": "bits",
+      "dependencies": [],
+      "code-module": "biguint",
+      "code-path": "",
+      "code-text": {
+        "lines-start": 0,
+        "lines-end": 0
+      },
+      "kind": "exec",
+      "language": "rust",
+      "is-disabled": false
+    }
+  }
+}
